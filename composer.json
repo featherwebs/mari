@@ -1,6 +1,11 @@
 {
   "name": "featherwebs/mari",
   "description": "CMS package",
+  "keywords": [
+    "Laravel",
+    "CMS"
+  ],
+  "homepage": "https://github.com/featherwebs/mari",
   "type": "composer-plugin",
   "require": {
     "laravel/framework": "5.5.*",
@@ -14,5 +19,10 @@
       "name": "Srawan Shrestha",
       "email": "shrestha.srawank@gmail.com"
     }
-  ]
+  ],
+  "autoload": {
+    "psr-4": {
+        "Featherwebs\\Mari\\": "src"
+    }
+  }
 }
