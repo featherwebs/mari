@@ -22,8 +22,11 @@
     }
   ],
   "autoload": {
-    "psr-0": {
-        "Featherwebs\\Mari": "src/"
+    "psr-4": {
+      "Featherwebs\\Mari\\": "src/"
     }
+  },
+  "extra": {
+    "class": "Featherwebs\\Mari"
   }
 }
