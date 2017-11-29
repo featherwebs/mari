@@ -3,6 +3,8 @@
 namespace Featherwebs\Mari;
 
 use Illuminate\Support\ServiceProvider;
+use Intervention\Image\ImageServiceProvider;
+use Zizaco\Entrust\EntrustServiceProvider;
 
 class FeatherwebsServiceProvider extends ServiceProvider
 {
@@ -32,6 +34,8 @@ class FeatherwebsServiceProvider extends ServiceProvider
     {
         include __DIR__ . '/routes.php';
         include __DIR__ . '/helpers/helpers.php';
+        $this->app->register(ImageServiceProvider::class);
+        $this->app->register(EntrustServiceProvider::class);
         //        $this->app->make('Featherwebs\Mari\Controllers');
     }
 }
