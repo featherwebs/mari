@@ -8,6 +8,7 @@
   "homepage": "https://github.com/featherwebs/mari",
   "require": {
     "php": ">=5.3.0",
+    "laravel/framework": "5.5.*",
     "illuminate/support": "~5.5.0",
     "zizaco/entrust": "1.9.1",
     "yajra/laravel-datatables-oracle": "8.0",
