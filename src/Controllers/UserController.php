@@ -5,7 +5,7 @@ namespace Featherwebs\Mari\Controllers;
 use Featherwebs\Mari\Requests\StoreUser;
 use Featherwebs\Mari\Requests\UpdateUser;
 use Featherwebs\Mari\Models\Role;
-use Featherwebs\Mari\Models\User;
+use App\User;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
