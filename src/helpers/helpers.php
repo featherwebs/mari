@@ -23,7 +23,7 @@ function fw_setting($query)
 
 function fw_image($meta = null)
 {
-    $media = Image::query();
+    $media = Image::latest();
 
     if ($meta) {
         $media = $media->whereMeta($meta);
@@ -39,7 +39,7 @@ function fw_menu($slug)
 
 function fw_post_by_tag($tags, $limit = false)
 {
-    $posts = Post::whereHas('tags', function ($q) use ($tags) {
+    $posts = Post::latest()->whereHas('tags', function ($q) use ($tags) {
         if (is_array($tags)) {
             $q->whereIn('slug', strtolower($tags));
         } else {
@@ -56,8 +56,7 @@ function fw_post_by_tag($tags, $limit = false)
 
 function fw_post_by_category($category, $limit = false)
 {
-
-    $posts = Post::whereHas('postType', function ($q) use ($category) {
+    $posts = Post::latest()->whereHas('postType', function ($q) use ($category) {
         if (is_array($category)) {
             $q->whereIn('slug', $category);
         } else {
@@ -76,17 +75,17 @@ function fw_post_by_category($category, $limit = false)
 function fw_post($slug = false)
 {
     if ($slug) {
-        return Post::where('slug', $slug)->first();
+        return Post::latest()->where('slug', $slug)->first();
     } else {
-        return Post::all();
+        return Post::latest()->get();
     }
 }
 
 function fw_page($slug = false)
 {
     if ($slug) {
-        return Page::where([ 'slug' => $slug ])->first();
+        return Page::latest()->where([ 'slug' => $slug ])->first();
     } else {
-        return Page::all();
+        return Page::latest()->get();
     }
 }
