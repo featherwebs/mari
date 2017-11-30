@@ -35,7 +35,6 @@ class FeatherwebsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        include __DIR__ . '/routes/routes.php';
         include __DIR__ . '/routes/admin.php';
         include __DIR__ . '/helpers/helpers.php';
         $this->app->register(ImageServiceProvider::class);
