@@ -12,13 +12,19 @@ Mari is a Laravel CMS package that aims to streamline Web Development process.
 Featherwebs\Mari\FeatherwebsServiceProvider::class,
 ```
 
-3) Run the command below to publish the package templates:
+3) Publish the Laravel default auth scaffolds.
+
+```shell
+php artisan make:auth
+```
+
+4) Run the command below to publish the package templates:
 
 ```shell
 php artisan vendor:publish
 ```
 
-4) Open your `app/User.php` change it to:
+5) Open your `app/User.php` change it to:
 
 ```php
 use Featherwebs\Mari\Models\FeatherwebsUser;
@@ -29,7 +35,7 @@ class User extends FeatherwebsUser
 }
 ```
 
-5)  If you want to use Entrust [Middleware](#middleware) (requires Laravel 5.1 or later) you also need to add the following:
+6)  If you want to use Entrust [Middleware](#middleware) (requires Laravel 5.1 or later) you also need to add the following:
 
 ```php
     'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
