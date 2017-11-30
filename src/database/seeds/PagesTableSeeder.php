@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Page;
+use Featherwebs\Mari\Models\Page;
 use Illuminate\Database\Seeder;
 
 class PagesTableSeeder extends Seeder

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\PostType;
+use Featherwebs\Mari\Models\PostType;
 use Illuminate\Database\Seeder;
 
 class PostTypesTableSeeder extends Seeder

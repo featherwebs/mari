@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Role;
-use App\Models\User;
+use Featherwebs\Mari\Models\Role;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder

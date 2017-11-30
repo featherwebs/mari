@@ -1,25 +1,6 @@
 <?php
 
-use \Featherwebs\Mari\Controllers\HomeController;
-use \Featherwebs\Mari\Controllers\AdminController;
-use \Featherwebs\Mari\Controllers\ProfileController;
-use \Featherwebs\Mari\Controllers\PageController;
-use \Featherwebs\Mari\Controllers\PostController;
-use \Featherwebs\Mari\Controllers\MenuController;
-use \Featherwebs\Mari\Controllers\SubMenuController;
-use \Featherwebs\Mari\Controllers\SettingController;
-use \Featherwebs\Mari\Controllers\MediaController;
-use \Featherwebs\Mari\Controllers\UserController;
-
 Route::group([ 'middleware' => 'web' ], function () {
-    Route::get('/', HomeController::class . '@index')->name('home');
-
-    Route::get('/thumbnails/{thumb}')->name('image.thumbs');
-
-    Route::get('/home', function () {
-        return redirect()->route('admin.home');
-    });
-
     Route::group([ 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth' ], function () {
         Route::get('/', function () {
             return redirect()->route('admin.home');
@@ -39,6 +20,4 @@ Route::group([ 'middleware' => 'web' ], function () {
 
         Route::resource('setting', SettingController::class)->except('edit')->middleware('permission:manage-setting');;
     });
-
-    Route::any('{slug}', HomeController::class . '@page')->name('page');
 });

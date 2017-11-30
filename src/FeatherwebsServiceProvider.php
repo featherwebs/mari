@@ -25,6 +25,7 @@ class FeatherwebsServiceProvider extends ServiceProvider
             __DIR__ . '/public'             => base_path('public'),
             __DIR__ . '/database/migrations'=> database_path('migrations'),
             __DIR__ . '/database/seeds'     => database_path('seeds'),
+            __DIR__ . '/routes/routes.php'  => base_path('routes/web.php'),
         ]);
     }
 
@@ -34,7 +35,8 @@ class FeatherwebsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        include __DIR__ . '/routes.php';
+        include __DIR__ . '/routes/routes.php';
+        include __DIR__ . '/routes/admin.php';
         include __DIR__ . '/helpers/helpers.php';
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(EntrustServiceProvider::class);

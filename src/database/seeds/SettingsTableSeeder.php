@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Setting;
+use Featherwebs\Mari\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class SettingsTableSeeder extends Seeder
