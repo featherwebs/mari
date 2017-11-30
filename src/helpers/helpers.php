@@ -4,6 +4,7 @@ use Featherwebs\Mari\Models\Image;
 use Featherwebs\Mari\Models\Menu;
 use Featherwebs\Mari\Models\Post;
 use Featherwebs\Mari\Models\Setting;
+use Featherwebs\Mari\Models\Page;
 
 function fw_setting($query)
 {
