@@ -1,4 +1,13 @@
 <?php
+use \Featherwebs\Mari\Controllers\AdminController;
+use \Featherwebs\Mari\Controllers\ProfileController;
+use \Featherwebs\Mari\Controllers\PageController;
+use \Featherwebs\Mari\Controllers\PostController;
+use \Featherwebs\Mari\Controllers\MenuController;
+use \Featherwebs\Mari\Controllers\SubMenuController;
+use \Featherwebs\Mari\Controllers\SettingController;
+use \Featherwebs\Mari\Controllers\MediaController;
+use \Featherwebs\Mari\Controllers\UserController;
 
 Route::group([ 'middleware' => 'web' ], function () {
     Route::group([ 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth' ], function () {
