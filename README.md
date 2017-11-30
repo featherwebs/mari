@@ -33,8 +33,9 @@ php artisan make:auth
 4) Run the command below to publish the package templates:
 
 ```shell
-php artisan vendor:publish
+php artisan vendor:publish --force
 ```
+and select `Featherwebs\Mari\FeatherwebsServiceProvider`
 
 5) Open your `app/User.php` change it to:
 
