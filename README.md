@@ -34,8 +34,25 @@ class User extends FeatherwebsUser
 ...
 }
 ```
+6) Update your `migrations/DatabaseSeeder.php` and add the following:
+```php
+public function run()
+{
+    ...
+    $this->call(RolesTableSeeder::class);
+    $this->call(UsersTableSeeder::class);
+    $this->call(PagesTableSeeder::class);
+    $this->call(SettingsTableSeeder::class);
+    ...
+}
+```
 
-6)  If you want to use Entrust [Middleware](#middleware) (requires Laravel 5.1 or later) you also need to add the following:
+7) Run the seeds:
+```shell
+php artisan db:seed
+```
+
+8)  If you want to use Entrust [Middleware](#middleware) (requires Laravel 5.1 or later) you also need to add the following:
 
 ```php
     'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
