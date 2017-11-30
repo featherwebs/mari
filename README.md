@@ -65,7 +65,7 @@ public function run()
 php artisan db:seed
 ```
 
-8)  If you want to use [Entrust](https://github.com/Zizaco/entrust) Middleware (requires Laravel 5.1 or later) you also need to add the following:
+8)  You also need to add the following:
 
 ```php
     'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
