@@ -84,4 +84,19 @@ class Post extends Model
     {
         return $query->where('is_featured', $isFeatured);
     }
+
+    public function getCustom($slug = false)
+    {
+        $custom = collect($this->custom);
+        if ( ! $slug) {
+            return $custom;
+        }
+
+        if ($custom->where('slug', $slug)->count() > 0
+            && array_key_exists('value', $custom->where('slug', $slug)->first())) {
+            return $custom->where('slug', $slug)->first()['value'];
+        }
+
+        return null;
+    }
 }

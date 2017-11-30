@@ -15,15 +15,16 @@ class HomeController extends BaseController
      */
     public function index()
     {
-        $homePage = Page::find(fw_setting('homepage'));
+        $page = Page::find(fw_setting('homepage'));
 
-        if ($homePage) {
-            $view = 'pages.' . $homePage->view;
-            if ($view) {
-                return view($view);
+        if ($page) {
+            $view = 'pages.' . $page->view;
+            if (view()->exists($view)) {
+                return view($view, compact('page'));
             }
         }
-        abort(404, 'Invalid View');
+
+        return abort(404, 'Invalid View');
     }
 
     public function page($slug)

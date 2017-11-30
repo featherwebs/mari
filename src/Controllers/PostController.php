@@ -107,4 +107,9 @@ class PostController extends BaseController
             ->route('admin.post.index')
             ->withSuccess(trans('messages.delete_success', [ 'entity' => "Post '" . $title . "'" ]));
     }
+
+    public function show(Post $post)
+    {
+        return view('post.show', compact('post'));
+    }
 }
