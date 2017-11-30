@@ -36,10 +36,15 @@ function fw_menu($slug)
     return Menu::with('subMenus')->whereSlug($slug)->first();
 }
 
-function fw_post_by_tag($tag, $limit = false)
+function fw_post_by_tag($tags, $limit = false)
 {
-    $posts = Post::whereHas('tags', function ($q) use ($tag) {
-        $q->where('slug', strtolower($tag));
+    $posts = Post::whereHas('tags', function ($q) use ($tags) {
+        if(is_array($tags))
+        {
+            $q->whereIn('slug', strtolower($tags));
+        } else {
+            $q->where('slug', strtolower($tags));
+        }
     });
 
     if ($limit) {
@@ -51,8 +56,15 @@ function fw_post_by_tag($tag, $limit = false)
 
 function fw_post_by_category($category, $limit = false)
 {
+
     $posts = Post::whereHas('postType', function ($q) use ($category) {
-        $q->where('slug', $category);
+        if(is_array($category))
+        {
+            $q->whereIn('slug', $category);
+        }else{
+            $q->where('slug', $category);
+        }
+
     });
 
     if ($limit) {
@@ -61,3 +73,11 @@ function fw_post_by_category($category, $limit = false)
 
     return $posts->get();
 }
+
+function fw_page($slug)
+{
+    $page = Page::where(['slug' => $slug])->first();
+
+    return $page;
+}
+
