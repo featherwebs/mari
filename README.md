@@ -83,7 +83,7 @@ Thank you for considering contributing to the Featherwebs Mari framework!
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Srawan Shrestha at srawan@featherwebs.com. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability, please send an e-mail to Srawan Shrestha at srawan@featherwebs.com. All security vulnerabilities will be promptly addressed.
 
 
 ## License
