@@ -2,9 +2,21 @@
 
 Mari is a Laravel CMS package that aims to streamline Web Development process.
 
+
+## Dependencies
+1) [Entrust](https://github.com/Zizaco/entrust)
+2) [Laravel Datatables](https://github.com/yajra/laravel-datatables)
+3) [Intervention](https://github.com/Intervention/image)
+4) [Revisionable](https://github.com/VentureCraft/revisionable)
+
+
 ## Installation
 
-1) In order to install Mari, just run `composer require featherwebs/mari`
+1) In order to install Mari, just add the following to your composer.json. Then run `composer update`:
+
+```json
+"featherwebs/mari": "@dev"
+```
 
 2) Open your `config/app.php` and add the following to the `providers` array:
 
@@ -52,7 +64,7 @@ public function run()
 php artisan db:seed
 ```
 
-8)  If you want to use Entrust [Middleware](#middleware) (requires Laravel 5.1 or later) you also need to add the following:
+8)  If you want to use [Entrust](https://github.com/Zizaco/entrust) Middleware (requires Laravel 5.1 or later) you also need to add the following:
 
 ```php
     'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
@@ -67,9 +79,11 @@ to `routeMiddleware` array in `app/Http/Kernel.php`.
 
 Thank you for considering contributing to the Featherwebs Mari framework!
 
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Srawan Shrestha at srawan@featherwebs.com. All security vulnerabilities will be promptly addressed.
+
 
 ## License
 
