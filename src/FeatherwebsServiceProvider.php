@@ -18,11 +18,12 @@ class FeatherwebsServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
         $this->publishes([
-            __DIR__ . '/views/layouts'  => base_path('resources/views/layouts'),
-            __DIR__ . '/views/pages'    => base_path('resources/views/pages'),
-            __DIR__ . '/views/partials' => base_path('resources/views/partials'),
-            __DIR__ . '/config'         => base_path('config'),
-            __DIR__ . '/public'         => base_path('public'),
+            __DIR__ . '/views/layouts'      => base_path('resources/views/layouts'),
+            __DIR__ . '/views/pages'        => base_path('resources/views/pages'),
+            __DIR__ . '/views/partials'     => base_path('resources/views/partials'),
+            __DIR__ . '/config'             => base_path('config'),
+            __DIR__ . '/public'             => base_path('public'),
+            __DIR__ . '/database/migration' => database_path('migrations'),
         ]);
     }
 
