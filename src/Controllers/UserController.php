@@ -33,7 +33,7 @@ class UserController extends BaseController
             $role = Role::findOrFail($request->input('role.id'));
             $user->attachRole($role);
             if ($request->hasFile('image')) {
-                $this->uploadImage($request->file('image'), $user);
+                fw_upload_image($request->file('image'), $user);
             }
 
             return $user;
@@ -60,7 +60,7 @@ class UserController extends BaseController
             $user->detachRoles($user->roles);
             $user->attachRole($role);
             if ($request->hasFile('image')) {
-                $this->uploadImage($request->file('image'), $user);
+                fw_upload_image($request->file('image'), $user);
             }
 
             return $user;

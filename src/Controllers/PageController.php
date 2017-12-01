@@ -36,7 +36,7 @@ class PageController extends BaseController
                 $meta  = $request->file('images.' . $k . '.meta');
                 if ($image && $image instanceof UploadedFile)
                 {
-                    $this->uploadImage($image, $page, $single = false, $meta);
+                    fw_upload_image($image, $page, $single = false, $meta);
                 }
             }
 
@@ -77,7 +77,7 @@ class PageController extends BaseController
                     if ($image && $image instanceof UploadedFile)
                     {
                         $page->images()->find($id)->delete();
-                        $this->uploadImage($image, $page, $single = false, $meta);
+                        fw_upload_image($image, $page, $single = false, $meta);
                     }
                     else
                     {
@@ -88,7 +88,7 @@ class PageController extends BaseController
                 {
                     if ($image && $image instanceof UploadedFile)
                     {
-                        $this->uploadImage($image, $page, $single = false, $meta);
+                        fw_upload_image($image, $page, $single = false, $meta);
                     }
                 }
             }

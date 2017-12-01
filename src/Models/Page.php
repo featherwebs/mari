@@ -67,4 +67,13 @@ class Page extends Model
     {
         return $query->where('is_published', $isPublished);
     }
+
+    public function getImage($slug = false)
+    {
+        if ( ! $slug) {
+            return $this->images;
+        }
+
+        return $this->images()->where('meta', $slug)->first();
+    }
 }

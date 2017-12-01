@@ -99,4 +99,13 @@ class Post extends Model
 
         return null;
     }
+
+    public function getImage($slug = false)
+    {
+        if ( ! $slug) {
+            return $this->images;
+        }
+
+        return $this->images()->where('meta', $slug)->first();
+    }
 }

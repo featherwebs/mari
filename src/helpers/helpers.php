@@ -5,6 +5,8 @@ use Featherwebs\Mari\Models\Menu;
 use Featherwebs\Mari\Models\Post;
 use Featherwebs\Mari\Models\Setting;
 use Featherwebs\Mari\Models\Page;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 
 function fw_setting($query)
 {
@@ -23,7 +25,7 @@ function fw_setting($query)
 
 function fw_image($meta = null)
 {
-    $media = Image::latest();
+    $media = Image::query();
 
     if ($meta) {
         $media = $media->whereMeta($meta);
@@ -39,7 +41,7 @@ function fw_menu($slug)
 
 function fw_post_by_tag($tags, $limit = false)
 {
-    $posts = Post::latest()->whereHas('tags', function ($q) use ($tags) {
+    $posts = Post::whereHas('tags', function ($q) use ($tags) {
         if (is_array($tags)) {
             $q->whereIn('slug', strtolower($tags));
         } else {
@@ -56,7 +58,8 @@ function fw_post_by_tag($tags, $limit = false)
 
 function fw_post_by_category($category, $limit = false)
 {
-    $posts = Post::latest()->whereHas('postType', function ($q) use ($category) {
+
+    $posts = Post::whereHas('postType', function ($q) use ($category) {
         if (is_array($category)) {
             $q->whereIn('slug', $category);
         } else {
@@ -75,17 +78,52 @@ function fw_post_by_category($category, $limit = false)
 function fw_post($slug = false)
 {
     if ($slug) {
-        return Post::latest()->where('slug', $slug)->first();
+        $post = Post::where('slug', $slug)->first();
+        if ($post) {
+            return $post;
+        }
+
+        return collect([]);
     } else {
-        return Post::latest()->get();
+        return Post::all();
     }
 }
 
 function fw_page($slug = false)
 {
     if ($slug) {
-        return Page::latest()->where([ 'slug' => $slug ])->first();
+        $page = Page::where([ 'slug' => $slug ])->first();
+        if ($page) {
+            return $page;
+        }
+
+        return collect([]);
     } else {
-        return Page::latest()->get();
+        return Page::all();
+    }
+}
+
+function fw_upload_image(UploadedFile $file, Model $model, $single = true, $meta = null)
+{
+    $extension = $file->getClientOriginalExtension();
+    $filename  = $file->getClientOriginalName();
+    $image     = [
+        'custom' => [ 'title' => $filename ],
+        'path'   => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension),
+        'meta'   => str_slug($meta, '_'),
+    ];
+
+    if ($single)
+    {
+        if ($model->image)
+        {
+            $model->image->delete();
+        }
+
+        $model->image()->create($image);
+    }
+    else
+    {
+        $model->images()->create($image);
     }
 }

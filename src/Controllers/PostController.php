@@ -38,7 +38,7 @@ class PostController extends BaseController
                 $image = $request->file('images.' . $k . '.file');
                 $meta  = $request->file('images.' . $k . '.meta');
                 if ($image && $image instanceof UploadedFile) {
-                    $this->uploadImage($image, $post, $single = false, $meta);
+                    fw_upload_image($image, $post, $single = false, $meta);
                 }
             }
 
@@ -79,13 +79,13 @@ class PostController extends BaseController
                 if ($id) {
                     if ($image && $image instanceof UploadedFile) {
                         $post->images()->find($id)->delete();
-                        $this->uploadImage($image, $post, $single = false, $meta);
+                        fw_upload_image($image, $post, $single = false, $meta);
                     } else {
                         $post->images()->find($id)->update([ 'meta' => str_slug($meta, '_') ]);
                     }
                 } else {
                     if ($image && $image instanceof UploadedFile) {
-                        $this->uploadImage($image, $post, $single = false, $meta);
+                        fw_upload_image($image, $post, $single = false, $meta);
                     }
                 }
             }
