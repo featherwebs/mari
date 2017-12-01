@@ -29903,10 +29903,10 @@ var app = new Vue({
     },
     methods: {
         addCustomField: function addCustomField() {
-            this.page.custom.push(this.new_custom);
+            this.page.custom.push(Object.assign({}, this.new_custom));
         },
         addImageField: function addImageField() {
-            this.page.images.push(this.new_image);
+            this.page.images.push(Object.assign({}, this.new_image));
         },
         showPreview: function showPreview(index, event) {
             var p = this;

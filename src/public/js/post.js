@@ -29908,10 +29908,10 @@ var app = new Vue({
     },
     methods: {
         addCustomField: function addCustomField() {
-            this.post.custom.push(this.new_custom);
+            this.post.custom.push(Object.assign({}, this.new_custom));
         },
         addImageField: function addImageField() {
-            this.post.images.push(this.new_image);
+            this.post.images.push(Object.assign({}, this.new_image));
         },
         showPreview: function showPreview(index, event) {
             var p = this;
