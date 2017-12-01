@@ -41,7 +41,7 @@ function fw_menu($slug)
 
 function fw_post_by_tag($tags, $limit = false)
 {
-    $posts = Post::whereHas('tags', function ($q) use ($tags) {
+    $posts = Post::with('tags')->whereHas('tags', function ($q) use ($tags) {
         if (is_array($tags)) {
             $q->whereIn('slug', strtolower($tags));
         } else {
@@ -59,7 +59,7 @@ function fw_post_by_tag($tags, $limit = false)
 function fw_post_by_category($category, $limit = false)
 {
 
-    $posts = Post::whereHas('postType', function ($q) use ($category) {
+    $posts = Post::with('tags')->whereHas('postType', function ($q) use ($category) {
         if (is_array($category)) {
             $q->whereIn('slug', $category);
         } else {
@@ -78,7 +78,7 @@ function fw_post_by_category($category, $limit = false)
 function fw_post($slug = false)
 {
     if ($slug) {
-        $post = Post::where('slug', $slug)->first();
+        $post = Post::with('tags')->where('slug', $slug)->first();
         if ($post) {
             return $post;
         }

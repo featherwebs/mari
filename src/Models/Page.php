@@ -71,7 +71,7 @@ class Page extends Model
 
     public function subPages()
     {
-        return $this->hasMany(Page::class, page_id);
+        return $this->hasMany(Page::class, 'page_id');
     }
 
 
