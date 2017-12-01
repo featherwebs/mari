@@ -65,4 +65,10 @@ class Page extends Model
     {
         return $query->where('is_published', $isPublished);
     }
+
+    public function subPages()
+    {
+        return $this->hasMany(Page::class, page_id);
+    }
+
 }
