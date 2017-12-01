@@ -110,6 +110,11 @@ class PostController extends BaseController
 
     public function show(Post $post)
     {
-        return view('post.show', compact('post'));
+        $view = 'default';
+        if ( ! empty($post->view) && view()->exists('posts.' . $post->view)) {
+            $view = $post->view;
+        }
+
+        return view('posts.' . $view, compact('post'));
     }
 }
