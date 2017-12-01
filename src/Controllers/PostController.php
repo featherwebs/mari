@@ -38,7 +38,7 @@ class PostController extends BaseController
                 $image = $request->file('images.' . $k . '.file');
                 $meta  = $request->file('images.' . $k . '.meta');
                 if ($image && $image instanceof UploadedFile) {
-                    $this->uploadImage($image, $post, $single = false, $meta);
+                    fw_upload_image($image, $post, $single = false, $meta);
                 }
             }
 
@@ -79,13 +79,13 @@ class PostController extends BaseController
                 if ($id) {
                     if ($image && $image instanceof UploadedFile) {
                         $post->images()->find($id)->delete();
-                        $this->uploadImage($image, $post, $single = false, $meta);
+                        fw_upload_image($image, $post, $single = false, $meta);
                     } else {
                         $post->images()->find($id)->update([ 'meta' => str_slug($meta, '_') ]);
                     }
                 } else {
                     if ($image && $image instanceof UploadedFile) {
-                        $this->uploadImage($image, $post, $single = false, $meta);
+                        fw_upload_image($image, $post, $single = false, $meta);
                     }
                 }
             }
@@ -106,5 +106,15 @@ class PostController extends BaseController
         return redirect()
             ->route('admin.post.index')
             ->withSuccess(trans('messages.delete_success', [ 'entity' => "Post '" . $title . "'" ]));
+    }
+
+    public function show(Post $post)
+    {
+        $view = 'default';
+        if ( ! empty($post->view) && view()->exists('posts.' . $post->view)) {
+            $view = $post->view;
+        }
+
+        return view('posts.' . $view, compact('post'));
     }
 }

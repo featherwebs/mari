@@ -20,6 +20,7 @@ class FeatherwebsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/views/layouts'      => base_path('resources/views/layouts'),
             __DIR__ . '/views/pages'        => base_path('resources/views/pages'),
+            __DIR__ . '/views/posts'        => base_path('resources/views/posts'),
             __DIR__ . '/views/partials'     => base_path('resources/views/partials'),
             __DIR__ . '/config'             => base_path('config'),
             __DIR__ . '/public'             => base_path('public'),

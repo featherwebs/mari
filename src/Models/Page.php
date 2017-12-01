@@ -48,14 +48,16 @@ class Page extends Model
         return route('page', $this->slug);
     }
 
-    public function getCustom($slug)
+    public function getCustom($slug = false)
     {
+        $custom = collect($this->custom);
         if ( ! $slug) {
-            return $this->custom;
+            return $custom;
         }
 
-        if ($this->custom && array_key_exists($slug, $this->custom)) {
-            return $this->custom[ $slug ];
+        if ($custom->where('slug', $slug)->count() > 0
+            && array_key_exists('value', $custom->where('slug', $slug)->first())) {
+            return $custom->where('slug', $slug)->first()['value'];
         }
 
         return null;
@@ -66,9 +68,20 @@ class Page extends Model
         return $query->where('is_published', $isPublished);
     }
 
+
     public function subPages()
     {
         return $this->hasMany(Page::class, page_id);
+    }
+
+
+    public function getImage($slug = false)
+    {
+        if ( ! $slug) {
+            return $this->images;
+        }
+
+        return $this->images()->where('meta', $slug)->first();
     }
 
 }
