@@ -48,9 +48,9 @@
             </div>
             <br>
 
-            @forelse($metas->slice(1) as $meta)
+            @forelse($metas as $meta)
                 <div class="row">
-                    <h3>{{ ucfirst($meta) }}</h3>
+                    <h3>{{ $meta == '' ? 'All' : ucfirst($meta)  }} </h3>
                     <br>
                     @forelse(fw_image($meta) as $media)
                         <div class="col-sm-2">
@@ -71,7 +71,7 @@
             @empty
             @endforelse
 
-            
+
             {{--@forelse($medias->chunk(6) as $chunk)--}}
                 {{--<div class="row">--}}
                     {{--@foreach($chunk as $key => $media)--}}
