@@ -42,7 +42,7 @@
                 <div class="col-sm-2">
                     <select id="action" name="action" class="form-control changeToSubmit">
                         <option value="">Select an Action</option>
-                        <option value="edit">Edit</option>
+                        <option value="edit">View/Edit</option>
                         <option value="delete">Delete</option>
                     </select>
                 </div>

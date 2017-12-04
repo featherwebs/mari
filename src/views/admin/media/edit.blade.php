@@ -117,7 +117,7 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Link URL</label>
-                                                    <input type="text" name="link[{{ $media->id }}]" value="{{ asset($media->path) }}" class="form-control input-sm" disabled>
+                                                    <input type="text" name="link[{{ $media->id }}]" value="{{ $media->url }}" class="form-control input-sm" disabled>
                                                 </div>
                                             </div>
                                         </div>

@@ -39,7 +39,7 @@ class MediaController extends BaseController
             $filename  = $file->getClientOriginalName();
             $data      = [
                 'custom' => [ 'title' => $filename ],
-                'path'   => $file->storeAs('misc', str_random() . '.' . $extension)
+                'path'   => $file->storeAs('misc', str_random() . '.' . $extension, 'public')
             ];
 
             return Image::create($data);
@@ -77,7 +77,7 @@ class MediaController extends BaseController
                     $data      = [
                         'custom' => [ 'title' => $filename ],
                         'meta'   => $meta,
-                        'path'   => $file->storeAs('misc', str_random() . '.' . $extension),
+                        'path'   => $file->storeAs('misc', str_random() . '.' . $extension, 'public'),
                         'id'     => $image->id
                     ];
                     $image->delete();

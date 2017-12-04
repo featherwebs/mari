@@ -12,13 +12,17 @@ function fw_setting($query)
 {
     $setting = Setting::fetch($query)->first();
 
-    if ($setting) {
-        if ($setting->image) {
+    if ($setting)
+    {
+        if ($setting->image)
+        {
             return asset($setting->image->thumbnail);
         }
 
         return $setting->value;
-    } else {
+    }
+    else
+    {
         return null;
     }
 }
@@ -27,7 +31,8 @@ function fw_image($meta = null)
 {
     $media = Image::query();
 
-    if ($meta) {
+    if ($meta)
+    {
         $media = $media->whereMeta($meta);
     }
 
@@ -42,14 +47,18 @@ function fw_menu($slug)
 function fw_posts_by_tag($tags, $limit = false)
 {
     $posts = Post::with('tags')->whereHas('tags', function ($q) use ($tags) {
-        if (is_array($tags)) {
+        if (is_array($tags))
+        {
             $q->whereIn('slug', $tags);
-        } else {
+        }
+        else
+        {
             $q->where('slug', strtolower($tags));
         }
     });
 
-    if ($limit) {
+    if ($limit)
+    {
         $posts = $posts->take($limit);
     }
 
@@ -59,14 +68,18 @@ function fw_posts_by_tag($tags, $limit = false)
 function fw_posts_by_category($category, $limit = false)
 {
     $posts = Post::with('tags')->whereHas('postType', function ($q) use ($category) {
-        if (is_array($category)) {
+        if (is_array($category))
+        {
             $q->whereIn('slug', $category);
-        } else {
+        }
+        else
+        {
             $q->where('slug', $category);
         }
     });
 
-    if ($limit) {
+    if ($limit)
+    {
         $posts = $posts->take($limit);
     }
 
@@ -81,7 +94,8 @@ function fw_post_by_slug($slug)
 function fw_posts($limit = false)
 {
     $posts = Post::query();
-    if ($limit) {
+    if ($limit)
+    {
         $posts = $posts->limit($limit);
     }
 
@@ -96,7 +110,8 @@ function fw_page_by_slug($slug)
 function fw_pages($limit = false)
 {
     $pages = Page::query();
-    if ($limit) {
+    if ($limit)
+    {
         $pages = $pages->limit($limit);
     }
 
@@ -109,25 +124,30 @@ function fw_upload_image(UploadedFile $file, Model $model, $single = true, $meta
     $filename  = $file->getClientOriginalName();
     $image     = [
         'custom' => [ 'title' => $filename ],
-        'path'   => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension),
+        'path'   => $file->storeAs('public/' . strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension),
         'meta'   => str_slug($meta, '_'),
     ];
 
-    if ($single) {
-        if ($model->image) {
+    if ($single)
+    {
+        if ($model->image)
+        {
             $model->image->delete();
         }
 
         $model->image()->create($image);
-    } else {
+    }
+    else
+    {
         $model->images()->create($image);
     }
 }
 
-function fw_fetch_data($url){
+function fw_fetch_data($url)
+{
     $client = new \GuzzleHttp\Client();
-    $res = $client->request('GET', $url);
-    $data = json_decode($res->getBody());
+    $res    = $client->request('GET', $url);
+    $data   = json_decode($res->getBody());
 
     return $data;
 
