@@ -1,14 +1,6 @@
 @extends('featherwebs::admin.layout')
 
 @section('content')
-    <nav aria-label="breadcrumb" role="navigation">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Setting</li>
-
-        </ol>
-    </nav>
-
     <form method="POST" action="{{ route('admin.setting.store') }}" class="form form-validate" role="form" novalidate="novalidate" enctype="multipart/form-data">
         {{ csrf_field() }}
         @component('featherwebs::admin.template.default')
@@ -21,14 +13,14 @@
                     </button>
                 </div>
             @endslot
-                @slot('breadcrumb')
-                    <nav aria-label="breadcrumb" role="navigation">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Settings</li>
-                        </ol>
-                    </nav>
-                @endslot
+            @slot('breadcrumb')
+                <nav aria-label="breadcrumb" role="navigation">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Settings</li>
+                    </ol>
+                </nav>
+            @endslot
             <div>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
