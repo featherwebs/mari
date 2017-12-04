@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('featherwebs::admin.layout')
 
 @section('content')
     <nav aria-label="breadcrumb" role="navigation">

@@ -50,7 +50,7 @@ function fw_posts_by_tag($tags, $limit = false)
     });
 
     if ($limit) {
-        return $posts->take($limit);
+        $posts = $posts->take($limit);
     }
 
     return $posts->get();
@@ -67,7 +67,7 @@ function fw_posts_by_category($category, $limit = false)
     });
 
     if ($limit) {
-        return $posts->take($limit);
+        $posts = $posts->take($limit);
     }
 
     return $posts->get();
@@ -82,7 +82,7 @@ function fw_posts($limit = false)
 {
     $posts = Post::query();
     if ($limit) {
-        $posts->limit($limit);
+        $posts = $posts->limit($limit);
     }
 
     return $posts->get();
@@ -97,7 +97,7 @@ function fw_pages($limit = false)
 {
     $pages = Page::query();
     if ($limit) {
-        $pages->limit($limit);
+        $pages = $pages->limit($limit);
     }
 
     return $pages->get();

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('featherwebs::admin.layout')
 
 @section('content')
     @component('layouts.admin-template')

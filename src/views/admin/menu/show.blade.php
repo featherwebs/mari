@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('featherwebs::admin.layout')
 
 @section('content')
     <form action="{{ route('admin.menu.submenu.store', $menu->slug) }}" method="POST" enctype="multipart/form-data" id="menu-app">
