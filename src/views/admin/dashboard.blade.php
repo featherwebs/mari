@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @component('admin.template.default')
+    @component('featherwebs::admin.template.default')
         @slot('heading')
             Dashboard
         @endslot
