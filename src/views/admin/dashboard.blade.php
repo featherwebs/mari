@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @component('layouts.admin-template')
+    @component('admin.template.default')
         @slot('heading')
             Dashboard
         @endslot
@@ -62,7 +62,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $activity->revisionable ? str_limit($activity->revisionable->title,25) : '' }}
-{{--                                            <b>{{explode('\\',$activity->revisionable_type)[2]."[ID:".$activity->revisionable_id."]"}}</b>--}}
+                                            {{--                                            <b>{{explode('\\',$activity->revisionable_type)[2]."[ID:".$activity->revisionable_id."]"}}</b>--}}
                                         </td>
                                         <td>{{ $activity->created_at->format('g:i A j/m/Y') }}</td>
                                     </tr>
@@ -71,10 +71,8 @@
                                         <td colspan="5">No Activities</td>
                                     </tr>
                                 @endforelse
-
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -102,12 +100,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
         <!--dashboard-table ends  -->
-
-
     @endcomponent
 @endsection

@@ -12,6 +12,6 @@ class AdminController extends BaseController
     {
         $activities = Revision::latest()->paginate(10);
 
-        return view('featherwebs::dashboard', compact('activities'));
+        return view('featherwebs::admin.dashboard', compact('activities'));
     }
 }
