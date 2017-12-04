@@ -40,13 +40,11 @@
                                 <b>{{ fw_setting('homepage') == $page->id ? '--Homepage--':'' }}</b>
                             </div>
                             <div class="col-xs-1">
-                                <a href="#" class="btn btn-xs btn-primary">
-                                    @if($page->is_published)
-                                        <i class="fa fa-eye"></i>
-                                    @else
-                                        <i class="fa fa-eye-slash"></i>
-                                    @endif
-                                </a>
+                                @if($post->is_published)
+                                    <i class="fa fa-check-circle-o text-success"></i>
+                                @else
+                                    <i class="fa fa-times text-muted"></i>
+                                @endif
                             </div>
                             <div class="col-xs-2 text-right">
                                 <form method="POST" action="{{ route('admin.page.destroy', $page->slug) }}">

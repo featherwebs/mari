@@ -24,7 +24,9 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-1">ID</div>
-                        <div class="col-xs-8">Title</div>
+                        <div class="col-xs-6">Title</div>
+                        <div class="col-xs-1">Type</div>
+                        <div class="col-xs-1">Tags</div>
                         <div class="col-xs-1">Published</div>
                         <div class="col-xs-2">Actions</div>
                     </div>
@@ -35,17 +37,21 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-1">{{ $post->id }}</div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 {{ $post->title }}
                             </div>
                             <div class="col-xs-1">
-                                <a href="#" class="btn btn-xs btn-primary">
-                                    @if($post->is_published)
-                                        <i class="fa fa-eye"></i>
-                                    @else
-                                        <i class="fa fa-eye-slash"></i>
-                                    @endif
-                                </a>
+                                {{ $post->postType->title }}
+                            </div>
+                            <div class="col-xs-1">
+                                {{ $post->tags->count() ? $post->tags->implode('title'): '-' }}
+                            </div>
+                            <div class="col-xs-1">
+                                @if($post->is_published)
+                                    <i class="fa fa-check-circle-o text-success"></i>
+                                @else
+                                    <i class="fa fa-times text-muted"></i>
+                                @endif
                             </div>
                             <div class="col-xs-2 text-right">
                                 <form method="POST" action="{{ route('admin.post.destroy', $post->slug) }}">

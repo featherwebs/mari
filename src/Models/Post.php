@@ -29,6 +29,7 @@ class Post extends Model
         'custom'       => 'json',
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
+        'created_at'   => 'date'
     ];
 
     public function getRouteKeyName()
@@ -85,7 +86,7 @@ class Post extends Model
         return $query->where('is_featured', $isFeatured);
     }
 
-    public function getCustom($slug = false)
+    public function getCustom($slug = false, $default = "-")
     {
         $custom = collect($this->custom);
         if ( ! $slug) {
@@ -97,7 +98,7 @@ class Post extends Model
             return $custom->where('slug', $slug)->first()['value'];
         }
 
-        return null;
+        return $default;
     }
 
     public function getImage($slug = false)

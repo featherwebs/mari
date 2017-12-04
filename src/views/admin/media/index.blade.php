@@ -57,8 +57,10 @@
             <br>
             @forelse($metas as $meta)
                 <div class="row">
-                    <h3>{{ $meta == '' ? 'All' : ucfirst($meta)  }}</h3>
-                    <br>
+                    <div class="col-sm-12">
+                        <h3>{{ $meta == '' ? 'All' : ucfirst($meta)  }}</h3>
+                        <br>
+                    </div>
                     @forelse(fw_image($meta) as $media)
                         <div class="col-sm-2">
                             <div class="panel panel-default thumbnail-wrapper">
@@ -67,7 +69,7 @@
                                     <img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">
                                     <span class="thumbnail-title">
                                         {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
-                                        {{--{{ str_limit($media->getCustom('title'), 15) }}--}}
+                                        {{ str_limit($media->getCustom('title'), 15) }}
                                     </span>
                                 </label>
                             </div>

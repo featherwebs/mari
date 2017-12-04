@@ -48,7 +48,7 @@ class Page extends Model
         return route('page', $this->slug);
     }
 
-    public function getCustom($slug = false)
+    public function getCustom($slug = false, $default = "-")
     {
         $custom = collect($this->custom);
         if ( ! $slug) {
@@ -60,7 +60,7 @@ class Page extends Model
             return $custom->where('slug', $slug)->first()['value'];
         }
 
-        return null;
+        return $default;
     }
 
     public function scopePublished($query, $isPublished = true)

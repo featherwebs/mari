@@ -5,6 +5,13 @@
         @slot('heading')
             Dashboard
         @endslot
+        @slot('breadcrumb')
+            <nav aria-label="breadcrumb" role="navigation">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" aria-current="page">Home</li>
+                </ol>
+            </nav>
+        @endslot
         <!-- dashboard-welcome starts-->
         <div class="well well-home dashboard-welcome rounded-border-well table-shadow">
             <div class="row">
@@ -71,7 +78,7 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-default rounded-border-btn pull-right fix-margin-bottom shadow-effect" href="http://demo.coastercms.org/admin/home/logs">View all admin logs</a>
+                <a class="btn btn-default rounded-border-btn pull-right fix-margin-bottom shadow-effect" href="#">View all admin logs</a>
             </div>
             <div class="col-md-2">
                 <div class="row">
