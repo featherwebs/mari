@@ -39,7 +39,7 @@ function fw_menu($slug)
     return Menu::with('subMenus')->whereSlug($slug)->first();
 }
 
-function fw_post_by_tag($tags, $limit = false)
+function fw_posts_by_tag($tags, $limit = false)
 {
     $posts = Post::with('tags')->whereHas('tags', function ($q) use ($tags) {
         if (is_array($tags)) {
@@ -56,16 +56,14 @@ function fw_post_by_tag($tags, $limit = false)
     return $posts->get();
 }
 
-function fw_post_by_category($category, $limit = false)
+function fw_posts_by_category($category, $limit = false)
 {
-
     $posts = Post::with('tags')->whereHas('postType', function ($q) use ($category) {
         if (is_array($category)) {
             $q->whereIn('slug', $category);
         } else {
             $q->where('slug', $category);
         }
-
     });
 
     if ($limit) {
@@ -75,32 +73,34 @@ function fw_post_by_category($category, $limit = false)
     return $posts->get();
 }
 
-function fw_post($slug = false)
+function fw_post_by_slug($slug)
 {
-    if ($slug) {
-        $post = Post::with('tags')->where('slug', $slug)->first();
-        if ($post) {
-            return $post;
-        }
-
-        return collect([]);
-    } else {
-        return Post::all();
-    }
+    return Post::with('tags')->where('slug', $slug)->first();
 }
 
-function fw_page($slug = false)
+function fw_posts($limit = false)
 {
-    if ($slug) {
-        $page = Page::where([ 'slug' => $slug ])->first();
-        if ($page) {
-            return $page;
-        }
-
-        return collect([]);
-    } else {
-        return Page::all();
+    $posts = Post::query();
+    if ($limit) {
+        $posts->limit($limit);
     }
+
+    return $posts->get();
+}
+
+function fw_page_by_slug($slug)
+{
+    return Page::where([ 'slug' => $slug ])->first();
+}
+
+function fw_pages($limit = false)
+{
+    $pages = Page::query();
+    if ($limit) {
+        $pages->limit($limit);
+    }
+
+    return $pages->get();
 }
 
 function fw_upload_image(UploadedFile $file, Model $model, $single = true, $meta = null)
@@ -113,17 +113,13 @@ function fw_upload_image(UploadedFile $file, Model $model, $single = true, $meta
         'meta'   => str_slug($meta, '_'),
     ];
 
-    if ($single)
-    {
-        if ($model->image)
-        {
+    if ($single) {
+        if ($model->image) {
             $model->image->delete();
         }
 
         $model->image()->create($image);
-    }
-    else
-    {
+    } else {
         $model->images()->create($image);
     }
 }
