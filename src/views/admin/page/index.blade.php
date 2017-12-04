@@ -40,7 +40,7 @@
                                 <b>{{ fw_setting('homepage') == $page->id ? '--Homepage--':'' }}</b>
                             </div>
                             <div class="col-xs-1">
-                                @if($post->is_published)
+                                @if($page->is_published)
                                     <i class="fa fa-check-circle-o text-success"></i>
                                 @else
                                     <i class="fa fa-times text-muted"></i>
