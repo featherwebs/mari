@@ -30,7 +30,7 @@
 @yield('content')
 
 <!-- Scripts -->
-@include('layouts.footer')
+@include('featherwebs::admin.partials.footer')
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -40,11 +40,11 @@
 <script> new WOW().init(); </script>
 <script type="text/javascript" src="/js/custom.js"></script>
 <script>
-    window.Laravel = { csrfToken: '{{ csrf_token() }}' };
+    window.Laravel = {csrfToken: '{{ csrf_token() }}'};
     $(document).ready(function () {
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var hash = '#'+$(e.target).attr('href').substr(1);
-            if(history.pushState) {
+            var hash = '#' + $(e.target).attr('href').substr(1);
+            if (history.pushState) {
                 history.pushState(null, null, hash);
             }
             else {

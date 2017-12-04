@@ -44,7 +44,7 @@
                                 {{ $post->postType->title }}
                             </div>
                             <div class="col-xs-1">
-                                {{ $post->tags->count() ? $post->tags->implode('title'): '-' }}
+                                {{ $post->tags->count() ? $post->tags->implode('title',', '): '-' }}
                             </div>
                             <div class="col-xs-1">
                                 @if($post->is_published)
