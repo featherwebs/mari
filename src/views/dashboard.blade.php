@@ -55,7 +55,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $activity->revisionable ? str_limit($activity->revisionable->title,25) : '' }}
-                                            <b>{{explode('\\',$activity->revisionable_type)[2]."[ID:".$activity->revisionable_id."]"}}</b>
+{{--                                            <b>{{explode('\\',$activity->revisionable_type)[2]."[ID:".$activity->revisionable_id."]"}}</b>--}}
                                         </td>
                                         <td>{{ $activity->created_at->format('g:i A j/m/Y') }}</td>
                                     </tr>
