@@ -13,6 +13,15 @@
                     </button>
                 </div>
             @endslot
+            @slot('breadcrumb')
+                <nav aria-label="breadcrumb" role="navigation">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.menu.index') }}">Menu</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ $menu->title }}</li>
+                    </ol>
+                </nav>
+            @endslot
             <div class="row">
                 <div class="col-sm-12">
                     Menu: <span v-html="menu.title"></span>

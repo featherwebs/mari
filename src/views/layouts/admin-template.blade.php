@@ -25,6 +25,9 @@
     </div>
     <div class="row">
         <div class="col-md-12">
+            {{ $breadcrumb }}
+        </div>
+        <div class="col-md-12">
             @include('partials.alerts')
             <div class="panel panel-default">
                 <div class="panel-heading">
