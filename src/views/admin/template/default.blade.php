@@ -2,7 +2,7 @@
     <div class="row">
         @if(auth()->check())
             <div class="col-md-12 padding-2">
-                @include('partials.admin-navbar')
+                @include('featherwebs::admin.partials.navbar')
             </div>
         @endif
     </div>
