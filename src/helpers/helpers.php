@@ -43,7 +43,7 @@ function fw_posts_by_tag($tags, $limit = false)
 {
     $posts = Post::with('tags')->whereHas('tags', function ($q) use ($tags) {
         if (is_array($tags)) {
-            $q->whereIn('slug', strtolower($tags));
+            $q->whereIn('slug', $tags);
         } else {
             $q->where('slug', strtolower($tags));
         }
@@ -122,4 +122,13 @@ function fw_upload_image(UploadedFile $file, Model $model, $single = true, $meta
     } else {
         $model->images()->create($image);
     }
+}
+
+function fw_fetch_data($url){
+    $client = new \GuzzleHttp\Client();
+    $res = $client->request('GET', $url);
+    $data = json_decode($res->getBody());
+
+    return $data;
+
 }

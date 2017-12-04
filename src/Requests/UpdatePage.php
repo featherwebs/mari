@@ -45,7 +45,7 @@ class UpdatePage extends FormRequest
             'meta_title'       => $this->get('meta_title'),
             'meta_description' => $this->get('meta_description'),
             'meta_keywords'    => $this->get('meta_keywords'),
-            'is_published'     => $this->get('is_puhlished', 'false') == 'true',
+            'is_published'     => $this->get('is_published', 'false') == 'true',
         ];
     }
 }

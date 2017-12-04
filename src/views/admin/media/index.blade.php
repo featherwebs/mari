@@ -24,6 +24,12 @@
 @endpush
 
 @section('content')
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Media</li>
+        </ol>
+    </nav>
 
     @component('layouts.admin-template')
         @slot('heading')
@@ -47,31 +53,54 @@
                 </div>
             </div>
             <br>
-            @forelse($medias->chunk(6) as $chunk)
+            @forelse($metas as $meta)
                 <div class="row">
-                    @foreach($chunk as $key => $media)
+                    <h3>{{ $meta == '' ? 'All' : ucfirst($meta)  }}</h3>
+                    <br>
+                    @forelse(fw_image($meta) as $media)
                         <div class="col-sm-2">
                             <div class="panel panel-default thumbnail-wrapper">
                                 <label>
                                     <input type="checkbox" name="image[]" value="{{ $media->id }}">
                                     <img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">
                                     <span class="thumbnail-title">
-                                        {!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>
-                                        {{ str_limit($media->getCustom('title'), 15) }}
+                                        {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
+                                        {{--{{ str_limit($media->getCustom('title'), 15) }}--}}
                                     </span>
                                 </label>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                    @endforelse
                 </div>
             @empty
-                <div class="alert alert-callout alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <p class="text-capitalize">no media available</p>
-                </div>
             @endforelse
+
+            {{--@forelse($medias->chunk(6) as $chunk)--}}
+            {{--<div class="row">--}}
+            {{--@foreach($chunk as $key => $media)--}}
+            {{--<div class="col-sm-2">--}}
+            {{--<div class="panel panel-default thumbnail-wrapper">--}}
+            {{--<label>--}}
+            {{--<input type="checkbox" name="image[]" value="{{ $media->id }}">--}}
+            {{--<img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">--}}
+            {{--<span class="thumbnail-title">--}}
+            {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
+            {{--{{ str_limit($media->getCustom('title'), 15) }}--}}
+            {{--</span>--}}
+            {{--</label>--}}
+            {{--</div>--}}
+            {{--</div>--}}
+            {{--@endforeach--}}
+            {{--</div>--}}
+            {{--@empty--}}
+            {{--<div class="alert alert-callout alert-warning alert-dismissible" role="alert">--}}
+            {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
+            {{--<span aria-hidden="true">&times;</span>--}}
+            {{--</button>--}}
+            {{--<p class="text-capitalize">no media available</p>--}}
+            {{--</div>--}}
+            {{--@endforelse--}}
         </form>
     @endcomponent
     <!-- Modal -->
