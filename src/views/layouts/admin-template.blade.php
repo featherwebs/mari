@@ -24,9 +24,11 @@
         @endif
     </div>
     <div class="row">
-        <div class="col-md-12">
-            {{ $breadcrumb }}
-        </div>
+        @isset($breadcrumb)
+            <div class="col-md-12">
+                {{ $breadcrumb }}
+            </div>
+        @endisset
         <div class="col-md-12">
             @include('partials.alerts')
             <div class="panel panel-default">
