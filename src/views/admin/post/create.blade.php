@@ -1,7 +1,7 @@
 @extends('featherwebs::admin.layout')
 
 @section('content')
-    @component('layouts.admin-template')
+    @component('featherwebs::admin.template.default')
         @slot('heading')
             Posts
         @endslot

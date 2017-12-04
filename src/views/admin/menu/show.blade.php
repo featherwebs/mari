@@ -3,7 +3,7 @@
 @section('content')
     <form action="{{ route('admin.menu.submenu.store', $menu->slug) }}" method="POST" enctype="multipart/form-data" id="menu-app">
         {{ csrf_field() }}
-        @component('layouts.admin-template')
+        @component('featherwebs::admin.template.default')
             @slot('heading')
                 Menu '{{ $menu->title }}'
                 <div class="pull-right">

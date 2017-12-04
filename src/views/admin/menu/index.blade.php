@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="menu-app">
-        @component('layouts.admin-template')
+        @component('featherwebs::admin.template.default')
             @slot('heading')
                 Menu
                 <div class="pull-right">

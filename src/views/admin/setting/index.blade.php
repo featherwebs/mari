@@ -11,7 +11,7 @@
 
     <form method="POST" action="{{ route('admin.setting.store') }}" class="form form-validate" role="form" novalidate="novalidate" enctype="multipart/form-data">
         {{ csrf_field() }}
-        @component('layouts.admin-template')
+        @component('featherwebs::admin.template.default')
             @slot('heading')
                 Settings
                 <div class="pull-right">

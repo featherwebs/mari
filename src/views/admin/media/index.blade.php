@@ -24,8 +24,7 @@
 @endpush
 
 @section('content')
-
-    @component('layouts.admin-template')
+    @component('featherwebs::admin.template.default')
         @slot('heading')
             Media
         @endslot

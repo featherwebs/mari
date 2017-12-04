@@ -20,7 +20,7 @@
     <form method="POST" action="{{ route('admin.media.update','all') }}" class="form form-validate" role="form" novalidate="novalidate" enctype="multipart/form-data">
         {{ method_field('PUT') }}
         {{ csrf_field() }}
-        @component('layouts.admin-template')
+        @component('featherwebs::admin.template.default')
             @slot('heading')
                 Media
                 <div class="pull-right">
