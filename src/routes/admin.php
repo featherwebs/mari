@@ -29,6 +29,6 @@ Route::group([ 'middleware' => 'web' ], function () {
 
         Route::resource('setting', SettingController::class)->except('edit')->middleware('permission:manage-setting');
 
-        require base_path('routes/mari.php');
+        include base_path('routes/mari.php');
     });
 });
