@@ -24,7 +24,7 @@ class PageController extends BaseController
     {
         $pages     = Page::pluck('title', 'id');
         $templates = collect(File::allFiles(resource_path('views/pages')))->map(function ($item) {
-            return $item->getFilename()->explode('.')[0];
+            return explode('.', $item->getFilename())[0];
         });
 
         return view('featherwebs::admin.page.create', compact('pages', 'templates'));
@@ -55,7 +55,7 @@ class PageController extends BaseController
         $page->load('images');
         $pages = Page::pluck('title', 'id');
         $templates = collect(File::allFiles(resource_path('views/pages')))->map(function ($item) {
-            return $item->getFilename()->explode('.')[0];
+            return explode('.', $item->getFilename())[0];
         });
 
         return view('featherwebs::admin.page.edit', compact('page', 'pages', 'templates'));
