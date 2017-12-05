@@ -51,6 +51,14 @@
                 </a>
             </li>
             @endpermission
+            @foreach(config('mari.navbar') as $item)
+                <li role="presentation">
+                    <a href="{{ route($item['route']) }}">
+                        <i class="{{ $item['icon'] }} fa-2x"></i>
+                        {{ $item['label'] }}
+                    </a>
+                </li>
+            @endforeach
             @permission('manage-user')
             <li role="presentation">
                 <a href="{{ route('admin.user.index') }}">

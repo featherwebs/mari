@@ -27,6 +27,8 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::resource('menu.submenu', SubMenuController::class)->only('store')->middleware('permission:manage-menu');
         Route::resource('user', UserController::class)->middleware('permission:manage-user');
 
-        Route::resource('setting', SettingController::class)->except('edit')->middleware('permission:manage-setting');;
+        Route::resource('setting', SettingController::class)->except('edit')->middleware('permission:manage-setting');
+
+        require base_path('routes/mari.php');
     });
 });

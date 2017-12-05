@@ -27,6 +27,7 @@ class FeatherwebsServiceProvider extends ServiceProvider
             __DIR__ . '/database/migrations'=> database_path('migrations'),
             __DIR__ . '/database/seeds'     => database_path('seeds'),
             __DIR__ . '/routes/routes.php'  => base_path('routes/web.php'),
+            __DIR__ . '/routes/mari.php'  => base_path('routes/mari.php'),
         ]);
     }
 
