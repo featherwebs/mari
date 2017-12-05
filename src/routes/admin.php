@@ -1,4 +1,5 @@
 <?php
+
 use \Featherwebs\Mari\Controllers\AdminController;
 use \Featherwebs\Mari\Controllers\ProfileController;
 use \Featherwebs\Mari\Controllers\PageController;
@@ -29,6 +30,9 @@ Route::group([ 'middleware' => 'web' ], function () {
 
         Route::resource('setting', SettingController::class)->except('edit')->middleware('permission:manage-setting');
 
-        include base_path('routes/mari.php');
+        if (is_readable(base_path('routes/mari.php')))
+        {
+            include base_path('routes/mari.php');
+        }
     });
 });
