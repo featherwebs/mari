@@ -212,12 +212,15 @@
     <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script>
-                @if(isset($post))
-        let post = JSON.parse('{!! addslashes(json_encode($post)) !!}');
-                @endif
-                @if(isset($tags))
-        let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
-                @endif
+        @if(isset($post))
+            let post = JSON.parse('{!! addslashes(json_encode($post)) !!}');
+        @endif
+        {{--@if($p = old('post', isset($post)?$post:null))--}}
+            {{--let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');--}}
+        {{--@endif--}}
+        @if(isset($tags))
+            let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
+        @endif
         let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
         let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
         $(document).ready(function () {
