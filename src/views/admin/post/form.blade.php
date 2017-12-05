@@ -219,6 +219,7 @@
         let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
                 @endif
         let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
+        let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
         $(document).ready(function () {
             $('.select2').select2({
                 tags: true,
