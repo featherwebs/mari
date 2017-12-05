@@ -29864,6 +29864,7 @@ var app = new Vue({
     el: '#page-app',
     data: {
         pages: typeof pages === 'undefined' ? [] : pages,
+        templates: typeof templates === 'undefined' ? [] : templates,
         page: typeof page === 'undefined' ? {
             title: '',
             sub_title: '',
@@ -29874,6 +29875,7 @@ var app = new Vue({
             meta_keywords: '',
             page_id: '',
             is_published: false,
+            view: 'default',
             images: [],
             custom: []
         } : page,

@@ -38,10 +38,9 @@
             <div class="form-group">
                 <label for="view" class="control-label col-sm-2">View</label>
                 <div class="col-sm-10">
-                    <div class="input-group">
-                        <input class="form-control" name="view" type="text" v-model="page.view" id="view" placeholder="Leave blank if default">
-                        <span class="input-group-addon" id="basic-addon2">.blade.php</span>
-                    </div>
+                    <select class="form-control" name="view" v-model="page.view">
+                        <option v-for="t in templates" :value="t">@{{ t }}</option>
+                    </select>
                     <span class="help-block">Filename of Blade Template File</span>
                 </div>
             </div>
@@ -190,6 +189,7 @@
             let page = JSON.parse('{!! addslashes(json_encode($page)) !!}');
         @endif
         let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
+        let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
     </script>
     <script src="{{ asset('js/page.js') }}"></script>
 @endpush

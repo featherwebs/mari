@@ -38,7 +38,9 @@
             <div class="form-group">
                 <label for="view" class="control-label col-sm-2">View</label>
                 <div class="col-sm-10">
-                    <input class="form-control" name="view" type="text" v-model="post.view" id="view">
+                    <select class="form-control" name="view" v-model="post.view">
+                        <option v-for="t in templates" :value="t">@{{ t }}</option>
+                    </select>
                     <span class="help-block">Filename of Blade Template File</span>
                 </div>
             </div>
