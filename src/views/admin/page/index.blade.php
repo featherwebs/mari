@@ -23,7 +23,7 @@
             <div class="panel">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-xs-1">ID</div>
+                        <div class="col-xs-1"></div>
                         <div class="col-xs-8">Title</div>
                         <div class="col-xs-1">Published</div>
                         <div class="col-xs-2">Actions</div>
@@ -34,7 +34,7 @@
                 <div class="panel">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-xs-1">{{ $page->id }}</div>
+                            <div class="col-xs-1">--</div>
                             <div class="col-xs-8">
                                 {{ $page->title }}
                                 <b>{{ fw_setting('homepage') == $page->id ? '--Homepage--':'' }}</b>
@@ -65,8 +65,50 @@
                             </div>
                         </div>
                     </div>
+                    @if($page->subPages->count())
+                        <div class="panel-body">
+                            @foreach($page->subPages as $subPage)
+                                <div class="row">
+                                    <div class="col-xs-1 text-right">-</div>
+                                    <div class="col-xs-8">
+                                        {{ $subPage->title }}
+                                        <b>{{ fw_setting('homepage') == $subPage->id ? '--Homepage--':'' }}</b>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        @if($subPage->is_published)
+                                            <i class="fa fa-check-circle-o text-success"></i>
+                                        @else
+                                            <i class="fa fa-times text-muted"></i>
+                                        @endif
+                                    </div>
+                                    <div class="col-xs-2 text-right">
+                                        <form method="POST" action="{{ route('admin.page.destroy', $subPage->slug) }}">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            <a href="{{ fw_setting('homepage') == $subPage->id ? url('/'):route('page', $subPage->slug) }}" class="btn btn-xs btn-primary" target="_blank">
+                                                View
+                                            </a>
+                                            <a href="{{ route('admin.page.edit', $subPage->slug) }}" class="btn btn-xs btn-primary">
+                                                Edit
+                                            </a>
+                                            @unless(fw_setting('homepage') == $subPage->id)
+                                                <button onclick="return confirm('Are You sure?');" class="btn btn-xs btn-danger">
+                                                    Delete
+                                                </button>
+                                            @endunless
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
+        @slot('footer')
+            <div class="text-right">
+                {!! $pages->links() !!}
+            </div>
+        @endslot
     @endcomponent
 @endsection

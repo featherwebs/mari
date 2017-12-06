@@ -15,14 +15,14 @@ class PageController extends BaseController
 {
     public function index()
     {
-        $pages = Page::with('images')->paginate(10);
+        $pages = Page::whereNull('page_id')->with('images', 'subPages')->get();
 
         return view('featherwebs::admin.page.index', compact('pages'));
     }
 
     public function create()
     {
-        $pages     = Page::pluck('title', 'id');
+        $pages     = Page::whereNull('page_id')->pluck('title', 'id');
         $templates = collect(File::allFiles(resource_path('views/pages')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         });
@@ -53,7 +53,7 @@ class PageController extends BaseController
     public function edit(Page $page)
     {
         $page->load('images');
-        $pages = Page::pluck('title', 'id');
+        $pages = Page::whereNull('page_id')->pluck('title', 'id');
         $templates = collect(File::allFiles(resource_path('views/pages')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         });
