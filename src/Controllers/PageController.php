@@ -15,7 +15,7 @@ class PageController extends BaseController
 {
     public function index()
     {
-        $pages = Page::whereNull('page_id')->with('images', 'subPages')->get();
+        $pages = Page::whereNull('page_id')->with('images', 'subPages')->paginate(10);
 
         return view('featherwebs::admin.page.index', compact('pages'));
     }
