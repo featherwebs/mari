@@ -19,7 +19,12 @@ class PostTypesTableSeeder extends Seeder
             [
                 'title' => 'News',
                 'slug'  => 'news'
+            ],
+            [
+                'title' => 'Other',
+                'slug'  => 'other'
             ]
+
         ];
 
         PostType::insert($postTypes);
