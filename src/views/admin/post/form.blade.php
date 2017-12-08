@@ -53,7 +53,7 @@
                 <label for="post_type_id" class="control-label col-sm-2">Post Type</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="post_type_id" v-model="post.post_type_id">
-                        <option :value="null">None</option>
+                        {{--<option :value="null">None</option>--}}
                         <option v-for="(p,k) in post_types" :value="k">@{{ p }}</option>
                     </select>
                     <span class="help-block"></span>
