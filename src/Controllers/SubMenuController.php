@@ -18,7 +18,7 @@ class SubMenuController extends BaseController
         });
 
         return redirect()
-            ->route('featherwebs::admin.menu.show', $menu->slug)
+            ->route('admin.menu.show', $menu->slug)
             ->withSuccess(trans('messages.update_success', [ 'entity' => "Menu '" . str_limit($menu->title, 20) . "'" ]));
     }
 }

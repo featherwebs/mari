@@ -29870,7 +29870,7 @@ var app = new Vue({
         post: typeof post === 'undefined' ? {
             title: '',
             sub_title: '',
-            post_type_id: null,
+            post_type_id: 3, // 3 for misc
             slug: '',
             content: '',
             meta_title: '',

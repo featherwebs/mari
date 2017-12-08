@@ -26,14 +26,6 @@
                     @endforeach
                 @endif
             </ul>
-            <ul class="nav navbar-nav navbar-right nav-subnav">
-                <li><a href="alumini.php">Alumini</a></li>
-                <li><a href="faculty.php">Faculty</a></li>
-                <li><a href="facilities.php">Facilities</a></li>
-                <li><a href="research.php">Research</a></li>
-                <li><a href="journal.php">Journal</a></li>
-                <li><a href="research.php">Vacancy</a></li>
-            </ul>
 
         </div><!-- /.navbar-collapse -->
         <a class="navbar-apply" href="enroll.php">Apply Now <span class="apply_arrow">&#8600;</span></a>
