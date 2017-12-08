@@ -10,6 +10,7 @@ use Featherwebs\Mari\Models\Tag;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PostController extends BaseController
@@ -25,8 +26,11 @@ class PostController extends BaseController
     {
         $tags      = Tag::pluck('title', 'id');
         $postTypes = PostType::pluck('title', 'id');
+        $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
+            return explode('.', $item->getFilename())[0];
+        });
 
-        return view('featherwebs::admin.post.create', compact('tags', 'postTypes'));
+        return view('featherwebs::admin.post.create', compact('tags', 'postTypes', 'templates'));
     }
 
     public function store(StorePost $request)
@@ -55,8 +59,11 @@ class PostController extends BaseController
         $post->load('images', 'tags');
         $tags      = Tag::pluck('title', 'id');
         $postTypes = PostType::pluck('title', 'id');
+        $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
+            return explode('.', $item->getFilename())[0];
+        });
 
-        return view('featherwebs::admin.post.edit', compact('post', 'tags', 'postTypes'));
+        return view('featherwebs::admin.post.edit', compact('post', 'tags', 'postTypes', 'templates'));
     }
 
     public function update(UpdatePost $request, Post $post)

@@ -38,7 +38,9 @@
             <div class="form-group">
                 <label for="view" class="control-label col-sm-2">View</label>
                 <div class="col-sm-10">
-                    <input class="form-control" name="view" type="text" v-model="post.view" id="view">
+                    <select class="form-control" name="view" v-model="post.view">
+                        <option v-for="t in templates" :value="t">@{{ t }}</option>
+                    </select>
                     <span class="help-block">Filename of Blade Template File</span>
                 </div>
             </div>
@@ -210,13 +212,17 @@
     <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script>
-                @if(isset($post))
-        let post = JSON.parse('{!! addslashes(json_encode($post)) !!}');
-                @endif
-                @if(isset($tags))
-        let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
-                @endif
+        @if(isset($post))
+            let post = JSON.parse('{!! addslashes(json_encode($post)) !!}');
+        @endif
+        {{--@if($p = old('post', isset($post)?$post:null))--}}
+            {{--let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');--}}
+        {{--@endif--}}
+        @if(isset($tags))
+            let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
+        @endif
         let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
+        let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
         $(document).ready(function () {
             $('.select2').select2({
                 tags: true,

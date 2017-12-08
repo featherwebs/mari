@@ -73,5 +73,10 @@
                 </div>
             @endforeach
         </div>
+        @slot('footer')
+            <div class="text-right">
+                {!! $posts->links() !!}
+            </div>
+        @endslot
     @endcomponent
 @endsection

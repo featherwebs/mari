@@ -27,7 +27,7 @@ class StorePost extends FormRequest
             'sub_title'     => '',
             'view'          => '',
             'content'       => '',
-            'post_type_id'  => 'exists:post_types,id',
+            'post_type_id'  => 'exists:post_types,id|nullable',
             'images.*.file' => 'image'
         ];
     }

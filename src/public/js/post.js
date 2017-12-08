@@ -29865,6 +29865,7 @@ var app = new Vue({
     el: '#post-app',
     data: {
         post_types: typeof post_types === 'undefined' ? [] : post_types,
+        templates: typeof templates === 'undefined' ? [] : templates,
         tags: typeof tags === 'undefined' ? [] : tags,
         post: typeof post === 'undefined' ? {
             title: '',
@@ -29875,7 +29876,7 @@ var app = new Vue({
             meta_title: '',
             meta_description: '',
             meta_keywords: '',
-            view: '',
+            view: 'default',
             images: [],
             is_published: false,
             is_featured: false,
