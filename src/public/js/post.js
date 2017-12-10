@@ -29882,7 +29882,7 @@ var app = new Vue({
             is_featured: false,
             custom: [],
             tags: [],
-            event_date: ''
+            event_on: ''
         } : post,
 
         new_image: {
