@@ -56,7 +56,7 @@ function fw_posts_by_tag($tags, $limit = false)
     return $posts->get();
 }
 
-function fw_posts_by_category($category, $limit = false)
+function fw_posts_by_category($category, $limit = false, $builder = false)
 {
     $posts = Post::with('tags')->whereHas('postType', function ($q) use ($category) {
         if (is_array($category)) {
@@ -68,6 +68,10 @@ function fw_posts_by_category($category, $limit = false)
 
     if ($limit) {
         $posts = $posts->take($limit);
+    }
+
+    if ($builder) {
+        return $posts;
     }
 
     return $posts->get();

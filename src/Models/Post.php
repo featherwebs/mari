@@ -22,8 +22,7 @@ class Post extends Model
         'custom',
         'view',
         'is_published',
-        'is_featured',
-        'event_on'
+        'is_featured'
     ];
 
     protected $casts = [
