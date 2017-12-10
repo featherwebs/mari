@@ -118,6 +118,7 @@ class PostController extends BaseController
     public function show(Post $post)
     {
         $view = 'default';
+        $post->load('images', 'tags', 'postType');
         if ( ! empty($post->view) && view()->exists('posts.' . $post->view)) {
             $view = $post->view;
         }

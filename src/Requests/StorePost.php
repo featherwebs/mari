@@ -34,7 +34,7 @@ class StorePost extends FormRequest
     }
 
     public function data()
-    {
+    {post
         return [
             'title'            => $this->get('title'),
             'sub_title'        => $this->get('sub_title'),
