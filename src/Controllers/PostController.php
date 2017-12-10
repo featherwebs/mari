@@ -25,7 +25,7 @@ class PostController extends BaseController
     public function create()
     {
         $tags      = Tag::pluck('title', 'id');
-        $postTypes = PostType::pluck('title', 'id');
+        $postTypes = PostType::all();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         });
@@ -56,9 +56,9 @@ class PostController extends BaseController
 
     public function edit(Post $post)
     {
-        $post->load('images', 'tags');
+        $post->load('images', 'tags', 'postType');
         $tags      = Tag::pluck('title', 'id');
-        $postTypes = PostType::pluck('title', 'id');
+        $postTypes = PostType::all();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         });
@@ -118,6 +118,7 @@ class PostController extends BaseController
     public function show(Post $post)
     {
         $view = 'default';
+        $post->load('images', 'tags', 'postType');
         if ( ! empty($post->view) && view()->exists('posts.' . $post->view)) {
             $view = $post->view;
         }
