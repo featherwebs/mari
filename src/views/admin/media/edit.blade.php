@@ -81,7 +81,7 @@
                                             </div>
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <label>Meta</label>
+                                                    <label>Type</label>
                                                     <input type="text" name="image[{{ $media->id }}][meta]" value="{{ $media->meta }}" class="form-control input-sm">
                                                     <p class="help-block">Image slug</p>
                                                 </div>

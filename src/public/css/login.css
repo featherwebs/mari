@@ -1,0 +1,280 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6,a,li,ul,img,fieldset,blockquote{
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+}
+h2{
+    font-family: Roboto-Bold;
+}
+
+header, footer, article, section, nav, figure, aside, main {
+    display: block;
+}
+figure {
+    margin:0; padding:0;
+}
+ul{
+    list-style: none;
+}
+
+blockquote{
+    quotes:none;
+    /*color: #F9613A;*/
+    font-size: 1.5em;
+    font-family: 'Roboto-Medium';
+    text-align: center;
+    margin-bottom: 40px;
+}
+@font-face {
+    font-family: Roboto-Black;
+    src: url('../fonts/Roboto-Black.ttf');
+}
+@font-face {
+    font-family: Roboto-Bold;
+    src: url('../fonts/Roboto-Bold.ttf');
+}
+@font-face {
+    font-family: Roboto-Medium;
+    src: url('../fonts/Roboto-Medium.ttf');
+}
+@font-face {
+    font-family: Roboto;
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: Roboto-Thin;
+    src: url('../fonts/Roboto-Thin.ttf');
+}
+
+/*------------------------------LOGIN PAGE STARTS ---------- */
+
+#login_board{
+    background-size: cover;
+    background-image: url(../images/mariGalaxy.jpg);
+    min-height: 100vh;
+}
+#login-texts-wrapper{
+    color: #fff;
+}
+.login-box-wrapper, #login-texts-wrapper{
+    height:95vh;
+}
+#login-texts{
+    position: relative;
+    top: 50%;
+    padding-left: 30%;
+    transform: translateY(-50%);
+
+}
+.form-signin{
+    background: #fff;
+    width: 60%;
+    /*height: 55%;*/
+    max-height: 500px;
+    min-height: 420px;
+    padding: 40px;
+    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 10px;
+}
+
+.form-signin-heading{
+    text-align: center;
+    margin-bottom: 15%;
+}
+
+#login_board .form-control{
+    line-height: 28px;
+    padding: 20px 10px;
+    margin-bottom: 5%;
+}
+.login-button{
+    display: block;
+    width: 100%;
+    margin: 20px auto;
+    padding: 15px 10px;
+    background: #116364;
+}
+#login-texts h1{
+    font-size: 6em;
+    margin-bottom: 5%;
+    font-weight: bold;
+}
+.trademark{
+    font-size: 0.5em !important;
+    position: relative;
+    top: -30px;
+}
+#login-texts h4{
+    font-size: 2.5em;
+    margin-bottom: 2%;
+}
+#login-texts-wrapper small{
+    color: #47dfba;
+}
+.form-signin .form-check-label{
+    color: rgb(85,85,85)
+}
+.form-signin-heading{
+    color: #222b7e;
+    font-size: 5em;
+}
+
+.cms-text{
+    margin-left: 15px;
+    font-size: 0.6em;
+    /*font-weight: lighter;*/
+    font-family: Roboto-Thin;
+}
+.back-to-shaligram{
+    color: #222b7e;
+}
+.footer-link{
+    text-align: center;
+}
+.footer-link li{
+    display: inline-block;
+    padding: 0 15px;
+}
+.footer-link a{
+    color: #fff;
+    font-size: 1.1em;
+}
+.footer-link li:not(:nth-child(5)){
+    border-right: 1px solid #fff;
+}
+
+/*------------------------------LOGIN PAGE ENDS ---------- */
+
+/*------------------------------MEDIA QUERY PAGE STARTS -------------------- */
+@media screen and (max-width: 1024px){
+    .form-signin{
+        background: #fff;
+        width: 100%;
+        height: auto;
+        padding: 40px 40px;
+
+    }
+    #login-texts{
+        padding-left: 0;
+    }
+    #login-texts h1{
+        font-size: 3em;
+        margin-bottom: 5%;
+        font-weight: bold;
+
+    }
+    .trademark{
+        font-size: 0.7em !important;
+        position: relative;
+        top: -15px;
+    }
+    #login-texts h4{
+        font-size: 2em;
+
+    }
+}
+
+@media screen and (max-width: 768px){
+    #login-texts-wrapper{
+        height: 300px;
+        text-align: center;
+    }
+    .login-box-wrapper{
+        height: 55vh;
+        margin-bottom: 10%;
+    }
+}
+@media screen and (max-width: 414px){
+    #login-texts-wrapper{
+        height:250px;
+    }
+    #login-texts{
+        text-align: center;
+        padding-left: 0;
+        margin-top: -30px;
+    }
+
+    #login-texts h1{
+        font-size: 3em;
+        margin-bottom: 5%;
+        font-weight: bold;
+    }
+    .footer-link li{
+        margin-bottom: 8px;
+
+    }
+    .footer-link a{
+        font-size: 1em;
+    }
+    .footer-link{
+        padding-top: 10px;
+    }
+}
+@media screen and (max-width: 375px){
+    #login-texts h1{
+        font-size: 2em;
+        margin-bottom: 5%;
+        font-weight: bold;
+
+    }
+    .trademark{
+        font-size: 0.7em !important;
+        position: relative;
+        top: -15px;
+    }
+    #login-texts h4{
+        font-size: 1em;
+
+    }
+    .login-box-wrapper{
+        height: 50vh;
+        margin-bottom: 10%;
+    }
+    .footer-link a{
+        font-size: 0.7em;
+    }
+    #login_board footer{
+        margin-top: 4%;
+
+    }
+    .form-signin{
+        padding: 20px;
+    }
+
+
+}
+@media screen and (max-width: 320px){
+    .form-signin-heading{
+        margin-bottom: 40px !important;
+    }
+    .login-box-wrapper{
+        height: 50vh;
+        overflow: hidden;
+    }
+    .form-signin{
+        height: 20vh;
+        zoom: 66%;
+    }
+
+    #login-texts-wrapper{
+        height: 200px;
+    }
+    .form-signin-heading{
+        font-size: 2em;
+        margin-bottom: 4%;
+    }
+
+}
