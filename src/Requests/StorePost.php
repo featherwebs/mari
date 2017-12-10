@@ -28,7 +28,8 @@ class StorePost extends FormRequest
             'view'          => '',
             'content'       => '',
             'post_type_id'  => 'exists:post_types,id|nullable',
-            'images.*.file' => 'image'
+            'images.*.file' => 'image',
+            'event_on'      => 'date'
         ];
     }
 
@@ -47,6 +48,7 @@ class StorePost extends FormRequest
             'meta_keywords'    => $this->get('meta_keywords'),
             'is_published'     => $this->get('is_published', 'false') == 'true',
             'is_featured'      => $this->get('is_featured', 'false') == 'true',
+            'event_on'         => $this->get('event_on'),
         ];
     }
 }

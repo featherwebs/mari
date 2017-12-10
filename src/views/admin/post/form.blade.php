@@ -54,10 +54,17 @@
             <div class="form-group">
                 <label for="post_type_id" class="control-label col-sm-2">Post Type</label>
                 <div class="col-sm-10">
-                    <select class="form-control" name="post_type_id" v-model="post.post_type_id">
+                    <select class="form-control" name="post_type_id" v-model="post.post_type_id" id="post_type_id">
                         {{--<option :value="null">None</option>--}}
                         <option v-for="(p,k) in post_types" :value="k">@{{ p }}</option>
                     </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="form-group" v-if="post.post_type_id==1"> <!-- 1 for post type event-->
+                <label for="event_on" class="control-label col-sm-2">Event Date</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" name="event_on" multiple id="event_on" v-model="post.event_on">
                     <span class="help-block"></span>
                 </div>
             </div>
@@ -212,15 +219,15 @@
     <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script>
-        @if(isset($post))
-            let post = JSON.parse('{!! addslashes(json_encode($post)) !!}');
-        @endif
-        {{--@if($p = old('post', isset($post)?$post:null))--}}
-            {{--let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');--}}
-        {{--@endif--}}
-        @if(isset($tags))
-            let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
-        @endif
+                @if(isset($post))
+        let post = JSON.parse('{!! addslashes(json_encode($post)) !!}');
+                @endif
+                {{--@if($p = old('post', isset($post)?$post:null))--}}
+                {{--let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');--}}
+                {{--@endif--}}
+                @if(isset($tags))
+        let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
+                @endif
         let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
         let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
         $(document).ready(function () {

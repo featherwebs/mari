@@ -29881,7 +29881,8 @@ var app = new Vue({
             is_published: false,
             is_featured: false,
             custom: [],
-            tags: []
+            tags: [],
+            event_date: ''
         } : post,
 
         new_image: {

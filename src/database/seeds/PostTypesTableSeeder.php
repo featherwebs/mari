@@ -13,14 +13,17 @@ class PostTypesTableSeeder extends Seeder
     {
         $postTypes = [
             [
+                'id'    => 1,
                 'title' => 'Event',
                 'slug'  => 'event'
             ],
             [
+                'id'    => 2,
                 'title' => 'News',
                 'slug'  => 'news'
             ],
             [
+                'id'    => 3,
                 'title' => 'Other',
                 'slug'  => 'other'
             ]

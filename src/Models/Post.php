@@ -23,13 +23,15 @@ class Post extends Model
         'view',
         'is_published',
         'is_featured',
+        'event_date'
     ];
 
     protected $casts = [
         'custom'       => 'json',
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
-        'created_at'   => 'date'
+        'created_at'   => 'date',
+        'event_on'     => 'date',
     ];
 
     public function getRouteKeyName()
