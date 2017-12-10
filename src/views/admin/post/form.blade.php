@@ -56,12 +56,12 @@
                 <div class="col-sm-10">
                     <select class="form-control" name="post_type_id" v-model="post.post_type_id" id="post_type_id">
                         {{--<option :value="null">None</option>--}}
-                        <option v-for="(p,k) in post_types" :value="k">@{{ p }}</option>
+                        <option v-for="pt in post_types" :value="pt.id">@{{ pt.title }}</option>
                     </select>
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group" v-if="post.post_type_id==1"> <!-- 1 for post type event-->
+            <div class="form-group" v-if="post.post_type && post.post_type.slug == 'event'">
                 <label for="event_on" class="control-label col-sm-2">Event Date</label>
                 <div class="col-sm-10">
                     <input type="date" class="form-control" name="event_on" multiple id="event_on" v-model="post.event_on">
