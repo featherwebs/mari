@@ -23,12 +23,16 @@ function fw_setting($query)
     }
 }
 
-function fw_image($meta = null)
+function fw_image($meta = null, $limit = null)
 {
     $media = Image::query();
 
     if ($meta) {
         $media = $media->whereMeta($meta);
+    }
+
+    if($limit){
+        $media = $media->take($limit);
     }
 
     return $media->get();
