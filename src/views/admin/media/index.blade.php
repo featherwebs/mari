@@ -146,6 +146,7 @@
                 maxFilesize: 20,
                 url: "{{ route('admin.media.store') }}",
                 uploadMultiple: false,
+                acceptedFiles : 'image/png, image/jpeg',
                 maxFiles: 20,
                 init: function () {
                     this.on("success", function (file, response) {
