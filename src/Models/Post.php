@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
 
@@ -29,8 +30,7 @@ class Post extends Model
         'custom'       => 'json',
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
-        'created_at'   => 'date',
-        'event_on'     => 'date',
+        'created_at'   => 'date'
     ];
 
     public function getRouteKeyName()
@@ -109,5 +109,28 @@ class Post extends Model
         }
 
         return $this->images()->where('meta', $slug)->first();
+    }
+
+    public function scopePast($query, $today = false)
+    {
+        if ($today) {
+            return $query->where('event_on', '<=', date('Y-m-d'));
+        }
+
+        return $query->where('event_on', '<', date('Y-m-d'));
+    }
+
+    public function scopeUpcoming($query, $today = false)
+    {
+        if ($today) {
+            return $query->where('event_on', '>=', date('Y-m-d'));
+        }
+
+        return $query->where('event_on', '>', date('Y-m-d'));
+    }
+
+    public function scopeToday($query)
+    {
+        return $query->where('event_on', '=', date('Y-m-d'));
     }
 }

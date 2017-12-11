@@ -31,7 +31,7 @@ function fw_image($meta = null, $limit = null)
         $media = $media->whereMeta($meta);
     }
 
-    if($limit){
+    if ($limit) {
         $media = $media->take($limit);
     }
 
@@ -43,7 +43,7 @@ function fw_menu($slug)
     return Menu::with('subMenus')->whereSlug($slug)->first();
 }
 
-function fw_posts_by_tag($tags, $limit = false)
+function fw_posts_by_tag($tags, $limit = false, $builder = false)
 {
     $posts = Post::with('tags')->whereHas('tags', function ($q) use ($tags) {
         if (is_array($tags)) {
@@ -55,6 +55,10 @@ function fw_posts_by_tag($tags, $limit = false)
 
     if ($limit) {
         $posts = $posts->take($limit);
+    }
+
+    if ($builder) {
+        return $posts;
     }
 
     return $posts->get();
@@ -140,4 +144,23 @@ function fw_fetch_data($url)
 
     return $data;
 
+}
+
+function fw_thumbnail($entity = null, $width = 150, $height = 150, $slug = "")
+{
+    $text    = empty($slug) ? env('APP_NAME') : $slug;
+    $default = "http://via.placeholder.com/{$width}x{$height}?text=[" . $text . "]";
+    if ($entity && $entity instanceof Image) {
+        return $entity->getThumbnail($width, $height);
+    } elseif ($entity && $entity->images->count()) {
+        if (empty($slug)) {
+            return $entity->images->first()->getThumbnail($width, $height);
+        } else {
+            return $entity->images()->where('meta', $slug)->first()->getThumbnail($width, $height);
+        }
+    } elseif ($entity && $entity->image) {
+        return $entity->image->getThumbnail($width, $height);
+    }
+
+    return $default;
 }
