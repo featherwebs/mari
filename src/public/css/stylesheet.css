@@ -3221,3 +3221,6 @@ p.single-event-author {
 .padding-3 {
     padding: 1em;
 }
+
+[v-cloak] > * { display:none }
+[v-cloak]::before { content: "loading…" }

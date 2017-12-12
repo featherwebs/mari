@@ -1,4 +1,4 @@
-<div class="row" id="menu-app">
+<div class="row" id="menu-app" v-cloak>
     <div class="col-sm-12">
         <div class="form-group">
             <label for="title" class="control-label col-sm-2">Title</label>

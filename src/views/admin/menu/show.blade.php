@@ -1,7 +1,7 @@
 @extends('featherwebs::admin.layout')
 
 @section('content')
-    <form action="{{ route('admin.menu.submenu.store', $menu->slug) }}" method="POST" enctype="multipart/form-data" id="menu-app">
+    <form action="{{ route('admin.menu.submenu.store', $menu->slug) }}" method="POST" enctype="multipart/form-data" id="menu-app" v-cloak>
         {{ csrf_field() }}
         @component('featherwebs::admin.template.default')
             @slot('heading')
