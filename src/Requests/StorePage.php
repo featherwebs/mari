@@ -28,7 +28,7 @@ class StorePage extends FormRequest
             'view'          => '',
             'content'       => '',
             'page_id'       => 'exists:pages,id|nullable',
-            'images.*.file' => 'mimes:jpeg,bmp,png'
+            'images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp'
         ];
     }
 
