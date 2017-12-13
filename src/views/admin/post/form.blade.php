@@ -1,4 +1,4 @@
-<div id="post-app" v-cloak>
+<div id="post-app">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
@@ -47,7 +47,7 @@
             <div class="form-group">
                 <label for="content" class="control-label col-sm-2">Content</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" name="content" id="content" v-model="post.content"></textarea>
+                    <ckeditor name="content" id="content" v-model="post.content" class="editor"></ckeditor>
                     <span class="help-block">Main Content of the Post</span>
                 </div>
             </div>
@@ -151,23 +151,31 @@
         <div role="tabpanel" class="tab-pane" id="custom">
             <div v-for="(field,i) in post.custom" class="panel">
                 <div class="panel-body">
+                    <a class="pull-right btn btn-xs btn-danger" href="javascript:void(0);" class="close" @click="removeCustomField(i)">&times;</a>
                     <div class="row">
                         <div class="col-sm-1">
                             Custom Field #@{{ i+1 }}
                         </div>
                         <div class="col-sm-11">
-                            <a class="pull-right btn btn-xs btn-danger" href="javascript:void(0);" class="close" @click="removeCustomField(i)">&times;</a>
                             <div class="form-group">
                                 <label :for="'custom['+i+'][slug]'" class="control-label col-sm-2">Slug</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <input class="form-control" :name="'custom['+i+'][slug]'" type="text" value="" id="'custom['+i+'][slug]'" v-model="field.slug">
-                                    <span class="help-block"></span>
+                                    <span class="help-block">This will be used while accessing this value</span>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select class="form-control" :name="'custom['+i+'][formatted]'" v-model="field.formatted">
+                                        <option :value="true">Formatted</option>
+                                        <option :value="false">Raw</option>
+                                    </select>
+                                    <span class="help-block">Enable formatting</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label :for="'custom['+i+'][value]'" class="control-label col-sm-2">Value</label>
+                                <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">Value</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" :name="'custom['+i+'][value]'" :id="'custom['+i+'][value]'" v-model="field.value"></textarea>
+                                    <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted"></ckeditor>
+                                    <textarea class="form-control" :name="'custom['+i+'][value]'" :id="'custom['+i+'][value]'" v-model="field.value" v-else></textarea>
                                     <span class="help-block"></span>
                                 </div>
                             </div>
