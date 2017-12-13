@@ -45,7 +45,7 @@ function fw_menu($slug)
 
 function fw_posts_by_tag($tags, $limit = false, $builder = false)
 {
-    $posts = Post::with('tags')->whereHas('tags', function ($q) use ($tags) {
+    $posts = Post::with('tags')->published()->whereHas('tags', function ($q) use ($tags) {
         if (is_array($tags)) {
             $q->whereIn('slug', $tags);
         } else {
@@ -66,7 +66,7 @@ function fw_posts_by_tag($tags, $limit = false, $builder = false)
 
 function fw_posts_by_category($category, $limit = false, $builder = false)
 {
-    $posts = Post::with('tags')->whereHas('postType', function ($q) use ($category) {
+    $posts = Post::with('tags')->published()->whereHas('postType', function ($q) use ($category) {
         if (is_array($category)) {
             $q->whereIn('slug', $category);
         } else {
@@ -87,12 +87,12 @@ function fw_posts_by_category($category, $limit = false, $builder = false)
 
 function fw_post_by_slug($slug)
 {
-    return Post::with('tags')->where('slug', $slug)->first();
+    return Post::with('tags')->published()->where('slug', $slug)->first();
 }
 
 function fw_posts($limit = false)
 {
-    $posts = Post::query();
+    $posts = Post::published();
     if ($limit) {
         $posts = $posts->limit($limit);
     }
@@ -107,7 +107,7 @@ function fw_page_by_slug($slug)
 
 function fw_pages($limit = false)
 {
-    $pages = Page::query();
+    $pages = Page::published();
     if ($limit) {
         $pages = $pages->limit($limit);
     }

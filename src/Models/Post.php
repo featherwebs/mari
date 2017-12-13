@@ -22,6 +22,7 @@ class Post extends Model
         'content',
         'custom',
         'view',
+        'event_on',
         'is_published',
         'is_featured'
     ];
