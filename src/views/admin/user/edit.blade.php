@@ -3,7 +3,11 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            User
+            @if(isset($profile))
+                Profile
+            @else
+                User
+            @endif
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">
