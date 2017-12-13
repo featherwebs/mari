@@ -10,9 +10,10 @@ class ProfileController extends BaseController
 {
     public function edit()
     {
-        $user = auth()->user();
-        $roles = Role::all();
+        $user    = auth()->user();
+        $roles   = Role::all();
+        $profile = true;
 
-        return view('featherwebs::admin.user.edit', compact('user', 'roles'));
+        return view('featherwebs::admin.user.edit', compact('user', 'roles', 'profile'));
     }
 }

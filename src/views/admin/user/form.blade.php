@@ -1,4 +1,7 @@
 <div id="user-app" v-cloak>
+    @isset($profile)
+        <input type="hidden" name="profile" value="1">
+    @endisset
     <div class="row">
         <div class="col-sm-9">
             <div class="form-group">

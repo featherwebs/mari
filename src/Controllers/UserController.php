@@ -66,6 +66,10 @@ class UserController extends BaseController
             return $user;
         });
 
+        if ($request->has('profile')) {
+            return redirect()->back()->withSuccess(trans('messages.update_success', [ 'entity' => "Profile" ]));
+        }
+
         return redirect()
             ->route('admin.user.edit', $user->username)
             ->withSuccess(trans('messages.update_success', [ 'entity' => "User '" . str_limit($user->name, 20) . "'" ]));
