@@ -28,13 +28,13 @@ class StorePost extends FormRequest
             'view'          => '',
             'content'       => '',
             'post_type_id'  => 'exists:post_types,id|nullable',
-            'images.*.file' => 'image',
+            'images.*.file' => 'mimes:jpeg,bmp,png',
             'event_on'      => 'date'
         ];
     }
 
     public function data()
-    {post
+    {
         return [
             'title'            => $this->get('title'),
             'sub_title'        => $this->get('sub_title'),

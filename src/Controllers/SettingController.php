@@ -4,6 +4,7 @@ namespace Featherwebs\Mari\Controllers;
 
 use Featherwebs\Mari\Models\Page;
 use Featherwebs\Mari\Models\Setting;
+use Featherwebs\Mari\Requests\StoreSettings;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -20,7 +21,7 @@ class SettingController extends BaseController
         return view('featherwebs::admin.setting.index', compact('settings', 'pages'));
     }
 
-    public function store(Request $request)
+    public function store(StoreSettings $request)
     {
         foreach ($request->get('setting', []) as $key => $value) {
             $setting = Setting::fetch($key);
