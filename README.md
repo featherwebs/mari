@@ -24,20 +24,14 @@ Mari is a Laravel CMS package that aims to streamline Web Development process.
 Featherwebs\Mari\FeatherwebsServiceProvider::class,
 ```
 
-3) Publish the Laravel default auth scaffolds.
-
-```shell
-php artisan make:auth
-```
-
-4) Run the command below to publish the package templates:
+3) Run the command below to publish the package templates:
 
 ```shell
 php artisan vendor:publish --force
 ```
 and select `Featherwebs\Mari\FeatherwebsServiceProvider`
 
-5) Open your `app/User.php` change it to:
+4) Open your `app/User.php` change it to:
 
 ```php
 use Featherwebs\Mari\Models\FeatherwebsUser;
@@ -47,7 +41,7 @@ class User extends FeatherwebsUser
 ...
 }
 ```
-6) Update your `migrations/DatabaseSeeder.php` and add the following:
+5) Update your `migrations/DatabaseSeeder.php` and add the following:
 ```php
 public function run()
 {
@@ -60,12 +54,12 @@ public function run()
 }
 ```
 
-7) Run the seeds:
+6) Run the seeds:
 ```shell
 php artisan db:seed
 ```
 
-8)  You also need to add the following:
+7)  You also need to add the following:
 
 ```php
     'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
