@@ -28,7 +28,7 @@ class CreatePostsTable extends Migration
             $table->date('event_on')->nullable();
             $table->tinyInteger('is_published')->default(false);
             $table->tinyInteger('is_featured')->default(false);
-            $table->foreign('post_type_id')->references('id')->on('post_types')->onDelete('restrict');
+            $table->foreign('post_type_id')->references('id')->on('post_types')->onDelete('');
             $table->timestamps();
         });
     }

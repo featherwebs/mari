@@ -21,12 +21,15 @@
                     <p>Click on the pages menu item to start editing page specific content, or for content on more than one page go to site-wide content.</p>
                 </div>
                 <div class="col-md-5 text-center">
-                    <a href="{{ route('admin.setting.index') }}" class="btn btn-default rounded-border-btn" style="margin-top:30px;">
-                        <i class="fa fa-lock"></i> Account settings
-                    </a>
-                    <a href="#" class="btn btn-default rounded-border-btn shadow-effect" style="margin-top:30px;">
-                        <i class="fa fa-life-ring"></i> Help Docs
-                    </a>
+                    @permission('manage-setting')
+                        <a href="{{ route('admin.setting.index') }}" class="btn btn-default rounded-border-btn" style="margin-top:30px;">
+                            <i class="fa fa-lock"></i> Account settings
+                        </a>
+                    @endpermission
+
+                    {{--<a href="#" class="btn btn-default rounded-border-btn shadow-effect" style="margin-top:30px;">--}}
+                        {{--<i class="fa fa-life-ring"></i> Help Docs--}}
+                    {{--</a>--}}
                 </div>
             </div>
         </div>
