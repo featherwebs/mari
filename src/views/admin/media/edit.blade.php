@@ -76,7 +76,7 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <input type="file" name="image[{{ $media->id }}][image]" class="file" data-id="{{ $media->id }}" accept="image/*" data-msg="Invalid!">
+                                                    <input type="file" name="image[{{ $media->id }}][image]" class="file" data-id="{{ $media->id }}" accept="image/jpeg,image/png,image/bmp" data-msg="Invalid!">
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">

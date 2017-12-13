@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label for="image" class="control-label col-sm-2">Avatar</label>
                 <div class="col-sm-10">
-                    <input id="image" class="form-control" name="image" type="file" @change="showPreview($event)">
+                    <input id="image" class="form-control" name="image" type="file" @change="showPreview($event)" accept="image/jpeg,image/png,image/bmp">
                     <span class="help-block"></span>
                 </div>
             </div>
