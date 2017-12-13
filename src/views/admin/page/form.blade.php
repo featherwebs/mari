@@ -1,4 +1,4 @@
-<div id="page-app">
+<div id="page-app" v-cloak>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
