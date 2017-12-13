@@ -72,7 +72,7 @@
                 <label for="post_type_id" class="control-label col-sm-2">Tags</label>
                 <div class="col-sm-10">
                     <select class="form-control select2" name="tags[]" multiple>
-                        <option v-for="(p,k) in tags" :value="k" :selected="post.tags.filter(tag => tag.id == k).length">@{{ p }}</option>
+                        <option v-for="tag in tags" :value="tag" :selected="post.tags.filter(t => t.title == tag).length">@{{ tag }}</option>
                     </select>
                     <span class="help-block"></span>
                 </div>
