@@ -47,7 +47,7 @@
             <div class="form-group">
                 <label for="content" class="control-label col-sm-2">Content</label>
                 <div class="col-sm-10">
-                    <ckeditor name="content" id="content" v-model="post.content" class="editor"></ckeditor>
+                    <ckeditor name="content" id="content" v-model="post.content" class="editor" :config="editor.full"></ckeditor>
                     <span class="help-block">Main Content of the Post</span>
                 </div>
             </div>
@@ -174,7 +174,7 @@
                             <div class="form-group">
                                 <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">Value</label>
                                 <div class="col-sm-10">
-                                    <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted"></ckeditor>
+                                    <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted" :config="editor.mini"></ckeditor>
                                     <textarea class="form-control" :name="'custom['+i+'][value]'" :id="'custom['+i+'][value]'" v-model="field.value" v-else></textarea>
                                     <span class="help-block"></span>
                                 </div>
