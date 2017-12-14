@@ -128,21 +128,22 @@
                             Custom Field #@{{ i+1 }}
                         </div>
                         <div class="col-sm-11">
-                            <div class="form-group">
+                            <div class="row">
                                 <label :for="'custom['+i+'][slug]'" class="control-label col-sm-2">Slug</label>
                                 <div class="col-sm-8">
                                     <input class="form-control" :name="'custom['+i+'][slug]'" type="text" value="" id="'custom['+i+'][slug]'" v-model="field.slug">
                                     <span class="help-block">This will be used while accessing this value</span>
                                 </div>
                                 <div class="col-sm-2">
-                                    <select class="form-control" :name="'custom['+i+'][formatted]'" v-model="field.formatted">
-                                        <option :value="true">Formatted</option>
-                                        <option :value="false">Raw</option>
-                                    </select>
-                                    <span class="help-block">Enable formatting</span>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" :name="'custom['+i+'][formatted]'" v-model="field.formatted">
+                                            Enable formatting
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">Value</label>
                                 <div class="col-sm-10">
                                     <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted" :config="editor.mini"></ckeditor>
