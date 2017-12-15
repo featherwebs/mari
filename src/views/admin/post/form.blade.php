@@ -47,7 +47,7 @@
             <div class="form-group">
                 <label for="content" class="control-label col-sm-2">Content</label>
                 <div class="col-sm-10">
-                    <ckeditor name="content" id="content" v-model="post.content" class="editor"></ckeditor>
+                    <ckeditor name="content" id="content" v-model="post.content" class="editor" :config="editor.full"></ckeditor>
                     <span class="help-block">Main Content of the Post</span>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                 <label for="post_type_id" class="control-label col-sm-2">Tags</label>
                 <div class="col-sm-10">
                     <select class="form-control select2" name="tags[]" multiple>
-                        <option v-for="(p,k) in tags" :value="k" :selected="post.tags.filter(tag => tag.id == k).length">@{{ p }}</option>
+                        <option v-for="tag in tags" :value="tag" :selected="post.tags.filter(t => t.title == tag).length">@{{ tag }}</option>
                     </select>
                     <span class="help-block"></span>
                 </div>
@@ -125,7 +125,7 @@
                                         <label :for="'images['+i+'][file]'">Image Source:</label>
                                         <div class="input-group">
                                             <input v-if="field.id" :name="'images['+i+'][image_id]'" type="hidden" :value="field.id">
-                                            <input :id="'images['+i+'][file]'" class="form-control" :name="'images['+i+'][file]'" type="file" @change="showPreview(i, $event)">
+                                            <input :id="'images['+i+'][file]'" class="form-control" :name="'images['+i+'][file]'" type="file" @change="showPreview(i, $event)" accept="image/jpeg,image/png,image/bmp">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -157,24 +157,25 @@
                             Custom Field #@{{ i+1 }}
                         </div>
                         <div class="col-sm-11">
-                            <div class="form-group">
+                            <div class="row">
                                 <label :for="'custom['+i+'][slug]'" class="control-label col-sm-2">Slug</label>
                                 <div class="col-sm-8">
                                     <input class="form-control" :name="'custom['+i+'][slug]'" type="text" value="" id="'custom['+i+'][slug]'" v-model="field.slug">
                                     <span class="help-block">This will be used while accessing this value</span>
                                 </div>
                                 <div class="col-sm-2">
-                                    <select class="form-control" :name="'custom['+i+'][formatted]'" v-model="field.formatted">
-                                        <option :value="true">Formatted</option>
-                                        <option :value="false">Raw</option>
-                                    </select>
-                                    <span class="help-block">Enable formatting</span>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" :name="'custom['+i+'][formatted]'" v-model="field.formatted">
+                                            Enable formatting
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">Value</label>
                                 <div class="col-sm-10">
-                                    <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted"></ckeditor>
+                                    <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted" :config="editor.mini"></ckeditor>
                                     <textarea class="form-control" :name="'custom['+i+'][value]'" :id="'custom['+i+'][value]'" v-model="field.value" v-else></textarea>
                                     <span class="help-block"></span>
                                 </div>

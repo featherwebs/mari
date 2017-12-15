@@ -67,7 +67,7 @@ class Post extends Model
             return;
         }
         foreach ($data as $t) {
-            $tag = Tag::find($t);
+            $tag = Tag::where('title', $t)->orWhere('slug', str_slug($t))->first();
             if ( ! $tag) {
                 $tag = Tag::create([ 'title' => $t, 'slug' => str_slug($t) ]);
             }

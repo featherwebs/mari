@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label for="logo" class="control-label col-sm-2">Logo</label>
                             <div class="col-sm-8">
-                                <input type="file" id="logo" name="setting[logo]" value="{{ old('setting.logo') ?: fw_setting('logo') }}" class="form-control" accept="image/jpeg,image/png" required>
+                                <input type="file" id="logo" name="setting[logo]" value="{{ old('setting.logo') ?: fw_setting('logo') }}" class="form-control" accept="image/jpeg,image/png,image/bmp">
                                 <span class="help-block">Main Logo</span>
                             </div>
                             <div class="col-sm-2">

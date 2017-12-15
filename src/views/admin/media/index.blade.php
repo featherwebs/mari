@@ -120,7 +120,7 @@
                         {{ csrf_field() }}
                         Drop file here or click
                         <div class="fallback">
-                            <input name="file" type="file" multiple />
+                            <input name="file" accept="image/jpeg,image/png,image/bmp" type="file" multiple />
                         </div>
                     </form>
                 </div>

@@ -38,7 +38,7 @@
                 <nav aria-label="breadcrumb" role="navigation">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.media.index') }}">Media</a></li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.media.index') }}">Media</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
                 </nav>
@@ -76,7 +76,7 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <input type="file" name="image[{{ $media->id }}][image]" class="file" data-id="{{ $media->id }}" accept="image/*" data-msg="Invalid!">
+                                                    <input type="file" name="image[{{ $media->id }}][image]" class="file" data-id="{{ $media->id }}" accept="image/jpeg,image/png,image/bmp" data-msg="Invalid!">
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">

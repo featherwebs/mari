@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use Featherwebs\Mari\Models\Page;
 use Featherwebs\Mari\Requests\StorePost;
 use Featherwebs\Mari\Requests\UpdatePost;
 use Featherwebs\Mari\Models\Post;
@@ -24,7 +25,8 @@ class PostController extends BaseController
 
     public function create()
     {
-        $tags      = Tag::pluck('title', 'id');
+        $pages     = Page::published()->pluck('title');
+        $tags      = Tag::pluck('title', 'id')->merge($pages)->unique();
         $postTypes = PostType::all();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
@@ -57,7 +59,8 @@ class PostController extends BaseController
     public function edit(Post $post)
     {
         $post->load('images', 'tags', 'postType');
-        $tags      = Tag::pluck('title', 'id');
+        $pages     = Page::published()->pluck('title');
+        $tags      = Tag::pluck('title', 'id')->merge($pages)->unique();
         $postTypes = PostType::all();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
