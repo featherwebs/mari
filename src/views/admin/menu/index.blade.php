@@ -1,7 +1,7 @@
 @extends('featherwebs::admin.layout')
 
 @section('content')
-    <div id="menu-app" v-cloak>
+    <div id="menu-app">
         @component('featherwebs::admin.template.default')
             @slot('heading')
                 Menu
