@@ -47,7 +47,7 @@
                     </select>
                 </div>
                 <div class="col-sm-1 text-right col-sm-offset-8">
-                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addModal">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button" data-toggle="modal" data-target="#addModal">
                         <i class="fa fa-plus"></i>
                         Add
                     </button>
@@ -61,17 +61,31 @@
                         <br>
                     </div>
                     @forelse(fw_image($meta) as $media)
-                        <div class="col-sm-2">
-                            <div class="panel panel-default thumbnail-wrapper">
-                                <label>
-                                    <input type="checkbox" name="image[]" value="{{ $media->id }}">
-                                    <img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">
-                                    <span class="thumbnail-title">
-                                        {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
+                        <div class="col-md-2 gallery-image-checkbox" >
+                            <input type="checkbox" name="image[]" id="{{$media->getCustom('title')}}" value="{{ $media->id }}">
+                            <label for="{{$media->getCustom('title')}}">
+                            <div class="gallery-card-image mdl-card mdl-shadow--2dp">
+                                <div class="mdl-card__title mdl-card--expand">
+                                    <img src="{{ $media->getThumbnail(150,150) }}" alt="">
+                                </div>
+                                <div class="mdl-card__actions">
+                                    <span class="gallery-card-image__filename">
+                                        {!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!} <br>
                                         {{ str_limit($media->getCustom('title'), 15) }}
                                     </span>
-                                </label>
+                                </div>
                             </div>
+                            </label>
+                            {{--<div class="panel panel-default thumbnail-wrapper">--}}
+                                {{--<label>--}}
+                                    {{--<input type="checkbox" name="image[]" value="{{ $media->id }}">--}}
+                                    {{--<img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">--}}
+                                    {{--<span class="thumbnail-title">--}}
+                                        {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
+                                        {{--{{ str_limit($media->getCustom('title'), 15) }}--}}
+                                    {{--</span>--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
                         </div>
                     @empty
                     @endforelse
@@ -137,6 +151,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
+    <script src="/js/dropzone.js"></script>
     <script type="text/javascript">
         var uploadedIds = [];
 

@@ -18,9 +18,11 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             @include('featherwebs::admin.post.form')
-            <button class="btn btn-primary">
-                <i class="fa fa-save"></i> Update
+
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right">
+                <i class="material-icons">add</i> Update Post
             </button>
+
         </form>
     @endcomponent
 @endsection

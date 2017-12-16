@@ -143,7 +143,7 @@
                     No Images. Add one?
                 </div>
             </div>
-            <button type="button" class="btn btn-primary btn-sm pull-right" @click="addImageField">
+            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" @click="addImageField">
                 <i class="fa fa-plus"></i>
                 Add New Image
             </button>
@@ -189,7 +189,7 @@
                     No Custom Field. Add one?
                 </div>
             </div>
-            <button type="button" class="btn btn-primary btn-sm pull-right" @click="addCustomField">
+            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" @click="addCustomField">
                 <i class="fa fa-plus"></i>
                 Add New Custom Field
             </button>
