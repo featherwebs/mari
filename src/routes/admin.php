@@ -11,7 +11,7 @@ use \Featherwebs\Mari\Controllers\MediaController;
 use \Featherwebs\Mari\Controllers\UserController;
 
 Route::group([ 'middleware' => 'web' ], function () {
-    Route::group([ 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth' ], function () {
+    Route::group([ 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:web' ], function () {
         Route::get('/', function () {
             return redirect()->route('admin.home');
         });
