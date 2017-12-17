@@ -3,12 +3,16 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            Posts
-            <div class="pull-right">
-                <a href="{{ route('admin.post.create') }}" class="btn btn-primary btn-xs">
-                    <i class="fa fa-plus"></i>
-                    Add
+            <div class="col-md-9">
+                <h2>Posts</h2>
+            </div>
+            <div class="col-md-3">
+                <a href="{{ route('admin.post.create') }}">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    <i class="material-icons">add</i> Add Posts
+                </button>
                 </a>
+
             </div>
         @endslot
         @slot('breadcrumb')

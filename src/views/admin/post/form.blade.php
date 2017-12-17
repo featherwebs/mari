@@ -54,7 +54,7 @@
             <div class="form-group">
                 <label for="post_type_id" class="control-label col-sm-2">Post Type</label>
                 <div class="col-sm-10">
-                    <select class="form-control" name="post_type_id" v-model="post.post_type_id" id="post_type_id">
+                    <select class="form-control" name="post_type_id" v-model="post.post_type_id" id="post_type_id" required>
                         {{--<option :value="null">None</option>--}}
                         <option v-for="pt in post_types" :value="pt.id">@{{ pt.title }}</option>
                     </select>
@@ -143,7 +143,7 @@
                     No Images. Add one?
                 </div>
             </div>
-            <button type="button" class="btn btn-primary btn-sm pull-right" @click="addImageField">
+            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" @click="addImageField">
                 <i class="fa fa-plus"></i>
                 Add New Image
             </button>
@@ -189,7 +189,7 @@
                     No Custom Field. Add one?
                 </div>
             </div>
-            <button type="button" class="btn btn-primary btn-sm pull-right" @click="addCustomField">
+            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" @click="addCustomField">
                 <i class="fa fa-plus"></i>
                 Add New Custom Field
             </button>

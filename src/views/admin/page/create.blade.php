@@ -17,8 +17,8 @@
         <form action="{{ route('admin.page.store') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             @include('featherwebs::admin.page.form')
-            <button class="btn btn-primary">
-                <i class="fa fa-save"></i> Create
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right update-button">
+                <i class="material-icons">create</i> Publish
             </button>
         </form>
     @endcomponent

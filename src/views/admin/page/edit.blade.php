@@ -3,7 +3,12 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            Pages
+            <h2 class="mdl-card__title-text"><span class="page-title-first">Page/ </span>  {{ $page->title }}</h2>
+            <a href="{{ route('admin.page.create') }}" class="class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right">
+                <i class="material-icons">add</i> Add New
+            </button>
+            </a>
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">
@@ -18,8 +23,9 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             @include('featherwebs::admin.page.form')
-            <button class="btn btn-primary">
-                <i class="fa fa-save"></i> Update
+
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right update-button">
+                <i class="material-icons">autorenew</i> Update
             </button>
         </form>
     @endcomponent
