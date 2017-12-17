@@ -200,7 +200,7 @@ if ( ! function_exists('fw_upload'))
         }
         else
         {
-            $model->filess()->create($data);
+            $model->files()->create($data);
         }
     }
 }
