@@ -27,7 +27,7 @@ class UpdatePost extends FormRequest
             'sub_title'     => '',
             'view'          => '',
             'content'       => '',
-            'post_type_id'  => 'exists:post_types,id',
+            'post_type_id'  => 'required|exists:post_types,id',
             'images.*.file' => 'image',
             'event_on'      => 'date'
         ];
