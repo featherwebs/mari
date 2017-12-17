@@ -247,7 +247,7 @@
         });
     </script>
     <script src="{{ asset('js/post.js') }}"></script>
-    <script src="{{ Asset::js.custom.js }}"></script>
+
 
 
 @endpush

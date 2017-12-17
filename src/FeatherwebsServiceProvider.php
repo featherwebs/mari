@@ -16,7 +16,6 @@ class FeatherwebsServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/views', 'featherwebs');
         //        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
-        $this->loadAssetFrom(__DIR__ . '/public', 'Asset');
 
         $this->publishes([
             __DIR__ . '/views/layouts'        => base_path('resources/views/layouts'),
