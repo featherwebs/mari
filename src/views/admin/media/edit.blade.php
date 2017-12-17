@@ -22,13 +22,15 @@
         {{ csrf_field() }}
         @component('featherwebs::admin.template.default')
             @slot('heading')
-                Media
-                <div class="pull-right">
-                    <button class="btn btn-primary btn-xs" type="submit">
+                <div class="col-md-9">
+                    <h4> Media</h4>
+                </div>
+                <div class="col-md-3">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right update-button " type="submit">
                         <i class="fa fa-save"></i>
                         Save
                     </button>
-                    <button class="btn btn-danger btn-xs btn-deleteall" type="button">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right update-button btn-deleteall update-button " type="button">
                         <i class="fa fa-trash"></i>
                         Delete All
                     </button>

@@ -85,24 +85,24 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="dash-side-tablets dash-side-tablets-1 shadow-effect">
-                            <p>Total No of Pages</p>
-                            {{ count(fw_pages()) }}
+                            <h3>Total No of Pages</h3>
+                            <h4>0{{ count(fw_pages()) }}</h4>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="dash-side-tablets dash-side-tablets-2 shadow-effect">
-                            <p>Total No of Posts</p>
-                            {{ count(fw_posts()) }}
+                            <h3>Total No of Posts</h3>
+                            <h4>{{ count(fw_posts()) }}</h4>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="dash-side-tablets dash-side-tablets-3 shadow-effect">
-                            <p>Future Stats</p>
-                            &infin;
+                            <h3>Future Stats</h3>
+                            <h4> &infin;</h4>
                         </div>
                     </div>
                 </div>
