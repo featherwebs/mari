@@ -92,5 +92,6 @@
                 @endif
         let roles = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
     </script>
-    <script src="{{ asset('js/user.js') }}"></script>
+
+    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/user.js"></script>
 @endpush

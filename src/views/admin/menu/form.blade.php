@@ -46,5 +46,6 @@
             let menu = JSON.parse('{!! addslashes(json_encode($menu)) !!}');
         @endif
     </script>
-    <script src="/js/menu.js"></script>
+
+    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/menu.js"></script>
 @endpush
