@@ -133,4 +133,9 @@ class Post extends Model
     {
         return $query->where('event_on', '=', date('Y-m-d'));
     }
+
+    public function scopeType($query, $id)
+    {
+        return $query->where('post_type_id', $id);
+    }
 }

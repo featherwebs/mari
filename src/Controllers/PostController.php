@@ -128,4 +128,30 @@ class PostController extends BaseController
 
         return view('posts.' . $view, compact('post'));
     }
+
+    public function archive(Request $request)
+    {
+        $posts = Post::published();
+        $title = "Posts";
+
+        if ($request->has('q')) {
+            $q     = $request->get('q');
+            $posts = $posts->where(function ($query) use ($q) {
+                $query->where('title', 'like', '%' . $query . '%')->orWhere('sub_title', 'like', '%' . $query . '%');
+            });
+        }
+
+        if ($request->has('type')) {
+            $t    = $request->get('type');
+            $type = PostType::where('slug', $t)->first();
+            if ($type) {
+                $title = ucwords(str_plural($type->title));
+                $posts = $posts->type($type->id);
+            }
+        }
+
+        $posts = $posts->paginate($request->get('limit', 12))->appends($request->except('page'));
+
+        return view('posts.index', compact('posts', 'title'));
+    }
 }
