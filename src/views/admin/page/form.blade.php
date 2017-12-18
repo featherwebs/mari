@@ -201,5 +201,6 @@
         let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
         let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
     </script>
-    <script src="{{ asset('js/page.js') }}"></script>
+
+    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/page.js"></script>
 @endpush

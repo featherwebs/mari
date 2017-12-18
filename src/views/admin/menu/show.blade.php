@@ -111,5 +111,6 @@
         let menu = JSON.parse('{!! addslashes(json_encode($menu)) !!}');
         let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
     </script>
-    <script src="/js/dist/submenu.js"></script>
+
+    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/submenu.js"></script>
 @endpush

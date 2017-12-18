@@ -246,7 +246,8 @@
             });
         });
     </script>
-    <script src="{{ asset('js/post.js') }}"></script>
+
+    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/post.js"></script>
 
 
 
