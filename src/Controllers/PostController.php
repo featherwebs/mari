@@ -23,16 +23,23 @@ class PostController extends BaseController
         return view('featherwebs::admin.post.index', compact('posts'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $meta      = [];
         $pages     = Page::published()->pluck('title');
         $tags      = Tag::pluck('title', 'id')->merge($pages)->unique();
         $postTypes = PostType::all();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
+        })->filter(function ($item) {
+            return $item != 'index';
         });
 
-        return view('featherwebs::admin.post.create', compact('tags', 'postTypes', 'templates'));
+        if ($request->has('template')) {
+            $meta = fw_get_file_data(resource_path('views/posts/') . $request->get('template') . '.blade.php');
+        }
+
+        return view('featherwebs::admin.post.create', compact('tags', 'postTypes', 'templates', 'meta'));
     }
 
     public function store(StorePost $request)

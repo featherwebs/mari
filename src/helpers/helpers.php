@@ -224,3 +224,33 @@ if ( ! function_exists('fw_ordinal')) {
         return number_format($number) . $suffix;
     }
 }
+
+if ( ! function_exists('fw_get_file_data')) {
+    function fw_get_file_data($file)
+    {
+        if ( ! file_exists($file)) {
+            return [];
+        }
+        $fp        = fopen($file, 'r');
+        $file_data = fread($fp, 8192);
+        fclose($fp);
+        $file_data   = str_replace("\r", "\n", $file_data);
+        $all_headers = [
+            'name'          => '',
+            'custom_fields' => 'split',
+            'images'        => ''
+        ];
+
+        foreach ($all_headers as $field => $option) {
+            if (preg_match('/^[ \t\/*#@]*:(.*)$/mi', $file_data, $match)
+                && $match[1]) {
+                $value                 = trim(preg_replace("/\s*(?:\*\/|\?>).*/", '', $match[1]));
+                $all_headers[ $field ] = $option == 'split' ? preg_split("/[\s,]+/", $value) : $value;
+            } else {
+                $all_headers[ $field ] = '';
+            }
+        }
+
+        return $all_headers;
+    }
+}
