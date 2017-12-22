@@ -35,4 +35,8 @@ Route::group([ 'middleware' => 'web' ], function () {
             include base_path('routes/mari.php');
         }
     });
+
+    Route::group([ 'prefix' => 'api', 'as' => 'api.' ], function () {
+        Route::post('page', PageController::class.'@api')->name('page.datatable');
+    });
 });

@@ -3,17 +3,12 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            <div class="col-md-9">
-                <h2 class="mdl-card__title-text">Pages</h2>
-            </div>
-
-            <div class="col-md-3">
-                <a href="{{ route('admin.page.create') }}" class="class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                        <i class="material-icons">add</i> ADD PAGES
-                    </button>
-                </a>
-            </div>
+            <h2 class="mdl-card__title-text">Pages</h2>
+        @endslot
+        @slot('tools')
+            <a href="{{ route('admin.page.create') }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                <i class="material-icons">add</i> ADD
+            </a>
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">
@@ -24,103 +19,71 @@
             </nav>
         @endslot
         <div>
-            <div class="panel">
-                <div class="panel-body">
-                    <div class="row">
-                        {{--<div class="col-xs-1"></div>--}}
-                        <div class="col-xs-8">Title</div>
-                        <div class="col-xs-1">Published</div>
-                        <div class="col-xs-2">Actions</div>
-                    </div>
-                </div>
-            </div>
-            @foreach($pages as $page)
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="row">
-                            {{--<div class="col-xs-1"></div>--}}
-                            <div class="col-xs-8">
-                                <a href="{{ route('admin.page.edit', $page->slug) }}">
-                                {{ $page->title }}
-                                <b>{{ fw_setting('homepage') == $page->id ? '--Homepage--':'' }}</b>
-                                </a>
-                            </div>
-                            <div class="col-xs-1">
-                                @if($page->is_published)
-                                    <i class="material-icons text-success">check_circle</i>
-
-                                @else
-                                    <i class="material-icons">check_circle</i>
-                                @endif
-                            </div>
-                            <div class="col-xs-3 text-right">
-                                <form method="POST" action="{{ route('admin.page.destroy', $page->slug) }}">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-                                    <a href="{{ fw_setting('homepage') == $page->id ? url('/'):route('page', $page->slug) }}" target="_blank">
-                                        <button class="mdl-button mdl-js-button mdl-button">
-                                            <i class="material-icons">remove_red_eye</i>
-                                        </button>
-                                    </a>
-                                    <a href="{{ route('admin.page.edit', $page->slug) }}">
-                                        <button class="mdl-button mdl-js-button mdl-button">
-                                            <i class="material-icons">mode_edit</i>
-                                        </button>
-
-                                    </a>
-                                    @unless(fw_setting('homepage') == $page->id)
-                                        <button onclick="return confirm('Are You sure?');" class="mdl-button mdl-js-button mdl-button">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    @endunless
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    @if($page->subPages->count())
-                        <div class="panel-body">
-                            @foreach($page->subPages as $subPage)
-                                <div class="row">
-                                    <div class="col-xs-1 text-right">-</div>
-                                    <div class="col-xs-8">
-                                        {{ $subPage->title }}
-                                        <b>{{ fw_setting('homepage') == $subPage->id ? '--Homepage--':'' }}</b>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        @if($subPage->is_published)
-                                            <i class="fa fa-check-circle-o text-success"></i>
-                                        @else
-                                            <i class="fa fa-times text-muted"></i>
-                                        @endif
-                                    </div>
-                                    <div class="col-xs-2 text-right">
-                                        <form method="POST" action="{{ route('admin.page.destroy', $subPage->slug) }}">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}
-                                            <a href="{{ fw_setting('homepage') == $subPage->id ? url('/'):route('page', $subPage->slug) }}" class="btn btn-xs btn-primary" target="_blank">
-                                                View
-                                            </a>
-                                            <a href="{{ route('admin.page.edit', $subPage->slug) }}" class="btn btn-xs btn-primary">
-                                                Edit
-                                            </a>
-                                            @unless(fw_setting('homepage') == $subPage->id)
-                                                <button onclick="return confirm('Are You sure?');" class="btn btn-xs btn-danger">
-                                                    Delete
-                                                </button>
-                                            @endunless
-                                        </form>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-            @endforeach
+            <table id="page-datatable">
+                <thead>
+                <th>SN</th>
+                <th>Title</th>
+                <th>Published</th>
+                <th>Action</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
-        @slot('footer')
-            <div class="text-right">
-                {!! $pages->links() !!}
-            </div>
-        @endslot
     @endcomponent
 @endsection
+@push('styles')
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">--}}
+@endpush
+@push('scripts')
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var home_page_id = "{{ fw_setting('homepage') }}";
+            $('#page-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '/api/page',
+                    data: { _token: $('meta[name="csrf-token"]').attr('content') }
+                },
+                columns:[
+                    {data: 'id', name: 'id'},
+                    {data: 'title', name: 'title', render:function(data, meta, row){
+                        if(row.id == home_page_id)
+                            return '<b>' + data + ' --Homepage-- </b>';
+                        else
+                            return '<b>' + data + '</b>';
+                    }},
+                    {data: 'is_published', name: 'is_published', render:function(data){
+                        if(data)
+                            return "<i class='material-icons text-success'>check_circle</i>";
+                        else
+                            return "<i class='fa fa-times text-muted'></i>";
+                    }},
+                    {data: 'slug',name: 'slug', searchable:false, orderable:false, render: function(data,meta,row){
+                        var actions = '<form method="POST" action="/admin/page/'+ data +'">';
+                        actions += '<input type="hidden" name="_method" value="DELETE">';
+                        actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
+
+                        if(row.id == home_page_id)
+                            actions += '<a href="/" class="btn btn-default btn-xs" target="_blank">View</a>';
+                        else
+                            actions += '<a href="/' + data +'" class="btn btn-default btn-xs" target="_blank">View</a>';
+
+                        actions += '<a href="/admin/page/' + data +'/edit" class="btn btn-default btn-xs">Edit</a>';
+
+                        if(row.id != home_page_id)
+                            actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
+                        actions += '</form>';
+
+                        return actions;
+                    }}
+
+                ]
+            });
+        });
+    </script>
+@endpush
