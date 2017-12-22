@@ -4,6 +4,7 @@ namespace Featherwebs\Mari;
 
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
+use Yajra\DataTables\DataTablesServiceProvider;
 use Zizaco\Entrust\EntrustServiceProvider;
 
 class FeatherwebsServiceProvider extends ServiceProvider
@@ -42,6 +43,7 @@ class FeatherwebsServiceProvider extends ServiceProvider
         include __DIR__ . '/helpers/helpers.php';
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(EntrustServiceProvider::class);
+        $this->app->register(DataTablesServiceProvider::class);
         //        $this->app->make('Featherwebs\Mari\Controllers');
     }
 }

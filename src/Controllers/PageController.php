@@ -10,14 +10,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Yajra\DataTables\Facades\DataTables;
 
 class PageController extends BaseController
 {
+    public function api()
+    {
+        $pages = Page::query();
+
+        return DataTables::of($pages)->make(true);
+    }
+
     public function index()
     {
-        $pages = Page::whereNull('page_id')->with('images', 'subPages')->paginate(10);
-
-        return view('featherwebs::admin.page.index', compact('pages'));
+        return view('featherwebs::admin.page.index');
     }
 
     public function create()
@@ -34,10 +40,12 @@ class PageController extends BaseController
     {
         $page = DB::transaction(function () use ($request) {
             $page = Page::create($request->data());
-            foreach ($request->get('images', []) as $k => $img) {
+            foreach ($request->get('images', []) as $k => $img)
+            {
                 $image = $request->file('images.' . $k . '.file');
                 $meta  = $request->file('images.' . $k . '.meta');
-                if ($image && $image instanceof UploadedFile) {
+                if ($image && $image instanceof UploadedFile)
+                {
                     fw_upload_image($image, $page, $single = false, $meta);
                 }
             }
@@ -45,15 +53,13 @@ class PageController extends BaseController
             return $page;
         });
 
-        return redirect()
-            ->route('admin.page.index')
-            ->withSuccess(trans('messages.create_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
+        return redirect()->route('admin.page.index')->withSuccess(trans('messages.create_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
     }
 
     public function edit(Page $page)
     {
         $page->load('images');
-        $pages = Page::whereNull('page_id')->pluck('title', 'id');
+        $pages     = Page::whereNull('page_id')->pluck('title', 'id');
         $templates = collect(File::allFiles(resource_path('views/pages')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         });
@@ -68,24 +74,33 @@ class PageController extends BaseController
 
             // Delete images marked to be deleted
             $deleted_image_ids = $request->get('deleted_image_ids');
-            if ( ! empty($deleted_image_ids)) {
+            if ( ! empty($deleted_image_ids))
+            {
                 $page->images()->whereIn('id', $deleted_image_ids)->delete();
             }
-            foreach ($request->get('images', []) as $k => $img) {
+            foreach ($request->get('images', []) as $k => $img)
+            {
                 $id    = $request->input('images.' . $k . '.image_id');
                 $image = $request->file('images.' . $k . '.file');
                 $meta  = $request->input('images.' . $k . '.meta');
 
                 // if existing image update the image/meta else create a new image
-                if ($id) {
-                    if ($image && $image instanceof UploadedFile) {
+                if ($id)
+                {
+                    if ($image && $image instanceof UploadedFile)
+                    {
                         $page->images()->find($id)->delete();
                         fw_upload_image($image, $page, $single = false, $meta);
-                    } else {
+                    }
+                    else
+                    {
                         $page->images()->find($id)->update([ 'meta' => str_slug($meta, '_') ]);
                     }
-                } else {
-                    if ($image && $image instanceof UploadedFile) {
+                }
+                else
+                {
+                    if ($image && $image instanceof UploadedFile)
+                    {
                         fw_upload_image($image, $page, $single = false, $meta);
                     }
                 }
@@ -94,9 +109,7 @@ class PageController extends BaseController
             return $page;
         });
 
-        return redirect()
-            ->route('admin.page.edit', $page->slug)
-            ->withSuccess(trans('messages.update_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
+        return redirect()->route('admin.page.edit', $page->slug)->withSuccess(trans('messages.update_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
     }
 
     public function destroy(Page $page)
@@ -104,8 +117,6 @@ class PageController extends BaseController
         $title = str_limit($page->title, 20);
         $page->delete();
 
-        return redirect()
-            ->route('admin.page.index')
-            ->withSuccess(trans('messages.delete_success', [ 'entity' => "Page '" . $title . "'" ]));
+        return redirect()->route('admin.page.index')->withSuccess(trans('messages.delete_success', [ 'entity' => "Page '" . $title . "'" ]));
     }
 }

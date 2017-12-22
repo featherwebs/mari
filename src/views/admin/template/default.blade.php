@@ -68,11 +68,10 @@
                     <div class="mdl-card__actions ">
                         {{ isset($footer) ? $footer : '' }}
                     </div>
+                    <div class="mdl-card__menu">
+                        {{ isset($tools) ? $tools : '' }}
+                    </div>
                 </div>
-                {{--<div class="panel-footer">--}}
-                {{--{{ isset($footer) ? $footer : '' }}--}}
-                {{--</div>--}}
-                {{--</div>--}}
             </div>
         </div>
     </div>
