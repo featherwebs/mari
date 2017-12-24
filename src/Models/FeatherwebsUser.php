@@ -19,6 +19,14 @@ class FeatherwebsUser extends Authenticatable
         boot as private revisionableBoot;
     }
 
+    protected $dontKeepRevisionOf = [
+        'password', 'remember_token'
+    ];
+
+    protected $revisionFormattedFields = [
+        'is_active' => 'boolean:No|Yes'
+    ];
+
     protected $revisionCreationsEnabled = true;
 
     public function getRouteKeyName()

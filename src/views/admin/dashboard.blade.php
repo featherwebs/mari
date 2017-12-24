@@ -21,7 +21,7 @@
                     <p>Click on the pages menu item to start editing page specific content, or for content on more than one page go to site-wide content.</p>
                 </div>
                 <div class="col-md-5 text-center">
-                    @permission('manage-setting')
+                    @permission('read-setting')
                         <a href="{{ route('admin.setting.index') }}" class="btn btn-default rounded-border-btn" style="margin-top:30px;">
                             <i class="fa fa-lock"></i> Account settings
                         </a>

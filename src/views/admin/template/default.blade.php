@@ -29,7 +29,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/" target="_blank"><i class="fa fa-desktop" aria-hidden="true"></i> View Site</a></li>
                 <li><a href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-                @permission('manage-setting')
+                @permission('read-setting')
                 <li><a href="{{ route('admin.setting.index') }}"><i class="fa fa-cogs" aria-hidden="true"></i> Settings</a></li>
                 @endpermission
                 <li class="dropdown">

@@ -21,10 +21,10 @@
         <div>
             <table id="page-datatable">
                 <thead>
-                <th>SN</th>
-                <th>Title</th>
-                <th>Published</th>
-                <th>Action</th>
+                    <th>SN</th>
+                    <th>Title</th>
+                    <th>Published</th>
+                    <th>Action</th>
                 </thead>
                 <tbody>
                 </tbody>
@@ -33,8 +33,8 @@
     @endcomponent
 @endsection
 @push('styles')
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">--}}
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+{{--<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">--}}
 @endpush
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js"></script>

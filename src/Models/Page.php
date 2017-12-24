@@ -33,6 +33,18 @@ class Page extends Model
         'url'
     ];
 
+    protected $dontKeepRevisionOf = [
+        'custom'
+    ];
+
+    protected $revisionFormattedFields = [
+        'is_published' => 'boolean:No|Yes'
+    ];
+
+    protected $revisionFormattedFieldNames = [
+        'is_published' => 'Published Status'
+    ];
+
     public function getRouteKeyName()
     {
         return 'slug';
