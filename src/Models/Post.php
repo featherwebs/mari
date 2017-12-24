@@ -86,7 +86,7 @@ class Post extends Model
             array_push($ids, $tag->id);
         }
 
-        $this->tags()->sync($ids);
+        $this->tags()->sync(array_values($ids));
     }
 
     public function scopePublished($query, $isPublished = true)
