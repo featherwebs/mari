@@ -33,6 +33,18 @@ class Post extends Model
         'created_at'   => 'date'
     ];
 
+    protected $dontKeepRevisionOf = [
+        'custom'
+    ];
+
+    protected $revisionFormattedFields = [
+        'is_published' => 'boolean:No|Yes'
+    ];
+
+    protected $revisionFormattedFieldNames = [
+        'is_published' => 'Published Status'
+    ];
+
     public function getRouteKeyName()
     {
         return 'slug';
