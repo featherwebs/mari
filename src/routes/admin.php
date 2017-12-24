@@ -38,5 +38,7 @@ Route::group([ 'middleware' => 'web' ], function () {
 
     Route::group([ 'prefix' => 'api', 'as' => 'api.' ], function () {
         Route::post('page', PageController::class.'@api')->name('page.datatable');
+        Route::post('menu', MenuController::class.'@api')->name('menu.datatable');
+        Route::post('post', PostController::class.'@api')->name('post.datatable');
     });
 });
