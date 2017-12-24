@@ -16,7 +16,7 @@
             <i class="fa fa-dashboard fa-2x"></i> Dashboard
         </a>
     </li>
-    @permission('manage-media')
+    @permission('read-media')
     <li role="presentation">
         <a class="mdl-navigation__link" href="{{ route('admin.media.index') }}">
             <i class="fa fa-image fa-2x"></i>
@@ -24,7 +24,7 @@
         </a>
     </li>
     @endpermission
-    @permission('manage-page')
+    @permission('read-page')
     <li role="presentation">
         <a class="mdl-navigation__link" href="{{ route('admin.page.index') }}">
             <i class="fa fa-file-text-o fa-2x"></i>
@@ -32,7 +32,7 @@
         </a>
     </li>
     @endpermission
-    @permission('manage-post')
+    @permission('read-post')
     <li role="presentation">
         <a class="mdl-navigation__link" href="{{ route('admin.post.index') }}">
             <i class="fa fa-newspaper-o fa-2x"></i>
@@ -40,7 +40,7 @@
         </a>
     </li>
     @endpermission
-    @permission('manage-menu')
+    @permission('read-menu')
     <li role="presentation">
         <a class="mdl-navigation__link" href="{{ route('admin.menu.index') }}">
             <i class="fa fa-list fa-2x"></i>
@@ -56,7 +56,7 @@
             </a>
         </li>
     @endforeach
-    @permission('manage-user')
+    @permission('read-user')
     <li role="presentation" class="hidden-md hidden-lg">
         <a class="mdl-navigation__link" href="{{ route('admin.user.index') }}">
             <i class="fa fa-users fa-2x"></i>
@@ -69,7 +69,7 @@
             Profile
         </a>
     </li>
-    @permission('manage-setting')
+    @permission('read-setting')
     <li role="presentation" class="hidden-md hidden-lg">
         <a class="mdl-navigation__link" href="{{ route('admin.setting.index') }}">
             Settings
@@ -82,26 +82,6 @@
             <i class="fa fa-sign-out fa-2x"></i> Logout
         </a>
     </li>
-    {{--@permission('manage-setting')--}}
-    {{--<li role="presentation">--}}
-    {{--<a href="{{ route('admin.setting.index') }}">--}}
-    {{--<i class="fa fa-cogs fa-2x"></i>--}}
-    {{--Setting--}}
-    {{--</a>--}}
-    {{--</li>--}}
-    {{--@endpermission--}}
-    {{--<li role="presentation" class="pull-right">--}}
-    {{--<a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">--}}
-    {{--<i class="fa fa-sign-out fa-2x"></i>--}}
-    {{--Logout--}}
-    {{--</a>--}}
-    {{--</li>--}}
-    {{--<li role="presentation" class="pull-right">--}}
-    {{--<a href="{{ route('admin.profile.edit') }}">--}}
-    {{--<i class="fa fa-user-circle fa-2x"></i>--}}
-    {{--{{ auth()->user()->name }}--}}
-    {{--</a>--}}
-    {{--</li>--}}
     <li class="featherwebs-mari-footer">
         © Copyright {{ date('Y') }}. Baked with Mari &trade;. All Rights Reserved.<br>
         Handcrafted by <a href="http://featherwebs.com" class="color-yellow" target="_blank">Featherwebs</a>
