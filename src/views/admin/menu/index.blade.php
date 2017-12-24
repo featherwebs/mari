@@ -21,56 +21,59 @@
                 </nav>
             @endslot
             <div class="panel">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-1">#</div>
-                        <div class="col-xs-4">Title</div>
-                        <div class="col-xs-2">Sub Menus</div>
-                        <div class="col-xs-2">Slug</div>
-                        <div class="col-xs-3 text-right">Action</div>
-                    </div>
-                </div>
+                <table id="menu-datatable">
+                    <thead>
+                    <th>SN</th>
+                    <th>Title</th>
+                    <th>Sub Menus</th>
+                    <th>Slug</th>
+                    <th>Action</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-            @forelse($menus as $menu)
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-1">{{ $menu->id }}</div>
-                            <div class="col-xs-4">
-                                {{ $menu->title }}
-                            </div>
-                            <div class="col-xs-2">
-                                {{ $menu->subMenus->count() }}
-                            </div>
-                            <div class="col-xs-2">
-                                {{ $menu->slug }}
-                            </div>
-                            <div class="col-xs-3 text-right">
-                                <form method="POST" action="{{ route('admin.menu.destroy', $menu->slug) }}">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-                                    <a href="{{ route('admin.menu.show', $menu->slug) }}" class="btn btn-xs btn-primary">
-                                        Submenus
-                                    </a>
-                                    <a href="{{ route('admin.menu.edit', $menu->slug) }}" class="btn btn-xs btn-primary">
-                                        Edit
-                                    </a>
-                                    <button onclick="return confirm('Are You sure?');" class="btn btn-xs btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <div class="alert alert-callout alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <p class="text-capitalize">no menu available</p>
-                </div>
-            @endforelse
         @endcomponent
     </div>
 @endsection
+
+@push('styles')
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#menu-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '/api/menu',
+                    data: { _token: $('meta[name="csrf-token"]').attr('content') }
+                },
+                columns:[
+                    {data: 'id', name: 'id'},
+                    {data: 'title', name: 'title'},
+                    {data:'sub_menus', name: 'subMenus', render: function(data){
+                        return data.length;
+                    }},
+                    {data: 'slug', name: 'slug'},
+                    {data: 'slug',name: 'slug', searchable:false, orderable:false, render: function(data,meta,row){
+                        var actions = '<form method="POST" action="/admin/menu/'+ data +'">';
+                        actions += '<input type="hidden" name="_method" value="DELETE">';
+                        actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
+                        actions += '<a href="/admin/menu/' + data +'" class="btn btn-default btn-xs" target="_blank">Submenus</a>';
+                        actions += '<a href="/admin/menu/' + data +'/edit" class="btn btn-default btn-xs">Edit</a>';
+                        actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
+                        actions += '</form>';
+
+                        return actions;
+                    }}
+
+                ]
+            });
+        });
+    </script>
+@endpush

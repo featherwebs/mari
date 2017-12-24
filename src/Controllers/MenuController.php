@@ -9,14 +9,20 @@ use Featherwebs\Mari\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller as BaseController;
+use Yajra\DataTables\Facades\DataTables;
 
 class MenuController extends BaseController
 {
+    public function api()
+    {
+        $menus = Menu::with('subMenus');
+
+        return DataTables::of($menus)->make(true);
+    }
+
     public function index()
     {
-        $menus = Menu::all();
-
-        return view('featherwebs::admin.menu.index', compact('menus'));
+        return view('featherwebs::admin.menu.index');
     }
 
     public function create()

@@ -13,14 +13,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Yajra\DataTables\Facades\DataTables;
 
 class PostController extends BaseController
 {
+    public function api()
+    {
+        $posts = Post::with('postType', 'tags');
+
+        return DataTables::of($posts)->make(true);
+    }
+
     public function index()
     {
-        $posts = Post::paginate(10);
-
-        return view('featherwebs::admin.post.index', compact('posts'));
+        return view('featherwebs::admin.post.index');
     }
 
     public function create(Request $request)

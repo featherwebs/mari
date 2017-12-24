@@ -3,17 +3,12 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            <div class="col-md-9">
-                <h2>Posts</h2>
-            </div>
-            <div class="col-md-3">
-                <a href="{{ route('admin.post.create') }}">
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                    <i class="material-icons">add</i> Add Posts
-                </button>
-                </a>
-
-            </div>
+            <h2 class="mdl-card__title-text">Pages</h2>
+        @endslot
+        @slot('tools')
+            <a href="{{ route('admin.post.create') }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                <i class="material-icons">add</i> ADD
+            </a>
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">
@@ -25,62 +20,70 @@
         @endslot
         <div>
             <div class="panel">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-1">ID</div>
-                        <div class="col-xs-6">Title</div>
-                        <div class="col-xs-1">Type</div>
-                        <div class="col-xs-1">Tags</div>
-                        <div class="col-xs-1">Published</div>
-                        <div class="col-xs-2">Actions</div>
-                    </div>
-                </div>
+                <table id="page-datatable">
+                    <thead>
+                    <th>SN</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Tags</th>
+                    <th>Published</th>
+                    <th>Action</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-            @foreach($posts as $post)
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-1">{{ $post->id }}</div>
-                            <div class="col-xs-6">
-                                {{ $post->title }}
-                            </div>
-                            <div class="col-xs-1">
-                                {{ $post->postType->title }}
-                            </div>
-                            <div class="col-xs-1">
-                                {{ $post->tags->count() ? $post->tags->implode('title',', '): '-' }}
-                            </div>
-                            <div class="col-xs-1">
-                                @if($post->is_published)
-                                    <i class="fa fa-check-circle-o text-success"></i>
-                                @else
-                                    <i class="fa fa-times text-muted"></i>
-                                @endif
-                            </div>
-                            <div class="col-xs-2 text-right">
-                                <form method="POST" action="{{ route('admin.post.destroy', $post->slug) }}">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-                                    <a href="{{ route('admin.post.edit', $post->slug) }}" class="btn btn-xs btn-primary">
-                                        View
-                                    </a>
-                                    <a href="{{ route('admin.post.edit', $post->slug) }}" class="btn btn-xs btn-primary">
-                                        Edit
-                                    </a>
-                                    <button onclick="return confirm('Are You sure?');" class="btn btn-xs btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
         </div>
-        @slot('footer')
-            <div class="text-right">
-                {!! $posts->links() !!}
-            </div>
-        @endslot
     @endcomponent
 @endsection
+
+@push('styles')
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#page-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '/api/post',
+                    data: { _token: $('meta[name="csrf-token"]').attr('content') }
+                },
+                columns:[
+                    {data: 'id', name: 'id'},
+                    {data: 'title', name: 'title'},
+                    {data: 'post_type.title', name:'postType.title'},
+                    {data: 'tags', name: 'tags.title', render:function(data){
+                        return data.map(function(elem){
+                            return elem.title;
+                        }).join(", ");
+                    }},
+                    {data: 'is_published', name: 'is_published', render:function(data){
+                        if(data)
+                            return "<i class='material-icons text-success'>check_circle</i>";
+                        else
+                            return "<i class='fa fa-times text-muted'></i>";
+                    }},
+                    {data: 'slug',name: 'slug', searchable:false, orderable:false, render: function(data,meta,row){
+                        var actions = '<form method="POST" action="/admin/post/'+ data +'">';
+                        actions += '<input type="hidden" name="_method" value="DELETE">';
+                        actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
+
+                        actions += '<a href="/post/' + data +'" class="btn btn-primary btn-xs" target="_blank">View</a>';
+
+                        actions += '<a href="/admin/post/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
+                        actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
+                        actions += '</form>';
+
+                        return actions;
+                    }}
+
+                ]
+            });
+        });
+    </script>
+@endpush
