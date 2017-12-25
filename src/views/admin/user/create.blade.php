@@ -3,7 +3,7 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            User
+            <h2 class="mdl-card__title-text">Users</h2>
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">

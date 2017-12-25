@@ -4,14 +4,17 @@
     <div id="menu-app">
         @component('featherwebs::admin.template.default')
             @slot('heading')
-                Menu
-                <div class="pull-right">
-                    <a href="{{ route('admin.menu.create') }}" class="btn btn-primary btn-xs">
-                        <i class="fa fa-plus"></i>
-                        Add
-                    </a>
-                </div>
+                <h2 class="mdl-card__title-text">Menu</h2>
             @endslot
+
+            @slot('tools')
+                @permission('create-post')
+                <a href="{{ route('admin.menu.create') }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    <i class="material-icons">add</i> ADD
+                </a>
+                @endpermission
+            @endslot
+
             @slot('breadcrumb')
                 <nav aria-label="breadcrumb" role="navigation">
                     <ol class="breadcrumb">
@@ -64,8 +67,8 @@
                         var actions = '<form method="POST" action="/admin/menu/'+ data +'">';
                         actions += '<input type="hidden" name="_method" value="DELETE">';
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
-                        actions += '<a href="/admin/menu/' + data +'" class="btn btn-default btn-xs" target="_blank">Submenus</a>';
-                        actions += '<a href="/admin/menu/' + data +'/edit" class="btn btn-default btn-xs">Edit</a>';
+                        actions += '<a href="/admin/menu/' + data +'" class="btn btn-primary btn-xs" target="_blank">Submenus</a>';
+                        actions += '<a href="/admin/menu/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
                         actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
                         actions += '</form>';
 

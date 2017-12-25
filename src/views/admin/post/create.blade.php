@@ -3,7 +3,7 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            Posts
+            <h2 class="mdl-card__title-text">Posts</h2>
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">
@@ -18,10 +18,8 @@
             {{ csrf_field() }}
             @include('featherwebs::admin.post.form')
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right">
-                <i class="material-icons">add</i> Create Post
+                <i class="material-icons">save</i> Save
             </button>
-            </a>
-
         </form>
     @endcomponent
 @endsection

@@ -3,34 +3,31 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            <h2 class="mdl-card__title-text">User</h2>
+            <h2 class="mdl-card__title-text">Roles</h2>
         @endslot
         @slot('tools')
-            <a href="{{ route('admin.user.create') }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                <i class="material-icons">add</i>
-                Add
+            @permission('create-role')
+            <a href="{{ route('admin.role.create') }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                <i class="material-icons">add</i> ADD
             </a>
+            @endpermission
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">User</li>
+                    <li class="breadcrumb-item active" aria-current="page">Role</li>
                 </ol>
             </nav>
         @endslot
         <div>
             <div class="panel">
-                <table id="user-datatable">
+                <table id="page-datatable">
                     <thead>
-                        <tr>
-                            <th class="col-xs-1">ID</th>
-                            <th class="col-xs-3">Name</th>
-                            <th class="col-xs-2">Role</th>
-                            <th class="col-xs-3">Email</th>
-                            <th class="col-xs-1">Active</th>
-                            <th class="col-xs-2">Actions</th>
-                        </tr>
+                    <th>SN</th>
+                    <th>Display Name</th>
+                    <th>Slug</th>
+                    <th>Action</th>
                     </thead>
                     <tbody>
                     </tbody>
@@ -48,37 +45,28 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#user-datatable').DataTable({
+            $('#page-datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
                     type: 'POST',
-                    url: '/api/user',
+                    url: '/api/role',
                     data: { _token: $('meta[name="csrf-token"]').attr('content') }
                 },
                 columns:[
                     {data: 'id', name: 'id'},
+                    {data: 'display_name', name:'display_name'},
                     {data: 'name', name: 'name'},
-                    {data: 'roles', name: 'roles.name', render:function (data) {
-                        return data.map(function(elem){
-                            return elem.display_name;
-                        }).join(", ");
-                    }},
-                    {data: 'email', name: 'email'},
-                    {data: 'is_active', name: 'is_active', render:function(data){
-                        if(data)
-                            return "<i class='material-icons text-success'>check_circle</i>";
-                        else
-                            return "<i class='fa fa-times text-muted'></i>";
-                    }},
-                    {data: 'slug',name: 'slug', searchable:false, orderable:false, render: function(data,meta,row){
-                        var actions = '<form method="POST" action="/admin/page/'+ data +'">';
+                    {data: 'name',name: 'name', searchable:false, orderable:false, render: function(data,meta,row){
+                        var actions = '<form method="POST" action="/admin/role/'+ data +'">';
                         actions += '<input type="hidden" name="_method" value="DELETE">';
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
-
-                        actions += '<a href="/admin/page/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
-
+                        @permission('update-role')
+                        actions += '<a href="/admin/role/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
+                        @endpermission
+                        @permission('delete-role')
                         actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
+                        @endpermission
                         actions += '</form>';
 
                         return actions;

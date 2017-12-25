@@ -5,6 +5,7 @@ use \Featherwebs\Mari\Controllers\ProfileController;
 use \Featherwebs\Mari\Controllers\PageController;
 use \Featherwebs\Mari\Controllers\PostController;
 use \Featherwebs\Mari\Controllers\MenuController;
+use Featherwebs\Mari\Controllers\RoleController;
 use \Featherwebs\Mari\Controllers\SubMenuController;
 use \Featherwebs\Mari\Controllers\SettingController;
 use \Featherwebs\Mari\Controllers\MediaController;
@@ -17,7 +18,14 @@ Route::group([ 'middleware' => 'web' ], function () {
         });
         Route::get('/home', AdminController::class . '@index')->name('home');
 
-        Route::get('media', MediaController::class.'@index')->name('media.index')->middleware('permission:read-media');
+        Route::get('role', RoleController::class.'@index')->name('role.index')->middleware('permission:read-role');
+        Route::get('role/create', RoleController::class.'@create')->name('role.create')->middleware('permission:create-role');
+        Route::post('role/store', RoleController::class.'@store')->name('role.store')->middleware('permission:create-role');
+        Route::get('role/{role}', RoleController::class.'@show')->name('role.show')->middleware('permission:read-role');
+        Route::get('role/{role}/edit', RoleController::class.'@edit')->name('role.edit')->middleware('permission:update-role');
+        Route::put('role/{role}', RoleController::class.'@update')->name('role.update')->middleware('permission:update-role');
+        Route::delete('role/{role}', RoleController::class.'@destroy')->name('role.destroy')->middleware('permission:delete-role');Route::get('media', MediaController::class.'@index')->name('media.index')->middleware('permission:read-media');
+
         Route::get('media/create', MediaController::class.'@create')->name('media.create')->middleware('permission:create-media');
         Route::post('media/store', MediaController::class.'@store')->name('media.store')->middleware('permission:create-media');
         Route::get('media/{medium}', MediaController::class.'@show')->name('media.show')->middleware('permission:read-media');
@@ -79,5 +87,7 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::post('page', PageController::class.'@api')->name('page.datatable');
         Route::post('menu', MenuController::class.'@api')->name('menu.datatable');
         Route::post('post', PostController::class.'@api')->name('post.datatable');
+        Route::post('role', RoleController::class.'@api')->name('role.datatable');
+        Route::post('user', UserController::class.'@api')->name('user.datatable');
     });
 });

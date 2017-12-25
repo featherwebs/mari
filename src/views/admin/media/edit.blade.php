@@ -22,19 +22,17 @@
         {{ csrf_field() }}
         @component('featherwebs::admin.template.default')
             @slot('heading')
-                <div class="col-md-9">
-                    <h4> Media</h4>
-                </div>
-                <div class="col-md-3">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right update-button " type="submit">
-                        <i class="fa fa-save"></i>
-                        Save
-                    </button>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right update-button btn-deleteall update-button " type="button">
-                        <i class="fa fa-trash"></i>
-                        Delete All
-                    </button>
-                </div>
+                <h2 class="mdl-card__title-text">Media</h2>
+            @endslot
+            @slot('tools')
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored btn-deleteall" type="button">
+                    <i class="fa fa-trash"></i>
+                    Delete All
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit">
+                    <i class="fa fa-save"></i>
+                    Save
+                </button>
             @endslot
             @slot('breadcrumb')
                 <nav aria-label="breadcrumb" role="navigation">
