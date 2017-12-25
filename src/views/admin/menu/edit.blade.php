@@ -3,7 +3,7 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            Edit Menu {{ $menu->title }}
+            <h2 class="mdl-card__title-text">Edit Menu {{ $menu->title }}</h2>
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">

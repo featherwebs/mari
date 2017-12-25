@@ -12,8 +12,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $admin     = User::create([
+        $superAdmin     = User::create([
             'name'     => 'Featherwebs',
+            'username' => 'featherwebs',
+            'email'    => 'super@featherwebs.com',
+            'password' => bcrypt('secret')
+        ]);
+        $superAdminRole = Role::whereName('super-admin')->first();
+        $superAdmin->attachRole($superAdminRole);
+
+        $admin     = User::create([
+            'name'     => 'Administrator',
             'username' => 'admin',
             'email'    => 'admin@featherwebs.com',
             'password' => bcrypt('secret')

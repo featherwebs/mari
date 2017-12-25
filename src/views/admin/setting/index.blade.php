@@ -5,13 +5,13 @@
         {{ csrf_field() }}
         @component('featherwebs::admin.template.default')
             @slot('heading')
-                Settings
-                <div class="pull-right">
-                    <button class="btn btn-primary btn-xs" type="submit">
-                        <i class="fa fa-save"></i>
-                        Save
-                    </button>
-                </div>
+                <h2 class="mdl-card__title-text">Settings</h2>
+            @endslot
+            @slot('tools')
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit">
+                    <i class="material-icons">save</i>
+                    Save
+                </button>
             @endslot
             @slot('breadcrumb')
                 <nav aria-label="breadcrumb" role="navigation">

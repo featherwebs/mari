@@ -9,19 +9,31 @@ use App\User;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends BaseController
 {
+    public function api()
+    {
+        if(auth()->user()->isSuperAdmin())
+            $users = User::with('roles');
+        else
+            $users = User::superAdmin(false)->with('roles');
+
+        return DataTables::of($users)->make(true);
+    }
+
     public function index()
     {
-        $users = User::paginate(10);
-
-        return view('featherwebs::admin.user.index', compact('users'));
+        return view('featherwebs::admin.user.index');
     }
 
     public function create()
     {
-        $roles = Role::all();
+        if(auth()->user()->isSuperAdmin())
+            $roles = Role::all();
+        else
+            $roles = Role::superAdmin(false)->get();
 
         return view('featherwebs::admin.user.create', compact('roles'));
     }

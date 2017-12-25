@@ -181,6 +181,7 @@
         background-image: linear-gradient(135deg, #000000 0%, #0f0f0f 100%);
         height: 100vh;
         box-shadow: 0 2px 10px 0 rgba(0,0,0,0.16);
+        overflow-y: scroll;
     }
     .mar-nav a{
         color: #fff;
@@ -327,14 +328,14 @@
     .featherwebs-mari-footer{
         padding: 0 20px;
         color: grey;
-        position: absolute !important;
-        bottom: 10%;
+        /*position: absolute !important;*/
+        /*bottom: 10%;*/
     }
-    .featherwebs-mari-footer a{
-        padding: 0 !important;
-        display: inline !important;
+    /*.featherwebs-mari-footer a{*/
+        /*padding: 0 !important;*/
+        /*display: inline !important;*/
 
-    }
+    /*}*/
     /*==========  Non-Mobile First Method  ==========*/
 
     /* Large Devices, Wide Screens */

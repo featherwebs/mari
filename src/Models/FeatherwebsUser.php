@@ -20,7 +20,8 @@ class FeatherwebsUser extends Authenticatable
     }
 
     protected $dontKeepRevisionOf = [
-        'password', 'remember_token'
+        'password',
+        'remember_token'
     ];
 
     protected $revisionFormattedFields = [
@@ -44,5 +45,30 @@ class FeatherwebsUser extends Authenticatable
         self::entrustBoot();
         self::revisionableBoot();
         parent::boot();
+    }
+
+    public function scopeSuperAdmin($query, $is = true)
+    {
+        $superRole = Role::whereDescription('super-admin')->first();
+        if ( ! $superRole)
+        {
+            return $query;
+        }
+
+        $supers = $superRole->users->pluck('id');
+
+        if ($is)
+        {
+            return $query->whereIn('id', $supers);
+        }
+
+        return $query->whereNotIn('id', $supers);
+    }
+
+    public function isSuperAdmin()
+    {
+        $superRole = Role::whereDescription('super-admin')->first();
+
+        return $this->hasRole($superRole->name);
     }
 }

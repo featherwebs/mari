@@ -69,11 +69,11 @@
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
 
                         if(row.id == home_page_id)
-                            actions += '<a href="/" class="btn btn-default btn-xs" target="_blank">View</a>';
+                            actions += '<a href="/" class="btn btn-primary btn-xs" target="_blank">View</a>';
                         else
-                            actions += '<a href="/' + data +'" class="btn btn-default btn-xs" target="_blank">View</a>';
+                            actions += '<a href="/' + data +'" class="btn btn-primary btn-xs" target="_blank">View</a>';
 
-                        actions += '<a href="/admin/page/' + data +'/edit" class="btn btn-default btn-xs">Edit</a>';
+                        actions += '<a href="/admin/page/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
 
                         if(row.id != home_page_id)
                             actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';

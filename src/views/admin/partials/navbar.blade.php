@@ -56,8 +56,16 @@
             </a>
         </li>
     @endforeach
+    @permission('read-role')
+    <li role="presentation">
+        <a class="mdl-navigation__link" href="{{ route('admin.role.index') }}">
+            <i class="fa fa-cubes fa-2x"></i>
+            Roles
+        </a>
+    </li>
+    @endpermission
     @permission('read-user')
-    <li role="presentation" class="hidden-md hidden-lg">
+    <li role="presentation">
         <a class="mdl-navigation__link" href="{{ route('admin.user.index') }}">
             <i class="fa fa-users fa-2x"></i>
             Users
@@ -76,13 +84,12 @@
         </a>
     </li>
     @endpermission
-
     <li role="presentation" class="hidden-md hidden-lg">
         <a class="mdl-navigation__link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
             <i class="fa fa-sign-out fa-2x"></i> Logout
         </a>
     </li>
-    <li class="featherwebs-mari-footer">
+    <li class="featherwebs-mari-footer" role="presentation">
         © Copyright {{ date('Y') }}. Baked with Mari &trade;. All Rights Reserved.<br>
         Handcrafted by <a href="http://featherwebs.com" class="color-yellow" target="_blank">Featherwebs</a>
     </li>

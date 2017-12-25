@@ -3,7 +3,7 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            <h2 class="mdl-card__title-text">Pages</h2>
+            <h2 class="mdl-card__title-text">Posts</h2>
         @endslot
         @slot('tools')
             @permission('create-post')
