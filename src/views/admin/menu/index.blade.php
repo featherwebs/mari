@@ -67,7 +67,7 @@
                         var actions = '<form method="POST" action="/admin/menu/'+ data +'">';
                         actions += '<input type="hidden" name="_method" value="DELETE">';
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
-                        actions += '<a href="/admin/menu/' + data +'" class="btn btn-primary btn-xs" target="_blank">Submenus</a>';
+                        actions += '<a href="/admin/menu/' + data +'" class="btn btn-primary btn-xs">Submenus</a>';
                         actions += '<a href="/admin/menu/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
                         actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
                         actions += '</form>';

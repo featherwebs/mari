@@ -28,7 +28,7 @@ class StorePost extends FormRequest
             'view'          => '',
             'content'       => '',
             'post_type_id'  => 'required|exists:post_types,id',
-            'images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp',
+            'images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048',
             'event_on'      => 'date'
         ];
     }
