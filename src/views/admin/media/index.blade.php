@@ -20,6 +20,10 @@
         .thumbnail-wrapper, .thumbnail-wrapper img {
             width: 100%;
         }
+
+        .dropzone {
+            border: 2px dashed rgba(0, 0, 0, 0.3);
+        }
     </style>
 @endpush
 
@@ -61,30 +65,30 @@
                         <br>
                     </div>
                     @forelse(fw_image($meta) as $media)
-                        <div class="col-md-2 gallery-image-checkbox" >
+                        <div class="col-md-2 gallery-image-checkbox">
                             <input type="checkbox" name="image[]" id="{{$media->getCustom('title')}}" value="{{ $media->id }}">
                             <label for="{{$media->getCustom('title')}}">
-                            <div class="gallery-card-image mdl-card mdl-shadow--2dp">
-                                <div class="mdl-card__title mdl-card--expand">
-                                    <img src="{{ $media->getThumbnail(150,150) }}" alt="">
-                                </div>
-                                <div class="mdl-card__actions">
+                                <div class="gallery-card-image mdl-card mdl-shadow--2dp">
+                                    <div class="mdl-card__title mdl-card--expand">
+                                        <img src="{{ $media->getThumbnail(150,150) }}" alt="">
+                                    </div>
+                                    <div class="mdl-card__actions">
                                     <span class="gallery-card-image__filename">
                                         {!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!} <br>
                                         {{ str_limit($media->getCustom('title'), 15) }}
                                     </span>
+                                    </div>
                                 </div>
-                            </div>
                             </label>
                             {{--<div class="panel panel-default thumbnail-wrapper">--}}
-                                {{--<label>--}}
-                                    {{--<input type="checkbox" name="image[]" value="{{ $media->id }}">--}}
-                                    {{--<img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">--}}
-                                    {{--<span class="thumbnail-title">--}}
-                                        {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
-                                        {{--{{ str_limit($media->getCustom('title'), 15) }}--}}
-                                    {{--</span>--}}
-                                {{--</label>--}}
+                            {{--<label>--}}
+                            {{--<input type="checkbox" name="image[]" value="{{ $media->id }}">--}}
+                            {{--<img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">--}}
+                            {{--<span class="thumbnail-title">--}}
+                            {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
+                            {{--{{ str_limit($media->getCustom('title'), 15) }}--}}
+                            {{--</span>--}}
+                            {{--</label>--}}
                             {{--</div>--}}
                         </div>
                     @empty
@@ -92,32 +96,6 @@
                 </div>
             @empty
             @endforelse
-
-            {{--@forelse($medias->chunk(6) as $chunk)--}}
-            {{--<div class="row">--}}
-            {{--@foreach($chunk as $key => $media)--}}
-            {{--<div class="col-sm-2">--}}
-            {{--<div class="panel panel-default thumbnail-wrapper">--}}
-            {{--<label>--}}
-            {{--<input type="checkbox" name="image[]" value="{{ $media->id }}">--}}
-            {{--<img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">--}}
-            {{--<span class="thumbnail-title">--}}
-            {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
-            {{--{{ str_limit($media->getCustom('title'), 15) }}--}}
-            {{--</span>--}}
-            {{--</label>--}}
-            {{--</div>--}}
-            {{--</div>--}}
-            {{--@endforeach--}}
-            {{--</div>--}}
-            {{--@empty--}}
-            {{--<div class="alert alert-callout alert-warning alert-dismissible" role="alert">--}}
-            {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
-            {{--<span aria-hidden="true">&times;</span>--}}
-            {{--</button>--}}
-            {{--<p class="text-capitalize">no media available</p>--}}
-            {{--</div>--}}
-            {{--@endforelse--}}
         </form>
     @endcomponent
     <!-- Modal -->
@@ -130,9 +108,8 @@
                     <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="mydropzone" enctype="multipart/form-data" method="POST">
+                    <form class="mydropzone dropzone" enctype="multipart/form-data" method="POST">
                         {{ csrf_field() }}
-                        Drop file here or click
                         <div class="fallback">
                             <input name="file" accept="image/jpeg,image/png,image/bmp" type="file" multiple />
                         </div>
@@ -153,14 +130,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
     <script type="text/javascript">
         var uploadedIds = [];
-
+        Dropzone.autoDiscover = false;
         $(document).ready(function () {
             $('.mydropzone').dropzone({
                 paramName: "file",
                 maxFilesize: 20,
                 url: "{{ route('admin.media.store') }}",
                 uploadMultiple: false,
-                acceptedFiles : 'image/png, image/jpeg',
+                acceptedFiles: 'image/png, image/jpeg',
                 maxFiles: 20,
                 init: function () {
                     this.on("success", function (file, response) {
