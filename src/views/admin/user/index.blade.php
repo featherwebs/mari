@@ -71,12 +71,12 @@
                         else
                             return "<i class='fa fa-times text-muted'></i>";
                     }},
-                    {data: 'slug',name: 'slug', searchable:false, orderable:false, render: function(data,meta,row){
-                        var actions = '<form method="POST" action="/admin/page/'+ data +'">';
+                    {data: 'username',name: 'username', searchable:false, orderable:false, render: function(data,meta,row){
+                        var actions = '<form method="POST" action="/admin/user/'+ data +'">';
                         actions += '<input type="hidden" name="_method" value="DELETE">';
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
 
-                        actions += '<a href="/admin/page/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
+                        actions += '<a href="/admin/user/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
 
                         actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
                         actions += '</form>';
