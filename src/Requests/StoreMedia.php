@@ -22,7 +22,7 @@ class StoreMedia extends FormRequest
     public function rules()
     {
         return [
-            'files.*' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp'
+            'files.*' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048'
         ];
     }
 }

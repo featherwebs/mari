@@ -80,16 +80,6 @@
                                     </div>
                                 </div>
                             </label>
-                            {{--<div class="panel panel-default thumbnail-wrapper">--}}
-                            {{--<label>--}}
-                            {{--<input type="checkbox" name="image[]" value="{{ $media->id }}">--}}
-                            {{--<img src="{{ $media->getThumbnail(150,150) }}" class="img-responsive">--}}
-                            {{--<span class="thumbnail-title">--}}
-                            {{--{!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!}<br>--}}
-                            {{--{{ str_limit($media->getCustom('title'), 15) }}--}}
-                            {{--</span>--}}
-                            {{--</label>--}}
-                            {{--</div>--}}
                         </div>
                     @empty
                     @endforelse
