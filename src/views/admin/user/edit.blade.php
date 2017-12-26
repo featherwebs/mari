@@ -16,7 +16,8 @@
                     @if(isset($profile))
                         <li class="breadcrumb-item active" aria-current="page">Profile</li>
                     @else
-                        <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.user.index') }}">User</a></li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            <a href="{{ route('admin.user.index') }}">User</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     @endif
                 </ol>
@@ -26,8 +27,8 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             @include('featherwebs::admin.user.form')
-            <button class="btn btn-primary">
-                <i class="fa fa-save"></i> Update
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right">
+                <i class="material-icons">save</i> Update
             </button>
         </form>
     @endcomponent

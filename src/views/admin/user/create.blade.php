@@ -17,8 +17,8 @@
         <form action="{{ route('admin.user.store') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             @include('featherwebs::admin.user.form')
-            <button class="btn btn-primary">
-                <i class="fa fa-save"></i> Create
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right">
+                <i class="material-icons">save</i> Save
             </button>
         </form>
     @endcomponent
