@@ -60,7 +60,7 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::put('menu/{menu}', MenuController::class.'@update')->name('menu.update')->middleware('permission:update-menu');
         Route::delete('menu/{menu}', MenuController::class.'@destroy')->name('menu.destroy')->middleware('permission:delete-menu');
 
-        Route::post('menu/{menu}/submenu', SubMenuController::class.'@store')->name('menu.submenu.store')->middleware('permission:create-menu.submenu');
+        Route::post('menu/{menu}/submenu', SubMenuController::class.'@store')->name('menu.submenu.store')->middleware('permission:create-menu');
 
         Route::get('user', UserController::class.'@index')->name('user.index')->middleware('permission:read-user');
         Route::get('user/create', UserController::class.'@create')->name('user.create')->middleware('permission:create-user');
