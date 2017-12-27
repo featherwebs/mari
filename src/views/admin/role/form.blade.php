@@ -60,5 +60,5 @@
         {{--@endif--}}
     </script>
 
-    <script type="text/javascript" src="/js/dist/role.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/role.js"></script>
 @endpush
