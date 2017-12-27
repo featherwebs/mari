@@ -369,4 +369,7 @@
 
     }
 
+    [v-cloak] > * { display:none }
+    [v-cloak]::before { content: "loading…" }
+
 </style>
