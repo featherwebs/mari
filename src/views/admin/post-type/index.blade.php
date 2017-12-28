@@ -3,11 +3,11 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            <h2 class="mdl-card__title-text">{{ str_plural($postType->title) }}</h2>
+            <h2 class="mdl-card__title-text">Post Types</h2>
         @endslot
         @slot('tools')
-            @permission('create-post')
-            <a href="{{ route('admin.post.create', ['post_type' => $postType->slug]) }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            @permission('create-post-type')
+            <a href="{{ route('admin.post-type.create') }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                 <i class="material-icons">add</i> ADD
             </a>
             @endpermission
@@ -16,7 +16,7 @@
             <nav aria-label="breadcrumb" role="navigation">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ str_plural($postType->title) }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">Post Type</li>
                 </ol>
             </nav>
         @endslot
@@ -25,10 +25,9 @@
                 <table id="page-datatable">
                     <thead>
                     <th>SN</th>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Tags</th>
-                    <th>Published</th>
+                    <th>Display Name</th>
+                    <th>Slug</th>
+                    <th>Custom Fields</th>
                     <th>Action</th>
                     </thead>
                     <tbody>
@@ -52,37 +51,28 @@
                 serverSide: true,
                 ajax: {
                     type: 'POST',
-                    url: '/api/post',
-                    data: { _token: $('meta[name="csrf-token"]').attr('content'), 'post_type': '{{ $postType->slug }}' }
+                    url: '/api/post-type',
+                    data: { _token: $('meta[name="csrf-token"]').attr('content') }
                 },
                 columns:[
                     {data: 'id', name: 'id'},
-                    {data: 'title', name: 'title'},
-                    {data: 'post_type.title', name:'postType.title'},
-                    {data: 'tags', name: 'tags.title', render:function(data){
-                        return data.map(function(elem){
-                            return elem.title;
-                        }).join(", ");
-                    }},
-                    {data: 'is_published', name: 'is_published', render:function(data){
-                        if(data)
-                            return "<i class='material-icons text-success'>check_circle</i>";
-                        else
-                            return "<i class='fa fa-times text-muted'></i>";
+                    {data: 'title', name:'title'},
+                    {data: 'slug', name: 'slug'},
+                    {data: 'custom', name: 'custom', render: function(data){
+                        return data ? data.map(function(custom){
+                            return custom.title;
+                        }).join(', '): '-';
                     }},
                     {data: 'slug',name: 'slug', searchable:false, orderable:false, render: function(data,meta,row){
-                        var actions = '<form method="POST" action="/admin/post/'+ data +'">';
+                        var actions = '<form method="POST" action="/admin/post-type/'+ data +'">';
                         actions += '<input type="hidden" name="_method" value="DELETE">';
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
-                        @permission('read-post')
-                        actions += '<a href="/post/' + data +'" class="btn btn-primary btn-xs" target="_blank">View</a>';
-                        @endpermission
-                        @permission('update-post')
-                        actions += '<a href="/admin/post/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
-                        @endpermission
-                        @permission('delete-post')
+                    @permission('update-post-type')
+                        actions += '<a href="/admin/post-type/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
+                    @endpermission
+                    @permission('delete-post-type')
                         actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
-                        @endpermission
+                    @endpermission
                         actions += '</form>';
 
                         return actions;

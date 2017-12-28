@@ -3,161 +3,133 @@
 use Featherwebs\Mari\Models\Image;
 use Featherwebs\Mari\Models\Menu;
 use Featherwebs\Mari\Models\Post;
+use Featherwebs\Mari\Models\PostType;
 use Featherwebs\Mari\Models\Setting;
 use Featherwebs\Mari\Models\Page;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 
-if ( ! function_exists('fw_setting'))
-{
+if ( ! function_exists('fw_setting')) {
     function fw_setting($query)
     {
         $setting = Setting::fetch($query)->first();
 
-        if ($setting)
-        {
-            if ($setting->image)
-            {
+        if ($setting) {
+            if ($setting->image) {
                 return asset($setting->image->thumbnail);
             }
 
             return $setting->value;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 }
-if ( ! function_exists('fw_image'))
-{
+if ( ! function_exists('fw_image')) {
     function fw_image($meta = null, $limit = null)
     {
         $media = Image::query();
 
-        if ($meta)
-        {
+        if ($meta) {
             $media = $media->whereMeta($meta);
         }
 
-        if ($limit)
-        {
+        if ($limit) {
             $media = $media->take($limit);
         }
 
         return $media->get();
     }
 }
-if ( ! function_exists('fw_menu'))
-{
+if ( ! function_exists('fw_menu')) {
     function fw_menu($slug)
     {
         return Menu::with('subMenus')->whereSlug($slug)->first();
     }
 }
-if ( ! function_exists('fw_posts_by_tag'))
-{
+if ( ! function_exists('fw_posts_by_tag')) {
     function fw_posts_by_tag($tags, $limit = false, $builder = false)
     {
         $posts = Post::with('tags')->published()->whereHas('tags', function ($q) use ($tags) {
-            if (is_array($tags))
-            {
+            if (is_array($tags)) {
                 $q->whereIn('slug', $tags);
-            }
-            else
-            {
+            } else {
                 $q->where('slug', strtolower($tags));
             }
         });
 
-        if ($limit)
-        {
+        if ($limit) {
             $posts = $posts->take($limit);
         }
 
-        if ($builder)
-        {
+        if ($builder) {
             return $posts;
         }
 
         return $posts->get();
     }
 }
-if ( ! function_exists('fw_posts_by_category'))
-{
+if ( ! function_exists('fw_posts_by_category')) {
     function fw_posts_by_category($category, $limit = false, $builder = false)
     {
         $posts = Post::with('tags')->published()->whereHas('postType', function ($q) use ($category) {
-            if (is_array($category))
-            {
+            if (is_array($category)) {
                 $q->whereIn('slug', $category);
-            }
-            else
-            {
+            } else {
                 $q->where('slug', $category);
             }
         });
 
-        if ($limit)
-        {
+        if ($limit) {
             $posts = $posts->take($limit);
         }
 
-        if ($builder)
-        {
+        if ($builder) {
             return $posts;
         }
 
         return $posts->get();
     }
 }
-if ( ! function_exists('fw_post_by_slug'))
-{
+if ( ! function_exists('fw_post_by_slug')) {
     function fw_post_by_slug($slug)
     {
         return Post::with('tags')->published()->where('slug', $slug)->first();
     }
 }
-if ( ! function_exists('fw_posts'))
-{
+if ( ! function_exists('fw_posts')) {
     function fw_posts($limit = false, $builder = false)
     {
         $posts = Post::published();
-        if ($limit)
-        {
+        if ($limit) {
             $posts = $posts->limit($limit);
         }
 
-        if ($builder)
-        {
+        if ($builder) {
             return $posts;
         }
 
         return $posts->get();
     }
 }
-if ( ! function_exists('fw_page_by_slug'))
-{
+if ( ! function_exists('fw_page_by_slug')) {
     function fw_page_by_slug($slug)
     {
         return Page::where([ 'slug' => $slug ])->first();
     }
 }
-if ( ! function_exists('fw_pages'))
-{
+if ( ! function_exists('fw_pages')) {
     function fw_pages($limit = false)
     {
         $pages = Page::published();
-        if ($limit)
-        {
+        if ($limit) {
             $pages = $pages->limit($limit);
         }
 
         return $pages->get();
     }
 }
-if ( ! function_exists('fw_upload_image'))
-{
+if ( ! function_exists('fw_upload_image')) {
     function fw_upload_image(UploadedFile $file, Model $model, $single = true, $meta = null)
     {
         $extension = $file->getClientOriginalExtension();
@@ -168,23 +140,18 @@ if ( ! function_exists('fw_upload_image'))
             'meta'   => str_slug($meta, '_'),
         ];
 
-        if ($single)
-        {
-            if ($model->image)
-            {
+        if ($single) {
+            if ($model->image) {
                 $model->image->delete();
             }
 
             $model->image()->create($image);
-        }
-        else
-        {
+        } else {
             $model->images()->create($image);
         }
     }
 }
-if ( ! function_exists('fw_upload'))
-{
+if ( ! function_exists('fw_upload')) {
     function fw_upload(UploadedFile $file, Model $model, $single = true)
     {
         $extension = $file->getClientOriginalExtension();
@@ -194,23 +161,18 @@ if ( ! function_exists('fw_upload'))
             'path'     => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public')
         ];
 
-        if ($single)
-        {
-            if ($model->files)
-            {
+        if ($single) {
+            if ($model->files) {
                 $model->files()->delete();
             }
 
             $model->files()->create($data);
-        }
-        else
-        {
+        } else {
             $model->files()->create($data);
         }
     }
 }
-if ( ! function_exists('fw_fetch_data'))
-{
+if ( ! function_exists('fw_fetch_data')) {
     function fw_fetch_data($url)
     {
         $client = new \GuzzleHttp\Client();
@@ -221,33 +183,23 @@ if ( ! function_exists('fw_fetch_data'))
 
     }
 }
-if ( ! function_exists('fw_thumbnail'))
-{
+if ( ! function_exists('fw_thumbnail')) {
     function fw_thumbnail($entity = null, $width = 150, $height = 150, $slug = "")
     {
         $text    = empty($slug) ? env('APP_NAME') : $slug;
         $default = "http://via.placeholder.com/{$width}x{$height}?text=[" . $text . "]";
-        if ($entity && $entity instanceof Image)
-        {
+        if ($entity && $entity instanceof Image) {
             return $entity->getThumbnail($width, $height);
-        }
-        elseif ($entity && $entity->images && $entity->images->count())
-        {
-            if (empty($slug))
-            {
+        } elseif ($entity && $entity->images && $entity->images->count()) {
+            if (empty($slug)) {
                 return $entity->images->first()->getThumbnail($width, $height);
-            }
-            else
-            {
+            } else {
                 $image = $entity->images()->where('meta', $slug)->first();
-                if ($image)
-                {
+                if ($image) {
                     return $image->getThumbnail($width, $height);
                 }
             }
-        }
-        elseif ($entity && $entity->image)
-        {
+        } elseif ($entity && $entity->image) {
             return $entity->image->getThumbnail($width, $height);
         }
 
@@ -255,8 +207,7 @@ if ( ! function_exists('fw_thumbnail'))
     }
 }
 
-if ( ! function_exists('fw_ordinal'))
-{
+if ( ! function_exists('fw_ordinal')) {
     /**
      * Append an ordinal indicator to a numeric value.
      * @param  string|int $value
@@ -270,8 +221,7 @@ if ( ! function_exists('fw_ordinal'))
         $indicators = [ 'th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th' ];
 
         $suffix = $superscript ? '<sup>' . $indicators[ $number % 10 ] . '</sup>' : $indicators[ $number % 10 ];
-        if ($number % 100 >= 11 && $number % 100 <= 13)
-        {
+        if ($number % 100 >= 11 && $number % 100 <= 13) {
             $suffix = $superscript ? '<sup>th</sup>' : 'th';
         }
 
@@ -279,12 +229,10 @@ if ( ! function_exists('fw_ordinal'))
     }
 }
 
-if ( ! function_exists('fw_get_file_data'))
-{
+if ( ! function_exists('fw_get_file_data')) {
     function fw_get_file_data($file)
     {
-        if ( ! file_exists($file))
-        {
+        if ( ! file_exists($file)) {
             return [];
         }
         $fp        = fopen($file, 'r');
@@ -297,19 +245,42 @@ if ( ! function_exists('fw_get_file_data'))
             'images'        => ''
         ];
 
-        foreach ($all_headers as $field => $option)
-        {
-            if (preg_match('/^[ \t\/*#@]*:(.*)$/mi', $file_data, $match) && $match[1])
-            {
+        foreach ($all_headers as $field => $option) {
+            if (preg_match('/^[ \t\/*#@]*:(.*)$/mi', $file_data, $match) && $match[1]) {
                 $value                 = trim(preg_replace("/\s*(?:\*\/|\?>).*/", '', $match[1]));
                 $all_headers[ $field ] = $option == 'split' ? preg_split("/[\s,]+/", $value) : $value;
-            }
-            else
-            {
+            } else {
                 $all_headers[ $field ] = '';
             }
         }
 
         return $all_headers;
+    }
+}
+
+if ( ! function_exists('fw_post_alias')) {
+    function fw_post_alias($postType, $field, $default)
+    {
+        if ($postType instanceof PostType) {
+            $aliases = collect($postType->alias);
+            $alias   = $aliases->where('slug', $field)->first();
+            if ($alias) {
+                return $alias['alias'];
+            }
+        }
+
+        return $default;
+    }
+}
+
+if ( ! function_exists('fw_post_types')) {
+    function fw_post_types($builder = false)
+    {
+        $postTypes = PostType::query();
+
+        if($builder)
+            return $postTypes;
+
+        return $postTypes->get();
     }
 }

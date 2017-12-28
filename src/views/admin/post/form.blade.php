@@ -6,37 +6,36 @@
         <li role="presentation">
             <a href="#image" role="tab" data-toggle="tab">Images</a></li>
         <li role="presentation">
-            <a href="#custom" role="tab" data-toggle="tab">Custom Fields</a></li>
-        <li role="presentation">
             <a href="#seo" role="tab" data-toggle="tab">Seo</a></li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
+        <input type="hidden" :value="post_type.id" name="post_type_id">
         <div role="tabpanel" class="tab-pane active" id="main">
             <div class="form-group">
-                <label for="title" class="control-label col-sm-2">Title</label>
+                <label for="title" class="control-label col-sm-2">{{ fw_post_alias($postType, 'title', 'Post Title')  }}</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="title" type="text" v-model="post.title" id="title">
-                    <span class="help-block">Post Title</span>
+                    <span class="help-block"></span>
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_title" class="control-label col-sm-2">Sub Title</label>
+                <label for="sub_title" class="control-label col-sm-2">{{ fw_post_alias($postType, 'sub_title', 'Post Sub Title')  }}</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="sub_title" type="text" v-model="post.sub_title" id="sub_title">
-                    <span class="help-block">Post Subtitle</span>
+                    <span class="help-block"></span>
                 </div>
             </div>
             <div class="form-group">
                 <label for="slug" class="control-label col-sm-2">Slug</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="slug" type="text" v-model="post.slug" id="slug" debounce="500">
-                    <span class="help-block">Post Slug (appears on url)</span>
+                    <span class="help-block">Appears on url</span>
                 </div>
             </div>
             <div class="form-group">
-                <label for="view" class="control-label col-sm-2">View</label>
+                <label for="view" class="control-label col-sm-2">{{ fw_post_alias($postType, 'view', 'Template')  }}</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="view" v-model="post.view">
                         <option v-for="t in templates" :value="t">@{{ t }}</option>
@@ -45,26 +44,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="content" class="control-label col-sm-2">Content</label>
+                <label for="content" class="control-label col-sm-2">{{ fw_post_alias($postType, 'content', 'Post Content')  }}</label>
                 <div class="col-sm-10">
                     <ckeditor name="content" id="content" v-model="post.content" class="editor" :config="editor.full"></ckeditor>
                     <span class="help-block">Main Content of the Post</span>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="post_type_id" class="control-label col-sm-2">Post Type</label>
+            <div class="form-group" v-for="(field,i) in post.custom">
+                <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">@{{ field.title }}</label>
                 <div class="col-sm-10">
-                    <select class="form-control" name="post_type_id" v-model="post.post_type_id" id="post_type_id" required>
-                        {{--<option :value="null">None</option>--}}
-                        <option v-for="pt in post_types" :value="pt.id">@{{ pt.title }}</option>
-                    </select>
-                    <span class="help-block"></span>
-                </div>
-            </div>
-            <div class="form-group" v-if="post.post_type && post.post_type.slug == 'event'">
-                <label for="event_on" class="control-label col-sm-2">Event Date</label>
-                <div class="col-sm-10">
-                    <input type="date" class="form-control" name="event_on" multiple id="event_on" v-model="post.event_on">
+                    <input :name="'custom['+i+'][slug]'" type="hidden" v-model="field.slug">
+                    <input :name="'custom['+i+'][type]'" type="hidden" v-model="field.type">
+                    <input :name="'custom['+i+'][title]'" type="hidden" v-model="field.title">
+                    <input class="form-control" :name="'custom['+i+'][value]'" type="text" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
+                    <input class="form-control" :name="'custom['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
+                    <input class="form-control" :name="'custom['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
+                    <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor.mini"></ckeditor>
                     <span class="help-block"></span>
                 </div>
             </div>
@@ -78,7 +73,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="is_published" class="control-label col-sm-2">Published</label>
+                <label for="is_published" class="control-label col-sm-2">{{ fw_post_alias($postType, 'is_published', 'Published')  }}</label>
                 <div class="col-sm-10">
                     <label>
                         <input type="radio" name="is_published" id="is_published" :value="true" v-model="post.is_published">
@@ -91,7 +86,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="is_featured" class="control-label col-sm-2">Featured</label>
+                <label for="is_featured" class="control-label col-sm-2">{{ fw_post_alias($postType, 'is_featured', 'Featured')  }}</label>
                 <div class="col-sm-10">
                     <label>
                         <input type="radio" name="is_featured" id="is_featured" :value="true" v-model="post.is_featured">
@@ -109,18 +104,14 @@
             <div v-for="(field,i) in post.images" class="panel">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-1">
-                            Image Field #@{{ i+1 }}
-                        </div>
-                        <div class="col-sm-11">
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <div class="col-sm-3">
                                     <div class="thumbnail">
-                                        <img alt="Post Banner" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
+                                        <img :alt="field.title" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
                                     </div>
                                 </div>
                                 <div class="col-sm-9">
-                                    <a class="pull-right btn btn-xs btn-danger" href="javascript:void(0);" class="close" @click="removeImage(i)">&times;</a>
                                     <div class="form-group">
                                         <label :for="'images['+i+'][file]'">Image Source:</label>
                                         <div class="input-group">
@@ -130,7 +121,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label :for="'images['+i+'][slug]'">Image Slug: </label>
-                                        <input class="form-control" :name="'images['+i+'][meta]'" type="text" v-model="field.meta">
+                                        <input class="form-control" :name="'images['+i+'][meta]'" type="text" v-model="field.slug">
                                     </div>
                                 </div>
                             </div>
@@ -138,61 +129,6 @@
                     </div>
                 </div>
             </div>
-            <div v-if="!post.images.length" class="panel">
-                <div class="panel-body">
-                    No Images. Add one?
-                </div>
-            </div>
-            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" @click="addImageField">
-                <i class="fa fa-plus"></i>
-                Add New Image
-            </button>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="custom">
-            <div v-for="(field,i) in post.custom" class="panel">
-                <div class="panel-body">
-                    <a class="pull-right btn btn-xs btn-danger" href="javascript:void(0);" class="close" @click="removeCustomField(i)">&times;</a>
-                    <div class="row">
-                        <div class="col-sm-1">
-                            Custom Field #@{{ i+1 }}
-                        </div>
-                        <div class="col-sm-11">
-                            <div class="row">
-                                <label :for="'custom['+i+'][slug]'" class="control-label col-sm-2">Slug</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control" :name="'custom['+i+'][slug]'" type="text" value="" id="'custom['+i+'][slug]'" v-model="field.slug">
-                                    <span class="help-block">This will be used while accessing this value</span>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" :name="'custom['+i+'][formatted]'" v-model="field.formatted">
-                                            Enable formatting
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">Value</label>
-                                <div class="col-sm-10">
-                                    <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted" :config="editor.mini"></ckeditor>
-                                    <textarea class="form-control" :name="'custom['+i+'][value]'" :id="'custom['+i+'][value]'" v-model="field.value" v-else></textarea>
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div v-if="!post.custom.length" class="panel">
-                <div class="panel-body">
-                    No Custom Field. Add one?
-                </div>
-            </div>
-            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" @click="addCustomField">
-                <i class="fa fa-plus"></i>
-                Add New Custom Field
-            </button>
         </div>
         <div role="tabpanel" class="tab-pane" id="seo">
             <div class="form-group">
@@ -228,15 +164,18 @@
     <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script>
-                @if(isset($post))
-        let post = JSON.parse('{!! addslashes(json_encode($post)) !!}');
-                @endif
-                {{--@if($p = old('post', isset($post)?$post:null))--}}
-                {{--let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');--}}
-                {{--@endif--}}
-                @if(isset($tags))
-        let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
-                @endif
+        @if(isset($post))
+            let post = JSON.parse('{!! addslashes(json_encode($post)) !!}');
+        @endif
+        @if(!empty($postType))
+            let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
+        @endif
+        {{--@if($p = old('post', isset($post)?$post:null))--}}
+        {{--let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');--}}
+        {{--@endif--}}
+        @if(isset($tags))
+            let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
+        @endif
         let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
         let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
         $(document).ready(function () {

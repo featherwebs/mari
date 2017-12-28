@@ -33,12 +33,14 @@
     </li>
     @endpermission
     @permission('read-post')
-    <li role="presentation">
-        <a class="mdl-navigation__link" href="{{ route('admin.post.index') }}">
-            <i class="fa fa-newspaper-o fa-2x"></i>
-            Post
-        </a>
-    </li>
+        @foreach(fw_post_types() as $type)
+            <li role="presentation">
+                <a class="mdl-navigation__link" href="{{ route('admin.post.index',['post_type' => $type->slug]) }}">
+                    <i class="fa fa-newspaper-o fa-2x"></i>
+                    {{ $type->title }}
+                </a>
+            </li>
+        @endforeach
     @endpermission
     @permission('read-menu')
     <li role="presentation">
@@ -61,6 +63,14 @@
         <a class="mdl-navigation__link" href="{{ route('admin.role.index') }}">
             <i class="fa fa-cubes fa-2x"></i>
             Roles
+        </a>
+    </li>
+    @endpermission
+    @permission('read-post-type')
+    <li role="presentation">
+        <a class="mdl-navigation__link" href="{{ route('admin.post-type.index') }}">
+            <i class="fa fa-cubes fa-2x"></i>
+            Post Type
         </a>
     </li>
     @endpermission

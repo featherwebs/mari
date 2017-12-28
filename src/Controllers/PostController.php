@@ -17,16 +17,23 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PostController extends BaseController
 {
-    public function api()
+    public function api(Request $request)
     {
+        $type  = PostType::whereSlug($request->get('post_type', ''))->first();
         $posts = Post::with('postType', 'tags');
+
+        if ($type) {
+            $posts = $posts->where('post_type_id', $type->id);
+        }
 
         return DataTables::of($posts)->make(true);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('featherwebs::admin.post.index');
+        $postType = PostType::whereSlug($request->get('post_type', ''))->first();
+
+        return view('featherwebs::admin.post.index', compact('postType'));
     }
 
     public function create(Request $request)
@@ -35,6 +42,7 @@ class PostController extends BaseController
         $pages     = Page::published()->pluck('title');
         $tags      = Tag::pluck('title', 'id')->merge($pages)->unique();
         $postTypes = PostType::all();
+        $postType  = PostType::whereSlug($request->get('post_type', ''))->first();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         })->filter(function ($item) {
@@ -45,7 +53,7 @@ class PostController extends BaseController
             $meta = fw_get_file_data(resource_path('views/posts/') . $request->get('template') . '.blade.php');
         }
 
-        return view('featherwebs::admin.post.create', compact('tags', 'postTypes', 'templates', 'meta'));
+        return view('featherwebs::admin.post.create', compact('tags', 'postTypes', 'templates', 'meta', 'postType'));
     }
 
     public function store(StorePost $request)
@@ -75,11 +83,12 @@ class PostController extends BaseController
         $pages     = Page::published()->pluck('title');
         $tags      = Tag::pluck('title', 'id')->merge($pages)->unique();
         $postTypes = PostType::all();
+        $postType  = $post->postType;
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         });
 
-        return view('featherwebs::admin.post.edit', compact('post', 'tags', 'postTypes', 'templates'));
+        return view('featherwebs::admin.post.edit', compact('post', 'tags', 'postTypes', 'templates', 'postType'));
     }
 
     public function update(UpdatePost $request, Post $post)

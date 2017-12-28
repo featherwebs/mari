@@ -123,29 +123,6 @@ class Post extends Model
         return $this->images()->where('meta', $slug)->first();
     }
 
-    public function scopePast($query, $today = false)
-    {
-        if ($today) {
-            return $query->where('event_on', '<=', date('Y-m-d'));
-        }
-
-        return $query->where('event_on', '<', date('Y-m-d'));
-    }
-
-    public function scopeUpcoming($query, $today = false)
-    {
-        if ($today) {
-            return $query->where('event_on', '>=', date('Y-m-d'));
-        }
-
-        return $query->where('event_on', '>', date('Y-m-d'));
-    }
-
-    public function scopeToday($query)
-    {
-        return $query->where('event_on', '=', date('Y-m-d'));
-    }
-
     public function scopeType($query, $id)
     {
         return $query->where('post_type_id', $id);

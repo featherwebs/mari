@@ -28,8 +28,7 @@ class UpdatePost extends FormRequest
             'view'          => '',
             'content'       => '',
             'post_type_id'  => 'required|exists:post_types,id',
-            'images.*.file' => 'image',
-            'event_on'      => 'date'
+            'images.*.file' => 'image'
         ];
     }
 
@@ -47,8 +46,7 @@ class UpdatePost extends FormRequest
             'meta_description' => $this->get('meta_description'),
             'meta_keywords'    => $this->get('meta_keywords'),
             'is_published'     => $this->get('is_published', 'false') == 'true',
-            'is_featured'      => $this->get('is_featured', 'false') == 'true',
-            'event_on'         => $this->get('event_on'),
+            'is_featured'      => $this->get('is_featured', 'false') == 'true'
         ];
     }
 }

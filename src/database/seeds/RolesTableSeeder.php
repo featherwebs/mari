@@ -176,6 +176,27 @@ class RolesTableSeeder extends Seeder
         $deleteSetting->description  = 'Settings';
         $deleteSetting->save();
 
+        $createPostType               = new Permission();
+        $createPostType->name         = 'create-post-type';
+        $createPostType->display_name = 'Create Post Type';
+        $createPostType->description  = 'Post Types';
+        $createPostType->save();
+        $readPostType               = new Permission();
+        $readPostType->name         = 'read-post-type';
+        $readPostType->display_name = 'Read Post Types';
+        $readPostType->description  = 'Post Types';
+        $readPostType->save();
+        $updatePostType               = new Permission();
+        $updatePostType->name         = 'update-post-type';
+        $updatePostType->display_name = 'Update Post Types';
+        $updatePostType->description  = 'Post Types';
+        $updatePostType->save();
+        $deletePostType               = new Permission();
+        $deletePostType->name         = 'delete-post-type';
+        $deletePostType->display_name = 'Delete Post Types';
+        $deletePostType->description  = 'Post Types';
+        $deletePostType->save();
+
         $superAdmin->attachPermissions([
             $createRole,
             $readRole,
@@ -205,6 +226,10 @@ class RolesTableSeeder extends Seeder
             $readSetting,
             $updateSetting,
             $deleteSetting,
+            $createPostType,
+            $readPostType,
+            $updatePostType,
+            $deletePostType
         ]);
 
         $admin->attachPermissions([
