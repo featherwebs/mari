@@ -3,7 +3,7 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            <h2 class="mdl-card__title-text">Posts</h2>
+            <h2 class="mdl-card__title-text">{{ $postType->title }}</h2>
         @endslot
         @slot('tools')
             @permission('create-post')
@@ -16,7 +16,7 @@
             <nav aria-label="breadcrumb" role="navigation">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.post.index') }}">Post</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.post.index') }}">{{ $postType->title }}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ $post->title }}</li>
                 </ol>
             </nav>
