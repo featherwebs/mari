@@ -38,7 +38,7 @@ class StorePost extends FormRequest
             'title'            => $this->get('title'),
             'sub_title'        => $this->get('sub_title'),
             'slug'             => str_slug($this->get('slug')),
-            'view'             => $this->get('view'),
+            'view'             => $this->get('view', 'default'),
             'content'          => $this->get('content'),
             'custom'           => $this->input('custom', []),
             'post_type_id'     => $this->get('post_type_id'),

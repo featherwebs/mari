@@ -12,7 +12,7 @@
         <div class="col-sm-1">
             <select :name="'alias['+i+'][visible]'" class="form-control" v-model="column.visible" :readonly="column.required">
                 <option :value="true">Shown</option>
-                <option :value="false" v-if="column.required">Hidden</option>
+                <option :value="false" v-if="!column.required">Hidden</option>
             </select>
         </div>
         <div class="col-sm-9">
