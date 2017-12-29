@@ -16,7 +16,7 @@
             <nav aria-label="breadcrumb" role="navigation">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.post.index') }}">{{ $postType->title }}</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.post.index', ['post_type', $postType->slug]) }}">{{ $postType->title }}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ $post->title }}</li>
                 </ol>
             </nav>

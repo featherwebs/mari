@@ -56,9 +56,13 @@
                     <input :name="'custom['+i+'][slug]'" type="hidden" v-model="field.slug">
                     <input :name="'custom['+i+'][type]'" type="hidden" v-model="field.type">
                     <input :name="'custom['+i+'][title]'" type="hidden" v-model="field.title">
+                    <input :name="'custom['+i+'][options]'" type="hidden" v-model="field.options">
                     <input class="form-control" :name="'custom['+i+'][value]'" type="text" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
                     <input class="form-control" :name="'custom['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
                     <input class="form-control" :name="'custom['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
+                    <select class="form-control" :name="'custom['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
+                        <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
+                    </select>
                     <ckeditor :name="'custom['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor.mini"></ckeditor>
                     <span class="help-block"></span>
                 </div>

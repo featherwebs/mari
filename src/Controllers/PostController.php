@@ -72,7 +72,7 @@ class PostController extends BaseController
         });
 
         return redirect()
-            ->route('admin.post.index')
+            ->route('admin.post.index', [ 'post_type' => $post->postType->slug ])
             ->withSuccess(trans('messages.create_success', [ 'entity' => "Post '" . str_limit($post->title, 20) . "'" ]));
     }
 
@@ -131,10 +131,11 @@ class PostController extends BaseController
     public function destroy(Post $post)
     {
         $title = str_limit($post->title, 20);
+        $type  = $post->postType->slug;
         $post->delete();
 
         return redirect()
-            ->route('admin.post.index')
+            ->route('admin.post.index', [ 'post_type' => $type ])
             ->withSuccess(trans('messages.delete_success', [ 'entity' => "Post '" . $title . "'" ]));
     }
 

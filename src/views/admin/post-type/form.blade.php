@@ -10,9 +10,9 @@
     <div class="row" v-for="(column, i) in post_type.alias">
         <label class="control-label col-sm-2">@{{ column.title }}</label>
         <div class="col-sm-1">
-            <select :name="'alias['+i+'][visible]'" class="form-control" v-model="column.visible" :readonly="column.required">
+            <select :name="'alias['+i+'][visible]'" class="form-control" v-model="column.visible" :readonly="column.required===true || column.required==='true'">
                 <option :value="true">Shown</option>
-                <option :value="false" v-if="!column.required">Hidden</option>
+                <option :value="false" v-if="!(column.required===true || column.required==='true')">Hidden</option>
             </select>
         </div>
         <div class="col-sm-9">
@@ -32,24 +32,27 @@
         </div>
     </div>
     <div class="form-group" v-for="(field,i) in post_type.custom">
+        <div class="col-xs-1">
+            <button class="btn btn-xs btn-danger" type="button" @click="removeCustomField(i)">
+                <i class="material-icons">remove</i>
+            </button>
+        </div>
         <div class="col-xs-2">
             <input class="form-control" :name="'custom['+i+'][slug]'" type="text" v-model="field.slug">
             <span class="help-block">Slug</span>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-2">
             <select class="form-control" :name="'custom['+i+'][type]'" v-model="field.type">
                 <option v-for="option in custom_types" :value="option.slug" v-html="option.title"></option>
             </select>
             <span class="help-block">Data Type</span>
         </div>
-        <div class="col-xs-5">
+        <div class="col-xs-4">
             <input class="form-control" :name="'custom['+i+'][title]'" type="text" v-model="field.title">
             <span class="help-block">Display Title</span>
         </div>
-        <div class="col-xs-1">
-            <button class="btn btn-xs btn-danger" type="button" @click="removeCustomField(i)">
-                <i class="material-icons">remove</i>
-            </button>
+        <div class="col-xs-3">
+            <textarea class="form-control" :name="'custom['+i+'][options]'" v-model="field.options" v-if="field.type=='select'" rows="3"></textarea>
         </div>
     </div>
 </div>
