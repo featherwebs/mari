@@ -41,15 +41,14 @@ class User extends FeatherwebsUser
 ...
 }
 ```
-5) Run migrations and seeds
+5) Run migrations
 ```php
 php artisan migrate --path="vendor/featherwebs/mari/src/database/migrations"
-php artisan db:seed --class="Featherwebs\Mari\Seeder\MariSeeder"
 ```
 
-6) Run the seeds:
-```shell
-php artisan db:seed
+6) Run seeds
+```php
+php artisan db:seed --class="Featherwebs\Mari\Seeder\MariSeeder"
 ```
 
 7)  You also need to add the following:

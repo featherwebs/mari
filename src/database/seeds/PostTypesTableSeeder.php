@@ -18,22 +18,22 @@ class PostTypesTableSeeder extends Seeder
                 'id'     => 1,
                 'title'  => 'Event',
                 'slug'   => 'event',
-                'custom' => [],
-                'alias'  => []
+                'custom' => '[{"slug":"event_on","type":"date","title":"Event Date"}]',
+                'alias'  => '[]'
             ],
             [
                 'id'     => 2,
                 'title'  => 'News',
                 'slug'   => 'news',
-                'custom' => [],
-                'alias'  => []
+                'custom' => '[]',
+                'alias'  => '[]'
             ],
             [
                 'id'     => 3,
                 'title'  => 'Other',
                 'slug'   => 'other',
-                'custom' => [],
-                'alias'  => []
+                'custom' => '[]',
+                'alias'  => '[]'
             ]
 
         ];
