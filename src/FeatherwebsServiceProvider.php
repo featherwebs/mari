@@ -25,8 +25,6 @@ class FeatherwebsServiceProvider extends ServiceProvider
             __DIR__ . '/views/partials'       => base_path('resources/views/partials'),
             __DIR__ . '/config'               => base_path('config'),
             __DIR__ . '/public'               => base_path('public'),
-            __DIR__ . '/database/migrations'  => database_path('migrations'),
-            __DIR__ . '/database/seeds'       => database_path('seeds'),
             __DIR__ . '/routes/routes.php'    => base_path('routes/web.php'),
             __DIR__ . '/routes/mari.php'      => base_path('routes/mari.php'),
             __DIR__ . '/lang/en/messages.php' => resource_path('lang/en/messages.php'),
