@@ -130,16 +130,19 @@ class Post extends Model
 
     public function setSlugAttribute($value)
     {
-        $count  = 1;
+        $count  = '';
         $slug   = $value;
         $exists = true;
         while ( $exists) {
-            echo $slug;
-            $exists = self::where('slug', $slug)->count() > 0;
+
+            if($this->exists)
+                $exists = self::where('slug', $slug)->where('id', '!=', $this->id)->count() > 0;
+            else {
+                $exists = self::where('slug', $slug)->count() > 0;
+            }
+
             if ($exists) {
                 $count = intval($count) + 1;
-                $slug = $value . '-' . intval($count);
-            } else {
                 $slug = $value . '-' . intval($count);
             }
         }

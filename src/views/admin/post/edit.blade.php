@@ -7,7 +7,7 @@
         @endslot
         @slot('tools')
             @permission('create-post')
-            <a href="{{ route('admin.post.create') }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            <a href="{{ route('admin.post.create', ['post_type', $postType->slug]) }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                 <i class="material-icons">add</i> Add New
             </a>
             @endpermission
