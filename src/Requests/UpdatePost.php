@@ -23,7 +23,7 @@ class UpdatePost extends FormRequest
     {
         return [
             'title'         => 'required|min:3',
-            'slug'          => 'required|unique:posts,slug,' . $this->post->id,
+            'slug'          => 'required|min:3',
             'sub_title'     => '',
             'view'          => '',
             'content'       => '',

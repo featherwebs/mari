@@ -23,7 +23,7 @@ class StorePost extends FormRequest
     {
         return [
             'title'         => 'required|min:3',
-            'slug'          => 'required|unique:posts,slug',
+            'slug'          => 'required|min:3',
             'sub_title'     => '',
             'view'          => '',
             'content'       => '',
