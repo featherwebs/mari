@@ -20,21 +20,21 @@
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ fw_post_alias_visible($postType, 'sub_title') ? '': ' hidden' }}">
                 <label for="sub_title" class="control-label col-sm-2">{{ fw_post_alias($postType, 'sub_title', 'Post Sub Title')  }}</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="sub_title" type="text" v-model="post.sub_title" id="sub_title">
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ fw_post_alias_visible($postType, 'slug') ? '': ' hidden' }}">
                 <label for="slug" class="control-label col-sm-2">Slug</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="slug" type="text" v-model="post.slug" id="slug" debounce="500">
                     <span class="help-block">Appears on url</span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ fw_post_alias_visible($postType, 'view') ? '': ' hidden' }}">
                 <label for="view" class="control-label col-sm-2">{{ fw_post_alias($postType, 'view', 'Template')  }}</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="view" v-model="post.view">
@@ -43,7 +43,7 @@
                     <span class="help-block">Filename of Blade Template File</span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ fw_post_alias_visible($postType, 'content') ? '': ' hidden' }}">
                 <label for="content" class="control-label col-sm-2">{{ fw_post_alias($postType, 'content', 'Post Content')  }}</label>
                 <div class="col-sm-10">
                     <ckeditor name="content" id="content" v-model="post.content" class="editor" :config="editor.full"></ckeditor>
@@ -63,7 +63,7 @@
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ fw_post_alias_visible($postType, 'tags') ? '': ' hidden' }}">
                 <label for="post_type_id" class="control-label col-sm-2">Tags</label>
                 <div class="col-sm-10">
                     <select class="form-control select2" name="tags[]" multiple>
@@ -72,7 +72,7 @@
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ fw_post_alias_visible($postType, 'is_published') ? '': ' hidden' }}">
                 <label for="is_published" class="control-label col-sm-2">{{ fw_post_alias($postType, 'is_published', 'Published')  }}</label>
                 <div class="col-sm-10">
                     <label>
@@ -85,7 +85,7 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ fw_post_alias_visible($postType, 'is_featured') ? '': ' hidden' }}">
                 <label for="is_featured" class="control-label col-sm-2">{{ fw_post_alias($postType, 'is_featured', 'Featured')  }}</label>
                 <div class="col-sm-10">
                     <label>
@@ -187,7 +187,4 @@
     </script>
 
     <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/post.js"></script>
-
-
-
 @endpush

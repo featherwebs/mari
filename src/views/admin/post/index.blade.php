@@ -26,7 +26,6 @@
                     <thead>
                     <th>SN</th>
                     <th>Title</th>
-                    <th>Type</th>
                     <th>Tags</th>
                     <th>Published</th>
                     <th>Action</th>
@@ -58,7 +57,6 @@
                 columns:[
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title'},
-                    {data: 'post_type.title', name:'postType.title'},
                     {data: 'tags', name: 'tags.title', render:function(data){
                         return data.map(function(elem){
                             return elem.title;

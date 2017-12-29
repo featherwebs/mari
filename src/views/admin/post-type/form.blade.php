@@ -9,10 +9,17 @@
     <h4>Column Aliases</h4>
     <div class="row" v-for="(column, i) in post_type.alias">
         <label class="control-label col-sm-2">@{{ column.title }}</label>
-        <div class="col-sm-10">
+        <div class="col-sm-1">
+            <select :name="'alias['+i+'][visible]'" class="form-control" v-model="column.visible" :readonly="column.required == 'true'">
+                <option :value="true">Shown</option>
+                <option :value="false" v-if="!(column.required == 'true')">Hidden</option>
+            </select>
+        </div>
+        <div class="col-sm-9">
             <input class="form-control" :name="'alias['+i+'][alias]'" type="text" v-model="column.alias">
             <input type="hidden" :name="'alias['+i+'][slug]'" v-model="column.slug">
             <input type="hidden" :name="'alias['+i+'][title]'" v-model="column.title">
+            <input type="hidden" :name="'alias['+i+'][required]'" v-model="column.required">
             <span class="help-block"></span>
         </div>
     </div>
@@ -54,8 +61,8 @@
 @push('scripts')
     <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
     <script>
-        @if(isset($postType))
-            let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
+                @if(isset($postType))
+        let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
         @endif
 
         {{--@if($p = old('post_type', isset($postType)?$postType:null))--}}

@@ -264,7 +264,7 @@ if ( ! function_exists('fw_post_alias')) {
         if ($postType instanceof PostType) {
             $aliases = collect($postType->alias);
             $alias   = $aliases->where('slug', $field)->first();
-            if ($alias) {
+            if ($alias && array_key_exists('alias', $alias)) {
                 return $alias['alias'];
             }
         }
@@ -273,13 +273,29 @@ if ( ! function_exists('fw_post_alias')) {
     }
 }
 
+if ( ! function_exists('fw_post_alias_visible')) {
+    function fw_post_alias_visible($postType, $field)
+    {
+        if ($postType instanceof PostType) {
+            $aliases = collect($postType->alias);
+            $alias   = $aliases->where('slug', $field)->first();
+            if ($alias && array_key_exists('visible', $alias)) {
+                return strtolower($alias['visible']) == "true";
+            }
+        }
+
+        return true;
+    }
+}
+
 if ( ! function_exists('fw_post_types')) {
     function fw_post_types($builder = false)
     {
         $postTypes = PostType::query();
 
-        if($builder)
+        if ($builder) {
             return $postTypes;
+        }
 
         return $postTypes->get();
     }

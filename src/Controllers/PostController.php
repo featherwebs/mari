@@ -19,7 +19,7 @@ class PostController extends BaseController
 {
     public function api(Request $request)
     {
-        $type  = PostType::whereSlug($request->get('post_type', ''))->first();
+        $type  = PostType::whereSlug($request->get('post_type', 'news'))->first();
         $posts = Post::with('postType', 'tags');
 
         if ($type) {
@@ -31,7 +31,7 @@ class PostController extends BaseController
 
     public function index(Request $request)
     {
-        $postType = PostType::whereSlug($request->get('post_type', ''))->first();
+        $postType = PostType::whereSlug($request->get('post_type', 'news'))->first();
 
         return view('featherwebs::admin.post.index', compact('postType'));
     }
@@ -39,10 +39,9 @@ class PostController extends BaseController
     public function create(Request $request)
     {
         $meta      = [];
-        $pages     = Page::published()->pluck('title');
-        $tags      = Tag::pluck('title', 'id')->merge($pages)->unique();
+        $tags      = Tag::pluck('title', 'id')->unique();
         $postTypes = PostType::all();
-        $postType  = PostType::whereSlug($request->get('post_type', ''))->first();
+        $postType  = PostType::whereSlug($request->get('post_type', 'news'))->first();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         })->filter(function ($item) {
@@ -80,8 +79,7 @@ class PostController extends BaseController
     public function edit(Post $post)
     {
         $post->load('images', 'tags', 'postType');
-        $pages     = Page::published()->pluck('title');
-        $tags      = Tag::pluck('title', 'id')->merge($pages)->unique();
+        $tags      = Tag::pluck('title', 'id')->unique();
         $postTypes = PostType::all();
         $postType  = $post->postType;
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {

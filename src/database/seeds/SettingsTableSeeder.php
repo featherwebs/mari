@@ -76,7 +76,7 @@ class SettingsTableSeeder extends Seeder
             ],
             [
                 'slug'      => 'homepage',
-                'value'     => '',
+                'value'     => '1',
                 'is_custom' => 0
             ],
         ];

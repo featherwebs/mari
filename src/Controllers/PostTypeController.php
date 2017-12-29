@@ -59,4 +59,15 @@ class PostTypeController extends BaseController
             ->route('admin.post-type.edit', $postType->slug)
             ->withSuccess(trans('messages.update_success', [ 'entity' => "Post '" . str_limit($postType->title, 20) . "'" ]));
     }
+
+    public function destroy(PostType $postType)
+    {
+        $title = $postType->title;
+
+        $postType->delete();
+
+        return redirect()
+            ->route('admin.post-type.index')
+            ->withSuccess(trans('messages.delete_success', [ 'entity' => "Post type '" . $title . "'" ]));
+    }
 }

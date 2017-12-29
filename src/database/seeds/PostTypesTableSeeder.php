@@ -27,15 +27,7 @@ class PostTypesTableSeeder extends Seeder
                 'slug'   => 'news',
                 'custom' => '[]',
                 'alias'  => '[]'
-            ],
-            [
-                'id'     => 3,
-                'title'  => 'Other',
-                'slug'   => 'other',
-                'custom' => '[]',
-                'alias'  => '[]'
             ]
-
         ];
 
         PostType::insert($postTypes);
