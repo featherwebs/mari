@@ -9,13 +9,13 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class FeatherwebsUser extends Authenticatable
 {
-    use EntrustUserTrait
-    {
+    protected $table = 'users';
+
+    use EntrustUserTrait {
         boot as private entrustBoot;
     }
     use Notifiable;
-    use RevisionableTrait
-    {
+    use RevisionableTrait {
         boot as private revisionableBoot;
     }
 
@@ -40,25 +40,16 @@ class FeatherwebsUser extends Authenticatable
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    public static function boot()
-    {
-        self::entrustBoot();
-        self::revisionableBoot();
-        parent::boot();
-    }
-
     public function scopeSuperAdmin($query, $is = true)
     {
         $superRole = Role::whereDescription('super-admin')->first();
-        if ( ! $superRole)
-        {
+        if ( ! $superRole) {
             return $query;
         }
 
         $supers = $superRole->users->pluck('id');
 
-        if ($is)
-        {
+        if ($is) {
             return $query->whereIn('id', $supers);
         }
 
@@ -70,5 +61,12 @@ class FeatherwebsUser extends Authenticatable
         $superRole = Role::whereDescription('super-admin')->first();
 
         return $this->hasRole($superRole->name);
+    }
+
+    public static function boot()
+    {
+        self::entrustBoot();
+        self::revisionableBoot();
+        parent::boot();
     }
 }

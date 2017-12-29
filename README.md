@@ -41,17 +41,10 @@ class User extends FeatherwebsUser
 ...
 }
 ```
-5) Update your `migrations/DatabaseSeeder.php` and add the following:
+5) Run migrations and seeds
 ```php
-public function run()
-{
-    ...
-    $this->call(RolesTableSeeder::class);
-    $this->call(UsersTableSeeder::class);
-    $this->call(PagesTableSeeder::class);
-    $this->call(SettingsTableSeeder::class);
-    ...
-}
+php artisan migrate --path="vendor/featherwebs/mari/src/database/migrations"
+php artisan db:seed --class="Featherwebs\Mari\Seeder\MariSeeder"
 ```
 
 6) Run the seeds:

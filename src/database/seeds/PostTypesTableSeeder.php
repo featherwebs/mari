@@ -1,5 +1,7 @@
 <?php
 
+namespace Featherwebs\Mari\Seeder;
+
 use Featherwebs\Mari\Models\PostType;
 use Illuminate\Database\Seeder;
 

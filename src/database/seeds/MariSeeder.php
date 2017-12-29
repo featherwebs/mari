@@ -1,8 +1,10 @@
 <?php
 
+namespace Featherwebs\Mari\Seeder;
+
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class MariSeeder extends Seeder
 {
     /**
      * Run the database seeds.

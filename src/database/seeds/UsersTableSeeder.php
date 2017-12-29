@@ -1,5 +1,7 @@
 <?php
 
+namespace Featherwebs\Mari\Seeder;
+
 use Featherwebs\Mari\Models\Role;
 use App\User;
 use Illuminate\Database\Seeder;
