@@ -127,4 +127,23 @@ class Post extends Model
     {
         return $query->where('post_type_id', $id);
     }
+
+    public function setSlugAttribute($value)
+    {
+        $count  = 1;
+        $slug   = $value;
+        $exists = true;
+        while ( $exists) {
+            echo $slug;
+            $exists = self::where('slug', $slug)->count() > 0;
+            if ($exists) {
+                $count = intval($count) + 1;
+                $slug = $value . '-' . intval($count);
+            } else {
+                $slug = $value . '-' . intval($count);
+            }
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
 }
