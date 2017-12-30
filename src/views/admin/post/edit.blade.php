@@ -7,7 +7,7 @@
         @endslot
         @slot('tools')
             @permission('create-post')
-            <a href="{{ route('admin.post.create', ['post_type' => $postType->slug]) }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            <a href="{{ route('admin.post.create', $postType->slug) }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                 <i class="material-icons">add</i> Add New
             </a>
             @endpermission
@@ -16,7 +16,7 @@
             <nav aria-label="breadcrumb" role="navigation">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.post.index', ['post_type' => $postType->slug]) }}">{{ $postType->title }}</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.post.index', $postType->slug) }}">{{ $postType->title }}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ $post->title }}</li>
                 </ol>
             </nav>

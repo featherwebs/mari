@@ -45,8 +45,8 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::put('page/{page}', PageController::class.'@update')->name('page.update')->middleware('permission:update-page');
         Route::delete('page/{page}', PageController::class.'@destroy')->name('page.destroy')->middleware('permission:delete-page');
 
-        Route::get('post', PostController::class.'@index')->name('post.index')->middleware('permission:read-post');
-        Route::get('post/create', PostController::class.'@create')->name('post.create')->middleware('permission:create-post');
+        Route::get('post/{postType}', PostController::class.'@index')->name('post.index')->middleware('permission:read-post');
+        Route::get('post/create/{postType}', PostController::class.'@create')->name('post.create')->middleware('permission:create-post');
         Route::post('post', PostController::class.'@store')->name('post.store')->middleware('permission:create-post');
         Route::get('post/{post}', PostController::class.'@show')->name('post.show')->middleware('permission:read-post');
         Route::get('post/{post}/edit', PostController::class.'@edit')->name('post.edit')->middleware('permission:update-post');

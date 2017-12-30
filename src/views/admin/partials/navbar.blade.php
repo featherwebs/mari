@@ -35,7 +35,7 @@
     @permission('read-post')
         @foreach(fw_post_types() as $type)
             <li role="presentation">
-                <a class="mdl-navigation__link" href="{{ route('admin.post.index',['post_type' => $type->slug]) }}">
+                <a class="mdl-navigation__link" href="{{ route('admin.post.index', $type->slug) }}">
                     <i class="fa fa-newspaper-o fa-2x"></i>
                     {{ $type->title }}
                 </a>

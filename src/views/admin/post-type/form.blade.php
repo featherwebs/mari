@@ -7,20 +7,29 @@
         </div>
     </div>
     <h4>Column Aliases</h4>
+    <div class="row">
+        <div class="col-sm-2"><h6>Column</h6></div>
+        <div class="col-sm-2"><h6>Visibility</h6></div>
+        <div class="col-sm-6"><h6>Alias</h6></div>
+        <div class="col-sm-2"><h6>Default</h6></div>
+    </div>
     <div class="row" v-for="(column, i) in post_type.alias">
         <label class="control-label col-sm-2">@{{ column.title }}</label>
-        <div class="col-sm-1">
+        <div class="col-sm-2">
             <select :name="'alias['+i+'][visible]'" class="form-control" v-model="column.visible" :readonly="column.required===true || column.required==='true'">
                 <option :value="true">Shown</option>
                 <option :value="false" v-if="!(column.required===true || column.required==='true')">Hidden</option>
             </select>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-6">
             <input class="form-control" :name="'alias['+i+'][alias]'" type="text" v-model="column.alias">
             <input type="hidden" :name="'alias['+i+'][slug]'" v-model="column.slug">
             <input type="hidden" :name="'alias['+i+'][title]'" v-model="column.title">
             <input type="hidden" :name="'alias['+i+'][required]'" v-model="column.required">
             <span class="help-block"></span>
+        </div>
+        <div class="col-sm-2">
+            <input class="form-control" :name="'alias['+i+'][default]'" type="text" v-model="column.default">
         </div>
     </div>
     <div class="row">
@@ -42,17 +51,26 @@
             <span class="help-block">Slug</span>
         </div>
         <div class="col-xs-2">
-            <select class="form-control" :name="'custom['+i+'][type]'" v-model="field.type">
-                <option v-for="option in custom_types" :value="option.slug" v-html="option.title"></option>
-            </select>
-            <span class="help-block">Data Type</span>
+            <div class="row">
+                <div class="col-xs-12">
+                    <select class="form-control" :name="'custom['+i+'][type]'" v-model="field.type">
+                        <option v-for="option in custom_types" :value="option.slug" v-html="option.title"></option>
+                    </select>
+                    <span class="help-block">Data Type</span>
+                </div>
+                <div class="col-xs-12" v-if="field.type=='select'">
+                    <textarea class="form-control" :name="'custom['+i+'][options]'" v-model="field.options" rows="3"></textarea>
+                    <span class="help-block">Options</span>
+                </div>
+            </div>
         </div>
         <div class="col-xs-4">
             <input class="form-control" :name="'custom['+i+'][title]'" type="text" v-model="field.title">
             <span class="help-block">Display Title</span>
         </div>
         <div class="col-xs-3">
-            <textarea class="form-control" :name="'custom['+i+'][options]'" v-model="field.options" v-if="field.type=='select'" rows="3"></textarea>
+            <input class="form-control" :name="'custom['+i+'][default]'" type="text" v-model="field.default">
+            <span class="help-block">Default</span>
         </div>
     </div>
 </div>
