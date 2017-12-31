@@ -32,7 +32,7 @@ class SettingController extends BaseController
         foreach ($request->file('setting', []) as $key => $file) {
             $setting = Setting::fetch($key)->first();
             if ($setting) {
-                fw_upload_image($file, $setting);
+                fw_upload_image($file, $setting, false);
             }
         }
 

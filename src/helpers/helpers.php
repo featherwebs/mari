@@ -15,8 +15,8 @@ if ( ! function_exists('fw_setting')) {
         $setting = Setting::fetch($query)->first();
 
         if ($setting) {
-            if ($setting->image) {
-                return asset($setting->image->thumbnail);
+            if ($setting->images()->first()) {
+                return asset($setting->images()->first()->thumbnail);
             }
 
             return $setting->value;

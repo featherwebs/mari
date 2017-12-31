@@ -32,8 +32,8 @@ class Setting extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function image()
+    public function images()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->morphToMany(Image::class, 'imageable');
     }
 }

@@ -35,9 +35,9 @@ class FeatherwebsUser extends Authenticatable
         return 'username';
     }
 
-    public function image()
+    public function images()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->morphToMany(Image::class, 'imageable');
     }
 
     public function scopeSuperAdmin($query, $is = true)
