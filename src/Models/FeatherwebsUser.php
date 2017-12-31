@@ -28,6 +28,8 @@ class FeatherwebsUser extends Authenticatable
         'is_active' => 'boolean:No|Yes'
     ];
 
+    protected $appends = ['image'];
+
     protected $revisionCreationsEnabled = true;
 
     public function getRouteKeyName()
@@ -38,6 +40,11 @@ class FeatherwebsUser extends Authenticatable
     public function images()
     {
         return $this->morphToMany(Image::class, 'imageable');
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->images()->first();
     }
 
     public function scopeSuperAdmin($query, $is = true)

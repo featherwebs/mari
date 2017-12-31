@@ -42,10 +42,14 @@ class UserController extends BaseController
     {
         $user = DB::transaction(function () use ($request) {
             $user = User::create($request->data());
-            $role = Role::findOrFail($request->input('role.id'));
-            $user->attachRole($role);
+            if($request->has('role.id'))
+            {
+                $role = Role::findOrFail($request->input('role.id'));
+                $user->attachRole($role);
+            }
             if ($request->hasFile('image')) {
-                fw_upload_image($request->file('image'), $user);
+                $user->images()->delete();
+                fw_upload_image($request->file('image'), $user, false);
             }
 
             return $user;

@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </template>
-            <div class="form-group">
+            <div class="form-group" v-if="roles">
                 <label for="roles" class="control-label col-sm-2">Role</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="role[id]" id="roles">
@@ -88,9 +88,11 @@
 @push('scripts')
     <script>
         @if(isset($user))
-            let user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
+            var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
         @endif
-        let roles = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
+        @if(isset($roles))
+            var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
+        @endif
     </script>
 
     <script type="text/javascript">
