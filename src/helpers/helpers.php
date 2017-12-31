@@ -271,3 +271,12 @@ if ( ! function_exists('fw_post_types')) {
         return $postTypes->get();
     }
 }
+
+if ( ! function_exists('fw_post_type_by_slug')) {
+    function fw_post_type_by_slug($slug = false)
+    {
+        $postType = PostType::where('slug', strtolower($slug))->first();
+
+        return $postType;
+    }
+}

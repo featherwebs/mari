@@ -22,4 +22,16 @@ class PostType extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    public function getCustom($slug)
+    {
+        $customCollection = collect($this->custom);
+
+        $custom = $customCollection->where('slug', $slug)->first();
+        if ($custom['type'] == 'select') {
+            $custom['options'] = explode(PHP_EOL, $custom['options']);
+        }
+
+        return $custom;
+    }
 }
