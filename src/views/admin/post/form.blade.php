@@ -5,8 +5,10 @@
             <a href="#main" role="tab" data-toggle="tab">Main Content</a></li>
         <li role="presentation" v-if="post.images.length">
             <a href="#image" role="tab" data-toggle="tab">Images</a></li>
-        <li role="presentation">
-            <a href="#seo" role="tab" data-toggle="tab">Seo</a></li>
+        @if(fw_post_alias_visible($postType, 'meta'))
+            <li role="presentation">
+                <a href="#seo" role="tab" data-toggle="tab">Seo</a></li>
+        @endif
     </ul>
 
     <!-- Tab panes -->
@@ -110,12 +112,12 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="thumbnail">
                                         <img :alt="field.title" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
                                     </div>
                                 </div>
-                                <div class="col-sm-9">
+                                <div class="col-sm-10">
                                     <div class="form-group">
                                         <label :for="'images['+i+'][file]'">Image Source:</label>
                                         <div class="input-group">
@@ -123,7 +125,7 @@
                                             <input :id="'images['+i+'][file]'" class="form-control" :name="'images['+i+'][file]'" type="file" @change="showPreview(i, $event)" accept="image/jpeg,image/png,image/bmp">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group hidden">
                                         <label :for="'images['+i+'][slug]'">Image Slug: </label>
                                         <input class="form-control" :name="'images['+i+'][meta]'" type="text" v-model="field.slug">
                                     </div>
@@ -190,5 +192,9 @@
         });
     </script>
 
-    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/post.js"></script>
+    <script type="text/javascript">
+        @php
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/post.js';
+        @endphp
+    </script>
 @endpush

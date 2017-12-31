@@ -60,5 +60,9 @@
         {{--@endif--}}
     </script>
 
-    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/role.js"></script>
+    <script type="text/javascript">
+        @php
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/role.js';
+        @endphp
+    </script>
 @endpush

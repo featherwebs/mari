@@ -87,11 +87,15 @@
 </div>
 @push('scripts')
     <script>
-                @if(isset($user))
-        let user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
-                @endif
+        @if(isset($user))
+            let user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
+        @endif
         let roles = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
     </script>
 
-    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/user.js"></script>
+    <script type="text/javascript">
+        @php
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/user.js';
+        @endphp
+    </script>
 @endpush

@@ -112,5 +112,9 @@
         let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
     </script>
 
-    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/submenu.js"></script>
+    <script type="text/javascript">
+        @php
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/submenu.js';
+        @endphp
+    </script>
 @endpush

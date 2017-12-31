@@ -47,5 +47,9 @@
         @endif
     </script>
 
-    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/menu.js"></script>
+    <script type="text/javascript">
+        @php
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/menu.js';
+        @endphp
+    </script>
 @endpush

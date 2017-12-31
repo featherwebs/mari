@@ -40,37 +40,39 @@
             <a class="pull-right" href="javascript:void(0);" @click="addCustomField">+ Add</a>
         </div>
     </div>
-    <div class="form-group" v-for="(field,i) in post_type.custom">
-        <div class="col-xs-1">
-            <button class="btn btn-xs btn-danger" type="button" @click="removeCustomField(i)">
-                <i class="material-icons">remove</i>
-            </button>
-        </div>
-        <div class="col-xs-2">
-            <input class="form-control" :name="'custom['+i+'][slug]'" type="text" v-model="field.slug">
-            <span class="help-block">Slug</span>
-        </div>
-        <div class="col-xs-2">
-            <div class="row">
-                <div class="col-xs-12">
-                    <select class="form-control" :name="'custom['+i+'][type]'" v-model="field.type">
-                        <option v-for="option in custom_types" :value="option.slug" v-html="option.title"></option>
-                    </select>
-                    <span class="help-block">Data Type</span>
-                </div>
-                <div class="col-xs-12" v-if="field.type=='select'">
-                    <textarea class="form-control" :name="'custom['+i+'][options]'" v-model="field.options" rows="3"></textarea>
-                    <span class="help-block">Options</span>
+    <div class="row" v-for="(field,i) in post_type.custom">
+        <div class="form-group">
+            <div class="col-xs-1">
+                <button class="btn btn-xs btn-danger" type="button" @click="removeCustomField(i)">
+                    <i class="material-icons">remove</i>
+                </button>
+            </div>
+            <div class="col-xs-2">
+                <input class="form-control" :name="'custom['+i+'][slug]'" type="text" v-model="field.slug">
+                <span class="help-block">Slug</span>
+            </div>
+            <div class="col-xs-2">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <select class="form-control" :name="'custom['+i+'][type]'" v-model="field.type">
+                            <option v-for="option in custom_types" :value="option.slug" v-html="option.title"></option>
+                        </select>
+                        <span class="help-block">Data Type</span>
+                    </div>
+                    <div class="col-xs-12" v-if="field.type=='select'">
+                        <textarea class="form-control" :name="'custom['+i+'][options]'" v-model="field.options" rows="3"></textarea>
+                        <span class="help-block">Options</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xs-4">
-            <input class="form-control" :name="'custom['+i+'][title]'" type="text" v-model="field.title">
-            <span class="help-block">Display Title</span>
-        </div>
-        <div class="col-xs-3">
-            <input class="form-control" :name="'custom['+i+'][default]'" type="text" v-model="field.default">
-            <span class="help-block">Default</span>
+            <div class="col-xs-4">
+                <input class="form-control" :name="'custom['+i+'][title]'" type="text" v-model="field.title">
+                <span class="help-block">Display Title</span>
+            </div>
+            <div class="col-xs-3">
+                <input class="form-control" :name="'custom['+i+'][default]'" type="text" v-model="field.default">
+                <span class="help-block">Default</span>
+            </div>
         </div>
     </div>
 </div>
@@ -91,5 +93,9 @@
         {{--@endif--}}
     </script>
 
-    <script type="text/javascript" src="https://rawgit.com/featherwebs/mari/master/src/public/js/dist/post-type.js"></script>
+    <script type="text/javascript">
+        @php
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/post-type.js';
+        @endphp
+    </script>
 @endpush
