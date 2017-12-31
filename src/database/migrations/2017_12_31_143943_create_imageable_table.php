@@ -14,12 +14,11 @@ class CreateImageableTable extends Migration
     public function up()
     {
         Schema::create('imageables', function (Blueprint $table) {
-            $table->increments('id');
+            $table->engine = 'InnoDB';
             $table->integer('image_id')->unsigned();
             $table->integer('imageable_id')->unsigned()->nullable();
             $table->string('imageable_type')->nullable();
             $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
