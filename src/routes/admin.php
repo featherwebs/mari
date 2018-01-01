@@ -35,7 +35,6 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::delete('media/{medium}', MediaController::class.'@destroy')->name('media.destroy')->middleware('permission:delete-media');
 
         Route::get('profile', ProfileController::class . '@edit')->name('profile.edit');
-        Route::put('profile', ProfileController::class . '@update')->name('profile.update');
 
         Route::get('page', PageController::class.'@index')->name('page.index')->middleware('permission:read-page');
         Route::get('page/create', PageController::class.'@create')->name('page.create')->middleware('permission:create-page');

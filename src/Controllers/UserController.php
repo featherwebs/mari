@@ -48,7 +48,6 @@ class UserController extends BaseController
                 $user->attachRole($role);
             }
             if ($request->hasFile('image')) {
-                $user->images()->delete();
                 fw_upload_image($request->file('image'), $user, false);
             }
 
@@ -63,7 +62,7 @@ class UserController extends BaseController
     public function edit(User $user)
     {
         $roles = Role::all();
-        $user->load('image', 'roles');
+        $user->load('images', 'roles');
 
         return view('featherwebs::admin.user.edit', compact('user', 'roles'));
     }
@@ -76,7 +75,8 @@ class UserController extends BaseController
             $user->detachRoles($user->roles);
             $user->attachRole($role);
             if ($request->hasFile('image')) {
-                fw_upload_image($request->file('image'), $user);
+                $user->images()->delete();
+                fw_upload_image($request->file('image'), $user, false);
             }
 
             return $user;
