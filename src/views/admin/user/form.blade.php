@@ -87,11 +87,11 @@
 </div>
 @push('scripts')
     <script>
-        @if(isset($user))
-            var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
-        @endif
-        @if(isset($roles))
-            var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
+                @if(isset($user))
+        var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
+                @endif
+                @if(isset($roles))
+        var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
         @endif
     </script>
 
