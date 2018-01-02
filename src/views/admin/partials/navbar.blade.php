@@ -1,10 +1,12 @@
 <header class="demo-header mdl-layout__header mari-navbar">
     <div class="mdl-layout__header-row">
         <span class="mdl-layout-title">{{ $heading or 'Home' }}</span>
-        <div class="mdl-layout-spacer"></div>
-        <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="mdl-button mdl-js-ripple-effect mdl-button--icon" title="Logout">
-            <i class="material-icons">exit_to_app</i>
-        </a>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="mdl-navigation__link" title="Logout">
+                <i class="material-icons">exit_to_app</i>
+            </a>
+        </nav>
     </div>
 </header>
 <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
