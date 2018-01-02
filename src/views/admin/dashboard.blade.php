@@ -55,7 +55,7 @@
                         </table>
                     </div>
                 </div>
-                <a class="btn btn-default rounded-border-btn pull-right fix-margin-bottom shadow-effect" href="#">View all admin logs</a>
+                {{--<a class="btn btn-default rounded-border-btn pull-right fix-margin-bottom shadow-effect" href="#">View all admin logs</a>--}}
             </div>
             <div class="col-md-2">
                 <div class="row">
