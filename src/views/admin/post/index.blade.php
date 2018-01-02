@@ -67,9 +67,6 @@
                         var actions = '<form method="POST" action="/admin/post/'+ data +'">';
                         actions += '<input type="hidden" name="_method" value="DELETE">';
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
-                        @permission('read-post')
-                        actions += '<a href="/post/' + data +'" class="mdl-button mdl-js-button" target="_blank"><i class="material-icons">launch</i></a>';
-                        @endpermission
                         @permission('update-post')
                         actions += '<a href="/admin/post/' + data +'/edit" class="mdl-button mdl-js-button"><i class="material-icons">edit</i></a>';
                         @endpermission

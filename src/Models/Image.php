@@ -93,4 +93,9 @@ class Image extends Model
     {
         return $this->meta;
     }
+
+    public function getTitleAttribute()
+    {
+        return $this->getCustom('title', '-');
+    }
 }

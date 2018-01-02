@@ -12,6 +12,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class MediaController extends BaseController
 {
 
+    public function api()
+    {
+        return Image::latest()->get();
+    }
+
     /**
      * @return \Illuminate\View\View
      */

@@ -97,5 +97,6 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::post('role', RoleController::class.'@api')->name('role.datatable');
         Route::post('user', UserController::class.'@api')->name('user.datatable');
         Route::post('post-type', PostTypeController::class.'@api')->name('post-type.datatable');
+        Route::post('media', MediaController::class.'@api')->name('media.api');
     });
 });
