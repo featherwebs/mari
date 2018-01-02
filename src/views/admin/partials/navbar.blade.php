@@ -1,8 +1,11 @@
 <header class="demo-header mdl-layout__header mari-navbar">
     <div class="mdl-layout__header-row">
         <span class="mdl-layout-title">{{ $heading or 'Home' }}</span>
+        <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="{{ url('/') }}" title="Visit Site">
+                <i class="material-icons">desktop_windows</i>
+            </a>
             <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="mdl-navigation__link" title="Logout">
                 <i class="material-icons">exit_to_app</i>
             </a>
