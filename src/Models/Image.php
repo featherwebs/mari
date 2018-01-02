@@ -11,7 +11,7 @@ class Image extends Model
 
     protected $fillable = [ 'id', 'path', 'meta', 'custom' ];
 
-    protected $appends = [ 'thumbnail', 'url' ];
+    protected $appends = [ 'thumbnail', 'url', 'slug' ];
 
     protected $casts = [ 'custom' => 'array' ];
 
@@ -27,16 +27,14 @@ class Image extends Model
 
     public function file()
     {
-        if (file_exists($this->getFullPath()))
-        {
+        if (file_exists($this->getFullPath())) {
             return InterventionImage::make(storage_path('app/public/' . $this->path));
         }
     }
 
     public function getThumbnail($width = null, $height = null)
     {
-        if ($width == null && $height == null)
-        {
+        if ($width == null && $height == null) {
             return null;
         }
         $prefix           = 'TH_';
@@ -44,16 +42,12 @@ class Image extends Model
         $originalFilename = $this->getCustom('title') ? $originalFilename : array_pop($originalFilename);
         $name             = $prefix . $width . '_' . $height . '_' . $originalFilename;
         $fileLocation     = self::THUMB_PATH . $name;
-        if ( ! file_exists($fileLocation))
-        {
-            if ($width == null || $height == null)
-            {
+        if ( ! file_exists($fileLocation)) {
+            if ($width == null || $height == null) {
                 $this->file()->resize($width, $height, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($fileLocation);
-            }
-            else
-            {
+            } else {
                 $this->file()->fit($width, $height)->save($fileLocation);
             }
         }
@@ -68,11 +62,9 @@ class Image extends Model
 
     public function delete()
     {
-        try
-        {
+        try {
             unlink($this->getFullPath());
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
 
         }
 
@@ -81,13 +73,11 @@ class Image extends Model
 
     public function getCustom($slug, $default = "-")
     {
-        if ( ! $slug)
-        {
+        if ( ! $slug) {
             return $this->custom;
         }
 
-        if ($this->custom && array_key_exists($slug, $this->custom))
-        {
+        if ($this->custom && array_key_exists($slug, $this->custom)) {
             return $this->custom[ $slug ];
         }
 
@@ -97,5 +87,10 @@ class Image extends Model
     public function getUrlAttribute()
     {
         return asset('storage/' . $this->path);
+    }
+
+    public function getSlugAttribute()
+    {
+        return $this->meta;
     }
 }
