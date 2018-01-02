@@ -24,7 +24,7 @@ class StoreSettings extends FormRequest
     public function rules()
     {
         return [
-            'setting.logo' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp'
+            'setting.logo' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048'
         ];
     }
 }

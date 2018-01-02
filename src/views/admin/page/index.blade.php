@@ -19,7 +19,7 @@
             </nav>
         @endslot
         <div>
-            <table id="page-datatable">
+            <table id="page-datatable" class="mdl-data-table" width="100%">
                 <thead>
                     <th>SN</th>
                     <th>Title</th>
@@ -33,11 +33,11 @@
     @endcomponent
 @endsection
 @push('styles')
-<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-{{--<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">--}}
+<link href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet">
 @endpush
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
     <script>
         $(document).ready(function() {
             var home_page_id = "{{ fw_setting('homepage') }}";
@@ -69,19 +69,25 @@
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
 
                         if(row.id == home_page_id)
-                            actions += '<a href="/" class="btn btn-primary btn-xs" target="_blank">View</a>';
+                            actions += '<a href="/" class="mdl-button mdl-js-button" target="_blank"><i class="material-icons">launch</i></a>';
                         else
-                            actions += '<a href="/' + data +'" class="btn btn-primary btn-xs" target="_blank">View</a>';
+                            actions += '<a href="/' + data +'" class="mdl-button mdl-js-button" target="_blank"><i class="material-icons">launch</i></a>';
 
-                        actions += '<a href="/admin/page/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
+                        actions += '<a href="/admin/page/' + data +'/edit" class="mdl-button mdl-js-button"><i class="material-icons">edit</i></a>';
 
                         if(row.id != home_page_id)
-                            actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
+                            actions += '<button onclick="return confirm(\'Are you sure?\')" class="mdl-button mdl-js-button mdl-color-text--red"><i class="material-icons">delete</i></button>';
                         actions += '</form>';
 
                         return actions;
                     }}
 
+                ],
+                columnDefs: [
+                    {
+                        targets: [ 0, 1, 2 ],
+                        className: 'mdl-data-table__cell--non-numeric'
+                    }
                 ]
             });
         });

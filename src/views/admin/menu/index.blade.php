@@ -24,7 +24,7 @@
                 </nav>
             @endslot
             <div class="panel">
-                <table id="menu-datatable">
+                <table id="menu-datatable" class="mdl-data-table" width="100%">
                     <thead>
                     <th>SN</th>
                     <th>Title</th>
@@ -41,11 +41,12 @@
 @endsection
 
 @push('styles')
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet">
 @endpush
 
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#menu-datatable').DataTable({
@@ -67,14 +68,20 @@
                         var actions = '<form method="POST" action="/admin/menu/'+ data +'">';
                         actions += '<input type="hidden" name="_method" value="DELETE">';
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
-                        actions += '<a href="/admin/menu/' + data +'" class="btn btn-primary btn-xs">Submenus</a>';
-                        actions += '<a href="/admin/menu/' + data +'/edit" class="btn btn-primary btn-xs">Edit</a>';
-                        actions += '<button onclick="return confirm(\'Are you sure?\')" class="btn btn-danger btn-xs">Delete</button>';
+                        actions += '<a href="/admin/menu/' + data +'" class="mdl-button mdl-js-button" title="Submenu"><i class="material-icons">clear_all</i></a>';
+                        actions += '<a href="/admin/menu/' + data +'/edit" class="mdl-button mdl-js-button"><i class="material-icons">edit</i></a>';
+                        actions += '<button onclick="return confirm(\'Are you sure?\')" class="mdl-button mdl-js-button mdl-color-text--red"><i class="material-icons">delete</i></button>';
                         actions += '</form>';
 
                         return actions;
                     }}
 
+                ],
+                columnDefs: [
+                    {
+                        targets: [ 0, 1, 2, 3 ],
+                        className: 'mdl-data-table__cell--non-numeric'
+                    }
                 ]
             });
         });

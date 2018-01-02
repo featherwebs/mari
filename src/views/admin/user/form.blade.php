@@ -87,17 +87,17 @@
 </div>
 @push('scripts')
     <script>
-                @if(isset($user))
-        var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
-                @endif
-                @if(isset($roles))
-        var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
+        @if(isset($user))
+            var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
+        @endif
+        @if(isset($roles))
+            var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
         @endif
     </script>
 
     <script type="text/javascript">
         @php
-            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/user.js';
+            include base_path().'/public/js/dist/user.js';
         @endphp
     </script>
 @endpush
