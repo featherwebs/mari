@@ -79,6 +79,7 @@
         height: 160px;
         margin-bottom: 35px;
         border-radius: 20px;
+        padding: 12px 25px;
     }
     .dash-side-tablets-1{
         background-image: linear-gradient(to right, #d4fc79 , #96e6a1 );
