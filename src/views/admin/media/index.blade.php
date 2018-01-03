@@ -58,30 +58,21 @@
                 </div>
             </div>
             <br>
-            @forelse($metas as $meta)
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h3>{{ $meta == '' ? 'All' : ucfirst($meta)  }}</h3>
-                        <br>
-                    </div>
-                    @forelse(fw_image($meta) as $media)
-                        <div class="col-md-2 gallery-image-checkbox">
-                            <input type="checkbox" name="image[]" id="{{$media->getCustom('title')}}" value="{{ $media->id }}">
-                            <label for="{{$media->getCustom('title')}}">
-                                <div class="gallery-card-image mdl-card mdl-shadow--2dp">
-                                    <div class="mdl-card__title mdl-card--expand">
-                                        <img src="{{ $media->getThumbnail(150,150) }}" alt="">
-                                    </div>
-                                    <div class="mdl-card__actions">
-                                    <span class="gallery-card-image__filename">
-                                        {{ str_limit($media->getCustom('title'), 15) }}
-                                    </span>
-                                    </div>
-                                </div>
-                            </label>
+            @forelse($medias as $media)
+                <div class="col-md-2 gallery-image-checkbox">
+                    <input type="checkbox" name="image[]" id="{{$media->getCustom('title')}}" value="{{ $media->id }}">
+                    <label for="{{$media->getCustom('title')}}">
+                        <div class="gallery-card-image mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand">
+                                <img src="{{ $media->getThumbnail(150,150) }}" alt="">
+                            </div>
+                            <div class="mdl-card__actions">
+                            <span class="gallery-card-image__filename">
+                                {{ str_limit($media->getCustom('title'), 15) }}
+                            </span>
+                            </div>
                         </div>
-                    @empty
-                    @endforelse
+                    </label>
                 </div>
             @empty
             @endforelse
