@@ -214,7 +214,7 @@
 @push('scripts')
     <script type="text/javascript">
         @php
-            include base_path().'/public/js/dist/setting.js';
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/setting.js';
         @endphp
     </script>
 @endpush

@@ -96,7 +96,7 @@
 
     <script type="text/javascript">
         @php
-            include base_path().'/public/js/dist/post-type.js';
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/post-type.js';
         @endphp
     </script>
 @endpush

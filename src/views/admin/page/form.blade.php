@@ -204,7 +204,7 @@
 
     <script type="text/javascript">
         @php
-            include base_path().'/public/js/dist/page.js';
+            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/page.js';
         @endphp
     </script>
 @endpush
