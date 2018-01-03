@@ -32,14 +32,9 @@ if ( ! function_exists('fw_setting'))
 }
 if ( ! function_exists('fw_image'))
 {
-    function fw_image($meta = null, $limit = null)
+    function fw_image($limit = null)
     {
         $media = Image::query();
-
-        if ($meta)
-        {
-            $media = $media->whereMeta($meta);
-        }
 
         if ($limit)
         {
