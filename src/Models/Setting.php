@@ -30,10 +30,10 @@ class Setting extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function images()
     {
-        return $this->morphToMany(Image::class, 'imageable');
+        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
     }
 }

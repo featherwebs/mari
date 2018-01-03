@@ -54,7 +54,7 @@ class PostController extends BaseController
             $post->syncTags($request->input('tags'));
             foreach ($request->get('images', []) as $k => $img) {
                 $image = $request->file('images.' . $k . '.file');
-                $meta  = $request->file('images.' . $k . '.meta');
+                $meta  = $request->file('images.' . $k . '.pivot.slug');
                 if ($image && $image instanceof UploadedFile) {
                     fw_upload_image($image, $post, $single = false, $meta);
                 }
@@ -95,7 +95,7 @@ class PostController extends BaseController
             foreach ($request->get('images', []) as $k => $img) {
                 $id    = $request->input('images.' . $k . '.image_id');
                 $image = $request->file('images.' . $k . '.file');
-                $meta  = $request->input('images.' . $k . '.meta');
+                $meta  = $request->input('images.' . $k . '.pivot.slug');
 
                 // if existing image update the image/meta else create a new image
                 if ($id) {
@@ -103,7 +103,8 @@ class PostController extends BaseController
                         $post->images()->find($id)->delete();
                         fw_upload_image($image, $post, $single = false, $meta);
                     } else {
-                        $post->images()->find($id)->update([ 'meta' => str_slug($meta, '_') ]);
+                        $image = Image::find($id);
+                        $post->images()->update($image, [ 'slug' => str_slug($meta, '_') ]);
                     }
                 } else {
                     if ($image && $image instanceof UploadedFile) {

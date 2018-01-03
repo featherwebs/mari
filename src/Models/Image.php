@@ -9,9 +9,9 @@ class Image extends Model
 {
     const THUMB_PATH = 'thumbnails/';
 
-    protected $fillable = [ 'id', 'path', 'meta', 'custom' ];
+    protected $fillable = [ 'id', 'path', 'custom' ];
 
-    protected $appends = [ 'thumbnail', 'url', 'slug' ];
+    protected $appends = [ 'thumbnail', 'url', 'title' ];
 
     protected $casts = [ 'custom' => 'array' ];
 
@@ -87,11 +87,6 @@ class Image extends Model
     public function getUrlAttribute()
     {
         return asset('storage/' . $this->path);
-    }
-
-    public function getSlugAttribute()
-    {
-        return $this->meta;
     }
 
     public function getTitleAttribute()

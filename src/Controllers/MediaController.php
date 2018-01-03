@@ -22,17 +22,9 @@ class MediaController extends BaseController
      */
     public function index()
     {
-        $metas  = Image::pluck('meta')->unique();
-        $medias = Image::latest();
+        $medias = Image::latest()->get();
 
-        $meta = request('meta', '');
-        if ($meta != '') {
-            $medias = $medias->whereMeta($meta);
-        }
-
-        $medias = $medias->get();
-
-        return view('featherwebs::admin.media.index', compact('medias', 'metas'));
+        return view('featherwebs::admin.media.index', compact('medias'));
     }
 
     public function store(StoreMedia $request)
@@ -74,7 +66,7 @@ class MediaController extends BaseController
         DB::transaction(function () use ($request) {
             foreach ($request->input('image') as $id => $data) {
                 $file  = $request->file('image.' . $id . '.image');
-                $meta  = $request->input('image.' . $id . '.meta');
+                $meta  = $request->input('image.' . $id . '.pivot.slug');
                 $image = Image::findOrFail($id);
                 if ($file) {
                     $extension = $file->getClientOriginalExtension();

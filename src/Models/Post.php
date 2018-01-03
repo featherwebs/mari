@@ -52,14 +52,7 @@ class Post extends Model
 
     public function images()
     {
-        return $this->morphToMany(Image::class, 'imageable');
-    }
-
-    public function delete()
-    {
-        $this->images()->delete();
-
-        parent::delete();
+        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
     }
 
     public function tags()
@@ -120,7 +113,7 @@ class Post extends Model
             return $this->images;
         }
 
-        return $this->images()->where('meta', $slug)->first();
+        return $this->images()->wherePivot('slug', $slug)->first();
     }
 
     public function scopeType($query, $id)

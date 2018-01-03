@@ -74,7 +74,6 @@
                                     </div>
                                     <div class="mdl-card__actions">
                                     <span class="gallery-card-image__filename">
-                                        {!! empty($media->meta) ? '<i>[NONE]</i>': '['.$media->meta.']' !!} <br>
                                         {{ str_limit($media->getCustom('title'), 15) }}
                                     </span>
                                     </div>

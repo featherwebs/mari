@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use Featherwebs\Mari\Models\Image;
 use Featherwebs\Mari\Requests\StorePage;
 use Featherwebs\Mari\Requests\UpdatePage;
 use Featherwebs\Mari\Models\Page;
@@ -43,10 +44,10 @@ class PageController extends BaseController
             foreach ($request->get('images', []) as $k => $img)
             {
                 $image = $request->file('images.' . $k . '.file');
-                $meta  = $request->file('images.' . $k . '.meta');
+                $slug  = $request->file('images.' . $k . '.pivot.slug');
                 if ($image && $image instanceof UploadedFile)
                 {
-                    fw_upload_image($image, $page, $single = false, $meta);
+                    fw_upload_image($image, $page, $single = false, $slug);
                 }
             }
 
@@ -82,26 +83,27 @@ class PageController extends BaseController
             {
                 $id    = $request->input('images.' . $k . '.image_id');
                 $image = $request->file('images.' . $k . '.file');
-                $meta  = $request->input('images.' . $k . '.meta');
+                $slug  = $request->input('images.' . $k . '.pivot.slug');
 
-                // if existing image update the image/meta else create a new image
+                // if existing image update the image/slug else create a new image
                 if ($id)
                 {
                     if ($image && $image instanceof UploadedFile)
                     {
                         $page->images()->find($id)->delete();
-                        fw_upload_image($image, $page, $single = false, $meta);
+                        fw_upload_image($image, $page, $single = false, $slug);
                     }
                     else
                     {
-                        $page->images()->find($id)->update([ 'meta' => str_slug($meta, '_') ]);
+                        $image = Image::find($id);
+                        $page->images()->update($image, [ 'slug' => str_slug($slug, '_') ]);
                     }
                 }
                 else
                 {
                     if ($image && $image instanceof UploadedFile)
                     {
-                        fw_upload_image($image, $page, $single = false, $meta);
+                        fw_upload_image($image, $page, $single = false, $slug);
                     }
                 }
             }

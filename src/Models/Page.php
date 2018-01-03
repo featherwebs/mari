@@ -52,7 +52,7 @@ class Page extends Model
 
     public function images()
     {
-        return $this->morphToMany(Image::class, 'imageable');
+        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
     }
 
     public function getUrlAttribute()
@@ -93,7 +93,7 @@ class Page extends Model
             return $this->images;
         }
 
-        return $this->images()->where('meta', $slug)->first();
+        return $this->images()->wherePivot('slug', $slug)->first();
     }
 
 }

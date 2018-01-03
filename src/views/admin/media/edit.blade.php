@@ -81,13 +81,6 @@
                                             </div>
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <label>Type</label>
-                                                    <input type="text" name="image[{{ $media->id }}][meta]" value="{{ $media->meta }}" class="form-control input-sm">
-                                                    <p class="help-block">Image slug</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
                                                     <label>Title</label>
                                                     <input type="text" name="image[{{ $media->id }}][custom][title]" value="{{ $media->getCustom('title') }}" class="form-control input-sm">
                                                     <p class="help-block">Recommended 30 Characters</p>

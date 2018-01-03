@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label :for="'images['+i+'][slug]'">Image Slug: </label>
-                                        <input class="form-control" :name="'images['+i+'][meta]'" type="text" v-model="field.meta">
+                                        <input class="form-control" :name="'images['+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
                                     </div>
                                 </div>
                             </div>

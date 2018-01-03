@@ -17,6 +17,7 @@ class CreateImageableTable extends Migration
             $table->engine = 'InnoDB';
             $table->integer('image_id')->unsigned();
             $table->integer('imageable_id')->unsigned()->nullable();
+            $table->string('slug')->nullable();
             $table->string('imageable_type')->nullable();
             $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
         });
