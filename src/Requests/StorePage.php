@@ -22,13 +22,15 @@ class StorePage extends FormRequest
     public function rules()
     {
         return [
-            'title'         => 'required|min:3',
-            'slug'          => 'required|unique:pages,slug',
-            'sub_title'     => '',
-            'view'          => '',
-            'content'       => '',
-            'page_id'       => 'exists:pages,id|nullable',
-            'images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048'
+            'title'             => 'required|min:3',
+            'slug'              => 'required|unique:pages,slug',
+            'sub_title'         => '',
+            'view'              => '',
+            'content'           => '',
+            'page_id'           => 'exists:pages,id|nullable',
+            'images.*.id'       => '',
+            'images.*.image_id' => '',
+            'images.*.file'     => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048'
         ];
     }
 

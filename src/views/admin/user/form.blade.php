@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label for="image" class="control-label col-sm-2">Avatar</label>
                 <div class="col-sm-10">
-                    <input id="image" class="form-control" name="image" type="file" @change="showPreview($event)" accept="image/jpeg,image/png,image/bmp">
+                    <image-selector name="image" @change="value => user.image.thumbnail = value" />
                     <span class="help-block"></span>
                 </div>
             </div>
@@ -87,11 +87,11 @@
 </div>
 @push('scripts')
     <script>
-        @if(isset($user))
-            var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
-        @endif
-        @if(isset($roles))
-            var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
+                @if(isset($user))
+        var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
+                @endif
+                @if(isset($roles))
+        var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
         @endif
     </script>
 

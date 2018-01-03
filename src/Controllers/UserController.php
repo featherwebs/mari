@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use Featherwebs\Mari\Models\Image;
 use Featherwebs\Mari\Requests\StoreUser;
 use Featherwebs\Mari\Requests\UpdateUser;
 use Featherwebs\Mari\Models\Role;
@@ -15,10 +16,11 @@ class UserController extends BaseController
 {
     public function api()
     {
-        if(auth()->user()->isSuperAdmin())
+        if (auth()->user()->isSuperAdmin()) {
             $users = User::with('roles');
-        else
+        } else {
             $users = User::superAdmin(false)->with('roles');
+        }
 
         return DataTables::of($users)->make(true);
     }
@@ -30,10 +32,11 @@ class UserController extends BaseController
 
     public function create()
     {
-        if(auth()->user()->isSuperAdmin())
+        if (auth()->user()->isSuperAdmin()) {
             $roles = Role::all();
-        else
+        } else {
             $roles = Role::superAdmin(false)->get();
+        }
 
         return view('featherwebs::admin.user.create', compact('roles'));
     }
@@ -42,8 +45,7 @@ class UserController extends BaseController
     {
         $user = DB::transaction(function () use ($request) {
             $user = User::create($request->data());
-            if($request->has('role.id'))
-            {
+            if ($request->has('role.id')) {
                 $role = Role::findOrFail($request->input('role.id'));
                 $user->attachRole($role);
             }
@@ -71,14 +73,19 @@ class UserController extends BaseController
     {
         $user = DB::transaction(function () use ($request, $user) {
             $user->update($request->data());
-            if($request->has('role.id')) {
+            if ($request->has('role.id')) {
                 $role = Role::findOrFail($request->input('role.id'));
                 $user->detachRoles($user->roles);
                 $user->attachRole($role);
             }
             if ($request->hasFile('image')) {
-                $user->images()->delete();
-                fw_upload_image($request->file('image'), $user, false);
+                fw_upload_image($request->file('image'), $user, true, 'photo');
+            } elseif ($request->has('image')) {
+                $image = Image::find($request->get('image'));
+                if ($image) {
+                    $user->images()->detach();
+                    $user->images()->save($image, [ 'slug' => 'photo' ]);
+                }
             }
 
             return $user;

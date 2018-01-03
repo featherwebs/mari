@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use Featherwebs\Mari\Models\Image;
 use Featherwebs\Mari\Models\Page;
 use Featherwebs\Mari\Models\Setting;
 use Featherwebs\Mari\Requests\StoreSettings;
@@ -29,11 +30,22 @@ class SettingController extends BaseController
                 $setting->update([ 'value' => $value ]);
             }
         }
-        foreach ($request->file('setting', []) as $key => $file) {
-            $setting = Setting::fetch($key)->first();
-            if ($setting) {
-                $setting->images()->delete();
-                fw_upload_image($file, $setting, false);
+
+        $logo = Setting::fetch('logo')->first();
+
+        if($logo) {
+            if ($file = $request->file('setting.logo')) {
+                if ($logo && $file) {
+                    $logo->images()->detach();
+                    fw_upload_image($file, $logo, false);
+                }
+            }
+            if ($id = $request->input('setting.logo_id')) {
+                $image = Image::find($id);
+                if ($image) {
+                    $logo->images()->detach();
+                    $logo->images()->save($image);
+                }
             }
         }
 

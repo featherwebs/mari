@@ -168,11 +168,11 @@ if ( ! function_exists('fw_upload_image'))
             'path'   => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public')
         ];
 
-        $imageInstance = Image::ceate($image);
+        $imageInstance = Image::create($image);
         if ($single)
         {
-            $model->images()->delete();
-            $model->image()->save($imageInstance, [ 'slug' => str_slug($slug, '_') ]);
+            $model->images()->detach();
+            $model->images()->save($imageInstance, [ 'slug' => str_slug($slug, '_') ]);
         }
         else
         {
@@ -243,7 +243,7 @@ if ( ! function_exists('fw_thumbnail'))
                 }
             }
         }
-        elseif ($entity && $entity->image)
+        elseif ($entity && $entity->image && $entity instanceof Image)
         {
             return $entity->image->getThumbnail($width, $height);
         }

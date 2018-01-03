@@ -21,7 +21,7 @@
                     </ol>
                 </nav>
             @endslot
-            <div>
+            <div id="setting-app">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
@@ -30,7 +30,7 @@
                         <a href="#contact" role="tab" data-toggle="tab">Contact</a></li>
                     <li role="presentation">
                         <a href="#social" role="tab" data-toggle="tab">Social</a></li>
-                    <li role="presentation">
+                    <li role="presentation" class="hidden">
                         <a href="#custom" role="tab" data-toggle="tab">Custom</a></li>
                 </ul>
 
@@ -79,11 +79,11 @@
                         <div class="form-group">
                             <label for="logo" class="control-label col-sm-2">Logo</label>
                             <div class="col-sm-8">
-                                <input type="file" id="logo" name="setting[logo]" value="{{ old('setting.logo') ?: fw_setting('logo') }}" class="form-control" accept="image/jpeg,image/png,image/bmp">
+                                <image-selector name="setting[logo_id]" file-name="setting[logo]" @change="value => logo = value" id="setting[logo]"/>
                                 <span class="help-block">Main Logo</span>
                             </div>
                             <div class="col-sm-2">
-                                <img src="{{ fw_setting('logo') }}" class="img-responsive">
+                                <img :src="logo ? logo: '{{ fw_setting('logo') }}'" class="img-responsive">
                             </div>
                         </div>
                     </div>
@@ -210,3 +210,11 @@
         </div>
     </form>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        @php
+            include base_path().'/public/js/dist/setting.js';
+        @endphp
+    </script>
+@endpush

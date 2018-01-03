@@ -48,6 +48,7 @@
                 </button>
             </div>
             <div class="col-xs-2">
+                <input :name="'custom['+i+'][pivot][slug]'" type="hidden" v-model="field.slug">
                 <input class="form-control" :name="'custom['+i+'][slug]'" type="text" v-model="field.slug">
                 <span class="help-block">Slug</span>
             </div>
@@ -95,7 +96,7 @@
 
     <script type="text/javascript">
         @php
-            include base_path().'/vendor/featherwebs/mari/src/public/js/dist/post-type.js';
+            include base_path().'/public/js/dist/post-type.js';
         @endphp
     </script>
 @endpush
