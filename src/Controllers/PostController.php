@@ -54,7 +54,7 @@ class PostController extends BaseController
             $post = Post::create($request->data());
             $post->syncTags($request->input('tags'));
             foreach ($request->get('images', []) as $k => $img) {
-                $id    = $request->input('images.' . $k . '.image_id');
+                $id    = $request->input('images.' . $k . '.id');
                 $image = $request->file('images.' . $k . '.file');
                 $slug  = $request->input('images.' . $k . '.pivot.slug');
                 if ($image && $image instanceof UploadedFile) {

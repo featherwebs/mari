@@ -42,7 +42,7 @@ class PageController extends BaseController
         $page = DB::transaction(function () use ($request) {
             $page = Page::create($request->data());
             foreach ($request->get('images', []) as $k => $img) {
-                $id    = $request->input('images.' . $k . '.image_id');
+                $id    = $request->input('images.' . $k . '.id');
                 $image = $request->file('images.' . $k . '.file');
                 $slug  = $request->input('images.' . $k . '.pivot.slug');
                 if ($image && $image instanceof UploadedFile) {
