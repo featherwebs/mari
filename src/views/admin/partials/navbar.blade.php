@@ -3,7 +3,7 @@
         <span class="mdl-layout-title">{{ $heading or 'Home' }}</span>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="{{ url('/') }}" title="Visit Site">
+            <a class="mdl-navigation__link" href="{{ url('/') }}" title="Visit Site" target="_blank">
                 <i class="material-icons">desktop_windows</i>
             </a>
             <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="mdl-navigation__link" title="Logout">

@@ -17,5 +17,6 @@ class MariSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(PagesTableSeeder::class);
         $this->call(SettingsTableSeeder::class);
+        $this->call(MenusTableSeeder::class);
     }
 }
