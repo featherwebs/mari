@@ -96,7 +96,7 @@
                                         <label :for="'images['+i+'][file]'">Image Source:</label>
                                         <div class="input-group">
                                             <input v-if="field.id" :name="'images['+i+'][image_id]'" type="hidden" :value="field.id">
-                                            <input :id="'images['+i+'][file]'" class="form-control" :name="'images['+i+'][file]'" type="file" @change="showPreview(i, $event)" accept="image/jpeg,image/png,image/bmp">
+                                            <image-selector :name="'images['+i+'][id]'" :file-name="'images['+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+i+'][file]'"/>
                                         </div>
                                     </div>
                                     <div class="form-group">

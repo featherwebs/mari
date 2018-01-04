@@ -48,6 +48,7 @@
                 </button>
             </div>
             <div class="col-xs-2">
+                <input :name="'custom['+i+'][pivot][slug]'" type="hidden" v-model="field.slug">
                 <input class="form-control" :name="'custom['+i+'][slug]'" type="text" v-model="field.slug">
                 <span class="help-block">Slug</span>
             </div>

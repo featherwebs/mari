@@ -32,14 +32,9 @@ if ( ! function_exists('fw_setting'))
 }
 if ( ! function_exists('fw_image'))
 {
-    function fw_image($meta = null, $limit = null)
+    function fw_image($limit = null)
     {
         $media = Image::query();
-
-        if ($meta)
-        {
-            $media = $media->whereMeta($meta);
-        }
 
         if ($limit)
         {
@@ -60,7 +55,7 @@ if ( ! function_exists('fw_posts_by_tag'))
 {
     function fw_posts_by_tag($tags, $limit = false, $builder = false)
     {
-        $posts = Post::with('tags')->published()->whereHas('tags', function ($q) use ($tags) {
+        $posts = Post::with('tags', 'images')->published()->whereHas('tags', function ($q) use ($tags) {
             if (is_array($tags))
             {
                 $q->whereIn('slug', $tags);
@@ -88,7 +83,7 @@ if ( ! function_exists('fw_posts_by_category'))
 {
     function fw_posts_by_category($category, $limit = false, $builder = false)
     {
-        $posts = Post::with('tags')->published()->whereHas('postType', function ($q) use ($category) {
+        $posts = Post::with('tags', 'images')->published()->whereHas('postType', function ($q) use ($category) {
             if (is_array($category))
             {
                 $q->whereIn('slug', $category);
@@ -116,14 +111,14 @@ if ( ! function_exists('fw_post_by_slug'))
 {
     function fw_post_by_slug($slug)
     {
-        return Post::with('tags')->published()->where('slug', $slug)->first();
+        return Post::with('tags', 'images')->published()->where('slug', $slug)->first();
     }
 }
 if ( ! function_exists('fw_posts'))
 {
     function fw_posts($limit = false, $builder = false)
     {
-        $posts = Post::published();
+        $posts = Post::with('tags', 'images')->published();
         if ($limit)
         {
             $posts = $posts->limit($limit);
@@ -141,14 +136,14 @@ if ( ! function_exists('fw_page_by_slug'))
 {
     function fw_page_by_slug($slug)
     {
-        return Page::where([ 'slug' => $slug ])->first();
+        return Page::with('images')->where([ 'slug' => $slug ])->first();
     }
 }
 if ( ! function_exists('fw_pages'))
 {
     function fw_pages($limit = false)
     {
-        $pages = Page::published();
+        $pages = Page::with('images')->published();
         if ($limit)
         {
             $pages = $pages->limit($limit);
@@ -168,11 +163,11 @@ if ( ! function_exists('fw_upload_image'))
             'path'   => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public')
         ];
 
-        $imageInstance = Image::ceate($image);
+        $imageInstance = Image::create($image);
         if ($single)
         {
-            $model->images()->delete();
-            $model->image()->save($imageInstance, [ 'slug' => str_slug($slug, '_') ]);
+            $model->images()->detach();
+            $model->images()->save($imageInstance, [ 'slug' => str_slug($slug, '_') ]);
         }
         else
         {
@@ -243,7 +238,7 @@ if ( ! function_exists('fw_thumbnail'))
                 }
             }
         }
-        elseif ($entity && $entity->image)
+        elseif ($entity && $entity->image && $entity instanceof Image)
         {
             return $entity->image->getThumbnail($width, $height);
         }

@@ -54,10 +54,16 @@ class PostController extends BaseController
             $post = Post::create($request->data());
             $post->syncTags($request->input('tags'));
             foreach ($request->get('images', []) as $k => $img) {
+                $id    = $request->input('images.' . $k . '.id');
                 $image = $request->file('images.' . $k . '.file');
-                $meta  = $request->file('images.' . $k . '.pivot.slug');
+                $slug  = $request->input('images.' . $k . '.pivot.slug');
                 if ($image && $image instanceof UploadedFile) {
-                    fw_upload_image($image, $post, $single = false, $meta);
+                    fw_upload_image($image, $post, $single = false, $slug);
+                } elseif ($id) {
+                    $image = Image::find($id);
+                    if ($image) {
+                        $post->images()->save($image, [ 'slug' => $slug ]);
+                    }
                 }
             }
 
@@ -91,25 +97,35 @@ class PostController extends BaseController
             // Delete images marked to be deleted
             $deleted_image_ids = $request->get('deleted_image_ids');
             if ( ! empty($deleted_image_ids)) {
-                $post->images()->whereIn('id', $deleted_image_ids)->delete();
+                $post->images()->whereIn('id', $deleted_image_ids)->detach();
             }
             foreach ($request->get('images', []) as $k => $img) {
-                $id    = $request->input('images.' . $k . '.image_id');
-                $image = $request->file('images.' . $k . '.file');
-                $meta  = $request->input('images.' . $k . '.pivot.slug');
+                $id       = $request->input('images.' . $k . '.id');
+                $image_id = $request->input('images.' . $k . '.image_id');
+                $image    = $request->file('images.' . $k . '.file');
+                $slug     = $request->input('images.' . $k . '.pivot.slug');
 
-                // if existing image update the image/meta else create a new image
-                if ($id) {
+                // if existing image update the image/slug else create a new image
+                if ($image_id) {
                     if ($image && $image instanceof UploadedFile) {
-                        $post->images()->find($id)->delete();
-                        fw_upload_image($image, $post, $single = false, $meta);
-                    } else {
+                        $image = Image::find($image_id);
+                        $post->images()->detach($image);
                         $image = Image::find($id);
-                        $post->images()->update($image, [ 'slug' => str_slug($meta, '_') ]);
+                        fw_upload_image($image, $post, $single = false, $slug);
+                    } elseif ($id) {
+                        $image = Image::find($image_id);
+                        $post->images()->detach($image);
+                        $image = Image::find($id);
+                        $post->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+                    } else {
+                        $post->images()->find($image_id)->pivot->update([ 'slug' => str_slug($slug, '_') ]);
                     }
                 } else {
                     if ($image && $image instanceof UploadedFile) {
-                        fw_upload_image($image, $post, $single = false, $meta);
+                        fw_upload_image($image, $post, $single = false, $slug);
+                    } elseif ($id) {
+                        $image = Image::find($id);
+                        $post->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
                     }
                 }
             }

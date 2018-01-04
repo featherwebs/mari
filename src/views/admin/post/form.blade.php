@@ -112,22 +112,25 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
+                                <div class="col-sm-1">
+                                    @{{ field.title }}
+                                </div>
                                 <div class="col-sm-2">
                                     <div class="thumbnail">
                                         <img :alt="field.title" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
                                     </div>
                                 </div>
-                                <div class="col-sm-10">
+                                <div class="col-sm-9">
                                     <div class="form-group">
                                         <label :for="'images['+i+'][file]'">Image Source:</label>
                                         <div class="input-group">
                                             <input v-if="field.id" :name="'images['+i+'][image_id]'" type="hidden" :value="field.id">
-                                            <input :id="'images['+i+'][file]'" class="form-control" :name="'images['+i+'][file]'" type="file" @change="showPreview(i, $event)" accept="image/jpeg,image/png,image/bmp">
+                                            <image-selector :name="'images['+i+'][id]'" :file-name="'images['+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+i+'][file]'"/>
                                         </div>
                                     </div>
                                     <div class="form-group hidden">
                                         <label :for="'images['+i+'][slug]'">Image Slug: </label>
-                                        <input class="form-control" :name="'images['+i+'][meta]'" type="text" v-model="field.slug">
+                                        <input class="form-control" :name="'images['+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
                                     </div>
                                 </div>
                             </div>

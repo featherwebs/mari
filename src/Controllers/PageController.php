@@ -41,20 +41,26 @@ class PageController extends BaseController
     {
         $page = DB::transaction(function () use ($request) {
             $page = Page::create($request->data());
-            foreach ($request->get('images', []) as $k => $img)
-            {
+            foreach ($request->get('images', []) as $k => $img) {
+                $id    = $request->input('images.' . $k . '.id');
                 $image = $request->file('images.' . $k . '.file');
-                $slug  = $request->file('images.' . $k . '.pivot.slug');
-                if ($image && $image instanceof UploadedFile)
-                {
+                $slug  = $request->input('images.' . $k . '.pivot.slug');
+                if ($image && $image instanceof UploadedFile) {
                     fw_upload_image($image, $page, $single = false, $slug);
+                } elseif ($id) {
+                    $image = Image::find($id);
+                    if ($image) {
+                        $page->images()->save($image, [ 'slug' => $slug ]);
+                    }
                 }
             }
 
             return $page;
         });
 
-        return redirect()->route('admin.page.index')->withSuccess(trans('messages.create_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
+        return redirect()
+            ->route('admin.page.index')
+            ->withSuccess(trans('messages.create_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
     }
 
     public function edit(Page $page)
@@ -75,35 +81,36 @@ class PageController extends BaseController
 
             // Delete images marked to be deleted
             $deleted_image_ids = $request->get('deleted_image_ids');
-            if ( ! empty($deleted_image_ids))
-            {
-                $page->images()->whereIn('id', $deleted_image_ids)->delete();
+            if ( ! empty($deleted_image_ids)) {
+                $page->images()->whereIn('id', $deleted_image_ids)->detach();
             }
-            foreach ($request->get('images', []) as $k => $img)
-            {
-                $id    = $request->input('images.' . $k . '.image_id');
-                $image = $request->file('images.' . $k . '.file');
-                $slug  = $request->input('images.' . $k . '.pivot.slug');
+            foreach ($request->get('images', []) as $k => $img) {
+                $id       = $request->input('images.' . $k . '.id');
+                $image_id = $request->input('images.' . $k . '.image_id');
+                $image    = $request->file('images.' . $k . '.file');
+                $slug     = $request->input('images.' . $k . '.pivot.slug');
 
                 // if existing image update the image/slug else create a new image
-                if ($id)
-                {
-                    if ($image && $image instanceof UploadedFile)
-                    {
-                        $page->images()->find($id)->delete();
-                        fw_upload_image($image, $page, $single = false, $slug);
-                    }
-                    else
-                    {
+                if ($image_id) {
+                    if ($image && $image instanceof UploadedFile) {
+                        $image = Image::find($image_id);
+                        $page->images()->detach($image);
                         $image = Image::find($id);
-                        $page->images()->update($image, [ 'slug' => str_slug($slug, '_') ]);
-                    }
-                }
-                else
-                {
-                    if ($image && $image instanceof UploadedFile)
-                    {
                         fw_upload_image($image, $page, $single = false, $slug);
+                    } elseif ($id) {
+                        $image = Image::find($image_id);
+                        $page->images()->detach($image);
+                        $image = Image::find($id);
+                        $page->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+                    } else {
+                        $page->images()->find($image_id)->pivot->update([ 'slug' => str_slug($slug, '_') ]);
+                    }
+                } else {
+                    if ($image && $image instanceof UploadedFile) {
+                        fw_upload_image($image, $page, $single = false, $slug);
+                    } elseif ($id) {
+                        $image = Image::find($id);
+                        $page->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
                     }
                 }
             }
@@ -111,7 +118,9 @@ class PageController extends BaseController
             return $page;
         });
 
-        return redirect()->route('admin.page.edit', $page->slug)->withSuccess(trans('messages.update_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
+        return redirect()
+            ->route('admin.page.edit', $page->slug)
+            ->withSuccess(trans('messages.update_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
     }
 
     public function destroy(Page $page)
@@ -119,6 +128,8 @@ class PageController extends BaseController
         $title = str_limit($page->title, 20);
         $page->delete();
 
-        return redirect()->route('admin.page.index')->withSuccess(trans('messages.delete_success', [ 'entity' => "Page '" . $title . "'" ]));
+        return redirect()
+            ->route('admin.page.index')
+            ->withSuccess(trans('messages.delete_success', [ 'entity' => "Page '" . $title . "'" ]));
     }
 }
