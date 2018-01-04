@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use Featherwebs\Mari\Models\Image;
 use Featherwebs\Mari\Models\Page;
 use Featherwebs\Mari\Requests\StorePost;
 use Featherwebs\Mari\Requests\UpdatePost;
