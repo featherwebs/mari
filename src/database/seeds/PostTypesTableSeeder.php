@@ -27,6 +27,13 @@ class PostTypesTableSeeder extends Seeder
                 'slug'   => 'news',
                 'custom' => '[]',
                 'alias'  => '[]'
+            ],
+            [
+                'id'     => 3,
+                'title'  => 'Slider',
+                'slug'   => 'slider',
+                'custom' => '[{"pivot":{"slug":"photo"},"slug":"photo","type":"image","title":"Image","default":null}]',
+                'alias'  => '[{"visible":"true","alias":"Title","slug":"title","title":"Title","required":"true","default":null},{"visible":"false","alias":"Slug","slug":"slug","title":"Slug","required":"false","default":null},{"visible":"false","alias":"Sub Title","slug":"sub_title","title":"Sub Title","required":"false","default":null},{"visible":"false","alias":"Content","slug":"content","title":"Content","required":"false","default":null},{"visible":"true","alias":"Is Published","slug":"is_published","title":"Is Published","required":"false","default":"true"},{"visible":"false","alias":"Is Featured","slug":"is_featured","title":"Is Featured","required":"false","default":null},{"visible":"false","alias":"Template","slug":"view","title":"Template","required":"false","default":null},{"visible":"false","alias":"Tags","slug":"tags","title":"Tags","required":"false","default":null},{"visible":"false","alias":"Meta","slug":"meta","title":"Meta","required":"false","default":null}]'
             ]
         ];
 

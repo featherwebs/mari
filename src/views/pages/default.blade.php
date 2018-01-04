@@ -6,12 +6,14 @@
             <div class="row">
                 <div id="myCarousel" class="carousel media carousel-fade" data-ride="carousel">
                     <div class="carousel-inner" role="listbox">
-                        @forelse(fw_image('slider') as $media)
-                            <div class="item{{ $loop->first ? ' active': '' }}">
-                                <img class="img-responsive" src="{{ $media->getThumbnail(1905, 708) }}" alt="{{ $media->getCustom('title') }}">
-                                <h2>{{ $media->getCustom('title') }}</h2>
-                                <h3>{{ $media->getCustom('caption') }}</h3>
-                            </div>
+                        @forelse(fw_posts_by_category('slider') as $media)
+                            @if($image = $media->images()->first())
+                                <div class="item{{ $loop->first ? ' active': '' }}">
+                                    <img class="img-responsive" src="{{ $image->getThumbnail(1905, 708) }}" alt="{{ $image->getCustom('title') }}">
+                                    <h2>{{ $image->getCustom('title') }}</h2>
+                                    <h3>{{ $image->getCustom('caption') }}</h3>
+                                </div>
+                            @endif
                         @empty
                             <div class="item active">
                                 <img class="img-responsive" src="http://via.placeholder.com/1905x708?text=[banner]" alt="">
