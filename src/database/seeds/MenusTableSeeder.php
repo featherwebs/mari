@@ -20,9 +20,10 @@ class MenusTableSeeder extends Seeder
 
         $submenus = [
             [
-                'title' => 'Posts',
-                'url'   => '/post',
-                'order' => 1
+                'menu_id' => 1,
+                'title'   => 'Posts',
+                'url'     => '/post',
+                'order'   => 1
             ]
         ];
 

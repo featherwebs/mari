@@ -11,6 +11,7 @@ class ModifyUsersTable extends Migration
      */
     public function up()
     {
+        DB::statement('ALTER TABLE tests ENGINE = InnoDB');
         Schema::table('users', function ($table) {
             $table->engine = 'InnoDB';
             if ( ! Schema::hasColumn('users', 'username')) {

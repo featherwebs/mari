@@ -108,9 +108,10 @@ class PostController extends BaseController
                 // if existing image update the image/slug else create a new image
                 if ($image_id) {
                     if ($image && $image instanceof UploadedFile) {
-                        $image = Image::find($image_id);
-                        $post->images()->detach($image);
-                        $image = Image::find($id);
+                        $img = Image::find($image_id);
+                        if($img) {
+                            $post->images()->detach($img);
+                        }
                         fw_upload_image($image, $post, $single = false, $slug);
                     } elseif ($id) {
                         $image = Image::find($image_id);
