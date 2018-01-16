@@ -24,7 +24,7 @@ class StoreGallery extends FormRequest
     public function rules()
     {
         return [
-            'files.*' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048|max_width:1920|max_height:1080'
+            'files.*' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048|dimensions:min_width=1920,min_height=1080'
         ];
     }
 
