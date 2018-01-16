@@ -29,7 +29,7 @@ class GalleryController extends Controller
     {
         DB::transaction(function () use ($request) {
             $data = $request->data();
-            $data['user_id'] = auth()->user()->id;
+
             Gallery::create($data);
         });
     }
@@ -37,6 +37,7 @@ class GalleryController extends Controller
     public function edit(Gallery $gallery)
     {
         $medias = $gallery->images;
+
         return view('gallery.edit', compact('gallery', 'medias'));
     }
 
@@ -44,24 +45,8 @@ class GalleryController extends Controller
         DB::transaction(function () use ($request, $gallery) {
             $file = $request->file('file');
 
-            $extension = $file->getClientOriginalExtension();
-            $filename  = $file->getClientOriginalName();
-            $data      = [
-                'custom' => [ 'title' => $filename ],
-                'path'   => $file->storeAs('misc', str_random() . '.' . $extension, 'public')
-            ];
-
-            $gallery->images()->create($data);
+            fw_upload_image($file, $gallery, false);
         });
     }
 
-    public function update()
-    {
-
-    }
-
-    public function destroy()
-    {
-
-    }
 }

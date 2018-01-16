@@ -85,10 +85,8 @@
                             actions += '<input type="hidden" name="_method" value="DELETE">';
                             actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
 
-                            if(row.id == home_page_id)
-                                actions += '<a href="/" class="mdl-button mdl-js-button" target="_blank"><i class="material-icons">launch</i></a>';
-                            else
-                                actions += '<a href="/' + data +'" class="mdl-button mdl-js-button" target="_blank"><i class="material-icons">launch</i></a>';
+
+                            actions += '<a href="/' + data +'" class="mdl-button mdl-js-button" target="_blank"><i class="material-icons">launch</i></a>';
 
                             actions += '<a href="/admin/gallery/' + data +'/edit" class="mdl-button mdl-js-button"><i class="material-icons">edit</i></a>';
 
