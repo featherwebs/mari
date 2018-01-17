@@ -1,6 +1,7 @@
 <?php
 
 use \Featherwebs\Mari\Controllers\AdminController;
+use Featherwebs\Mari\Controllers\GalleryController;
 use \Featherwebs\Mari\Controllers\PostTypeController;
 use \Featherwebs\Mari\Controllers\ProfileController;
 use \Featherwebs\Mari\Controllers\PageController;
@@ -84,6 +85,11 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::put('post-type/{postType}', PostTypeController::class.'@update')->name('post-type.update')->middleware('permission:update-post-type');
         Route::delete('post-type/{postType}', PostTypeController::class.'@destroy')->name('post-type.destroy')->middleware('permission:delete-post-type');
 
+        Route::get('gallery', GalleryController::class.'@index')->name('index');
+        Route::post('gallery', GalleryController::class.'@store')->name('store');
+        Route::get('gallery/{gallery}/edit', GalleryController::class.'@edit')->name('edit');
+        Route::post('gallery/{gallery}/add_image', GalleryController::class.'@storeImages')->name('store_image');
+
         if (is_readable(base_path('routes/mari.php')))
         {
             include base_path('routes/mari.php');
@@ -98,5 +104,6 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::post('user', UserController::class.'@api')->name('user.datatable');
         Route::post('post-type', PostTypeController::class.'@api')->name('post-type.datatable');
         Route::post('media', MediaController::class.'@api')->name('media.api');
+        Route::post('gallery', GalleryController::class.'@api')->name('gallery.api');
     });
 });
