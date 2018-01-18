@@ -85,10 +85,16 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::put('post-type/{postType}', PostTypeController::class.'@update')->name('post-type.update')->middleware('permission:update-post-type');
         Route::delete('post-type/{postType}', PostTypeController::class.'@destroy')->name('post-type.destroy')->middleware('permission:delete-post-type');
 
-        Route::get('gallery', GalleryController::class.'@index')->name('index');
-        Route::post('gallery', GalleryController::class.'@store')->name('store');
-        Route::get('gallery/{gallery}/edit', GalleryController::class.'@edit')->name('edit');
-        Route::post('gallery/{gallery}/add_image', GalleryController::class.'@storeImages')->name('store_image');
+        Route::group([ 'prefix' => 'gallery', 'as' => 'gallery.' ], function () {
+            Route::get('/', GalleryController::class . '@index')->name('index')->middleware('permission:read-post');
+            Route::post('/', GalleryController::class . '@store')->name('store')->middleware('permission:create-post');
+            Route::get('/{gallery}/edit', GalleryController::class . '@edit')
+                 ->name('edit')
+                 ->middleware('permission:update-post');
+            Route::post('/{gallery}/add_image', GalleryController::class . '@storeImages')
+                 ->name('store_image')
+                 ->middleware('permission:update-post');
+        });
 
         if (is_readable(base_path('routes/mari.php')))
         {
