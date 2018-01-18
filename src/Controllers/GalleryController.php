@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use App\Http\Controllers\Controller;
 use Featherwebs\Mari\Models\Gallery;
 use Featherwebs\Mari\Requests\StoreGallery;
 use Featherwebs\Mari\Requests\StoreMedia;
