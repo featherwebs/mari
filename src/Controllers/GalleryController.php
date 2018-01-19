@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use App\Http\Controllers\Controller;
 use Featherwebs\Mari\Models\Gallery;
 use Featherwebs\Mari\Requests\StoreGallery;
 use Featherwebs\Mari\Requests\StoreMedia;
@@ -22,7 +23,7 @@ class GalleryController extends Controller
     {
         $galleries = Gallery::all();
 
-        return view('gallery.index', compact('galleries'));
+        return view('featherwebs::gallery.index', compact('galleries'));
     }
 
     public function store(StoreGallery $request)
@@ -38,7 +39,7 @@ class GalleryController extends Controller
     {
         $medias = $gallery->images;
 
-        return view('gallery.edit', compact('gallery', 'medias'));
+        return view('featherwebs::gallery.edit', compact('gallery', 'medias'));
     }
 
     public function storeImages(Gallery $gallery, StoreMedia $request){

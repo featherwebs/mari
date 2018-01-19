@@ -1,6 +1,7 @@
 <?php
 
 use \Featherwebs\Mari\Controllers\AdminController;
+use Featherwebs\Mari\Controllers\GalleryController;
 use \Featherwebs\Mari\Controllers\PostTypeController;
 use \Featherwebs\Mari\Controllers\ProfileController;
 use \Featherwebs\Mari\Controllers\PageController;
@@ -83,6 +84,17 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::get('post-type/{postType}/edit', PostTypeController::class.'@edit')->name('post-type.edit')->middleware('permission:update-post-type');
         Route::put('post-type/{postType}', PostTypeController::class.'@update')->name('post-type.update')->middleware('permission:update-post-type');
         Route::delete('post-type/{postType}', PostTypeController::class.'@destroy')->name('post-type.destroy')->middleware('permission:delete-post-type');
+
+        Route::group([ 'prefix' => 'gallery', 'as' => 'gallery.' ], function () {
+            Route::get('/', GalleryController::class . '@index')->name('index')->middleware('permission:read-post');
+            Route::post('/', GalleryController::class . '@store')->name('store')->middleware('permission:create-post');
+            Route::get('/{gallery}/edit', GalleryController::class . '@edit')
+                 ->name('edit')
+                 ->middleware('permission:update-post');
+            Route::post('/{gallery}/add_image', GalleryController::class . '@storeImages')
+                 ->name('store_image')
+                 ->middleware('permission:update-post');
+        });
 
         if (is_readable(base_path('routes/mari.php')))
         {
