@@ -3,7 +3,7 @@
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
-            <h2 class="mdl-card__title-text">Pages</h2>
+            <h2 class="mdl-card__title-text">Galleries</h2>
         @endslot
         @slot('tools')
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button" data-toggle="modal" data-target="#addModal">
@@ -15,12 +15,12 @@
             <nav aria-label="breadcrumb" role="navigation">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" aria-current="page"><a href="{{ route('admin.home') }}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Page</li>
+                    <li class="breadcrumb-item active" aria-current="page">Gallery</li>
                 </ol>
             </nav>
         @endslot
         <div>
-            <table id="page-datatable" class="mdl-data-table" width="100%">
+            <table id="gallery-datatable" class="mdl-data-table" width="100%">
                 <thead>
                 <th>SN</th>
                 <th>Title</th>
@@ -67,8 +67,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
     <script>
         $(document).ready(function() {
-            var home_page_id = "{{ fw_setting('homepage') }}";
-            $('#page-datatable').DataTable({
+            $('#gallery-datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -79,19 +78,12 @@
                 columns:[
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title'},
-
                     {data: 'slug',name: 'slug', searchable:false, orderable:false, render: function(data,meta,row){
-                            var actions = '<form method="POST" action="/admin/page/'+ data +'">';
+                            var actions = '<form method="POST" action="/admin/gallery/'+ data +'">';
                             actions += '<input type="hidden" name="_method" value="DELETE">';
                             actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
-
-
-                            actions += '<a href="/' + data +'" class="mdl-button mdl-js-button" target="_blank"><i class="material-icons">launch</i></a>';
-
                             actions += '<a href="/admin/gallery/' + data +'/edit" class="mdl-button mdl-js-button"><i class="material-icons">edit</i></a>';
-
-                            if(row.id != home_page_id)
-                                actions += '<button onclick="return confirm(\'Are you sure?\')" class="mdl-button mdl-js-button mdl-color-text--red"><i class="material-icons">delete</i></button>';
+                            actions += '<button onclick="return confirm(\'Are you sure?\')" class="mdl-button mdl-js-button mdl-color-text--red"><i class="material-icons">delete</i></button>';
                             actions += '</form>';
 
                             return actions;
