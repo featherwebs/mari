@@ -22,17 +22,17 @@ class StoreMenu extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'slug'  => 'required|unique:menus,slug'
+            'menu.title' => 'required',
+            'menu.slug'  => 'required|unique:menus,slug'
         ];
     }
 
     public function data()
     {
         return [
-            'title'  => $this->get('title'),
-            'slug'   => $this->get('slug'),
-            'custom' => $this->input('custom')
+            'title'  => $this->input('menu.title'),
+            'slug'   => $this->input('menu.slug'),
+            'custom' => $this->input('menu.custom')
         ];
     }
 }

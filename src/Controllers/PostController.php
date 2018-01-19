@@ -52,11 +52,11 @@ class PostController extends BaseController
     {
         $post = DB::transaction(function () use ($request) {
             $post = Post::create($request->data());
-            $post->syncTags($request->input('tags'));
-            foreach ($request->get('images', []) as $k => $img) {
-                $id    = $request->input('images.' . $k . '.id');
-                $image = $request->file('images.' . $k . '.file');
-                $slug  = $request->input('images.' . $k . '.pivot.slug');
+            $post->syncTags($request->input('post.tags'));
+            foreach ($request->input('post.images', []) as $k => $img) {
+                $id    = $request->input('post.images.' . $k . '.id');
+                $image = $request->file('post.images.' . $k . '.file');
+                $slug  = $request->input('post.images.' . $k . '.pivot.slug');
                 if ($image && $image instanceof UploadedFile) {
                     fw_upload_image($image, $post, $single = false, $slug);
                 } elseif ($id) {
@@ -92,18 +92,18 @@ class PostController extends BaseController
     {
         DB::transaction(function () use ($request, $post) {
             $post->update($request->data());
-            $post->syncTags($request->input('tags'));
+            $post->syncTags($request->input('post.tags'));
 
             // Delete images marked to be deleted
-            $deleted_image_ids = $request->get('deleted_image_ids');
+            $deleted_image_ids = $request->input('post.deleted_image_ids');
             if ( ! empty($deleted_image_ids)) {
                 $post->images()->whereIn('id', $deleted_image_ids)->detach();
             }
-            foreach ($request->get('images', []) as $k => $img) {
-                $id       = $request->input('images.' . $k . '.id');
-                $image_id = $request->input('images.' . $k . '.image_id');
-                $image    = $request->file('images.' . $k . '.file');
-                $slug     = $request->input('images.' . $k . '.pivot.slug');
+            foreach ($request->input('post.images', []) as $k => $img) {
+                $id       = $request->input('post.images.' . $k . '.id');
+                $image_id = $request->input('post.images.' . $k . '.image_id');
+                $image    = $request->file('post.images.' . $k . '.file');
+                $slug     = $request->input('post.images.' . $k . '.pivot.slug');
 
                 // if existing image update the image/slug else create a new image
                 if ($image_id) {

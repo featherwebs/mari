@@ -41,10 +41,10 @@ class PageController extends BaseController
     {
         $page = DB::transaction(function () use ($request) {
             $page = Page::create($request->data());
-            foreach ($request->get('images', []) as $k => $img) {
-                $id    = $request->input('images.' . $k . '.id');
-                $image = $request->file('images.' . $k . '.file');
-                $slug  = $request->input('images.' . $k . '.pivot.slug');
+            foreach ($request->input('page.images', []) as $k => $img) {
+                $id    = $request->input('page.images.' . $k . '.id');
+                $image = $request->file('page.images.' . $k . '.file');
+                $slug  = $request->input('page.images.' . $k . '.pivot.slug');
                 if ($image && $image instanceof UploadedFile) {
                     fw_upload_image($image, $page, $single = false, $slug);
                 } elseif ($id) {
@@ -84,11 +84,11 @@ class PageController extends BaseController
             if ( ! empty($deleted_image_ids)) {
                 $page->images()->whereIn('id', $deleted_image_ids)->detach();
             }
-            foreach ($request->get('images', []) as $k => $img) {
-                $id       = $request->input('images.' . $k . '.id');
-                $image_id = $request->input('images.' . $k . '.image_id');
-                $image    = $request->file('images.' . $k . '.file');
-                $slug     = $request->input('images.' . $k . '.pivot.slug');
+            foreach ($request->input('page.images', []) as $k => $img) {
+                $id       = $request->input('page.images.' . $k . '.id');
+                $image_id = $request->input('page.images.' . $k . '.image_id');
+                $image    = $request->file('page.images.' . $k . '.file');
+                $slug     = $request->input('page.images.' . $k . '.pivot.slug');
 
                 // if existing image update the image/slug else create a new image
                 if ($image_id) {

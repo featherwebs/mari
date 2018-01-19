@@ -22,30 +22,30 @@ class UpdatePage extends FormRequest
     public function rules()
     {
         return [
-            'title'         => 'required|min:3',
-            'slug'          => 'required|unique:pages,slug,' . $this->page->id,
-            'sub_title'     => '',
-            'view'          => '',
-            'content'       => '',
-            'page_id'       => 'exists:pages,id|nullable',
-            'images.*.file' => 'image'
+            'page.title'         => 'required|min:3',
+            'page.slug'          => 'required|min:3',
+            'page.sub_title'     => '',
+            'page.view'          => '',
+            'page.content'       => '',
+            'page.page_id'       => 'exists:pages,id|nullable',
+            'page.images.*.file' => 'image'
         ];
     }
 
     public function data()
     {
         return [
-            'title'            => $this->get('title'),
-            'sub_title'        => $this->get('sub_title'),
-            'slug'             => str_slug($this->get('slug')),
-            'view'             => $this->get('view'),
-            'content'          => $this->get('content'),
-            'custom'           => $this->input('custom', []),
-            'page_id'          => $this->get('page_id'),
-            'meta_title'       => $this->get('meta_title'),
-            'meta_description' => $this->get('meta_description'),
-            'meta_keywords'    => $this->get('meta_keywords'),
-            'is_published'     => $this->get('is_published', 'false') == 'true',
+            'title'            => $this->input('page.title'),
+            'sub_title'        => $this->input('page.sub_title'),
+            'slug'             => str_slug($this->input('page.slug')),
+            'view'             => $this->input('page.view'),
+            'content'          => $this->input('page.content'),
+            'custom'           => $this->input('page.custom', []),
+            'page_id'          => $this->input('page.page_id'),
+            'meta_title'       => $this->input('page.meta_title'),
+            'meta_description' => $this->input('page.meta_description'),
+            'meta_keywords'    => $this->input('page.meta_keywords'),
+            'is_published'     => $this->input('page.is_published', 'false') == 'true',
         ];
     }
 }

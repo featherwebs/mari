@@ -3,14 +3,14 @@
         <div class="form-group">
             <label for="title" class="control-label col-sm-2">Title</label>
             <div class="col-sm-10">
-                <input class="form-control" name="title" type="text" v-model="menu.title" id="title" required>
+                <input class="form-control" name="menu[title]" type="text" v-model="menu.title" id="title" required>
                 <span class="help-block">Name of the Menu</span>
             </div>
         </div>
         <div class="form-group">
             <label for="slug" class="control-label col-sm-2">Slug</label>
             <div class="col-sm-10">
-                <input class="form-control" name="slug" type="text" v-model="menu.slug" id="slug" readonly>
+                <input class="form-control" name="menu[slug]" type="text" v-model="menu.slug" id="slug" readonly>
                 <span class="help-block">Slug of the Menu</span>
             </div>
         </div>
@@ -21,14 +21,14 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Slug</label>
                     <div class="col-sm-10">
-                        <input class="form-control" :name="'custom['+i+'][slug]'" type="text" v-model="custom.slug">
+                        <input class="form-control" :name="'menu[custom]['+i+'][slug]'" type="text" v-model="custom.slug">
                         <span class="help-block">Cutom Field Slug</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Value</label>
                     <div class="col-sm-10">
-                        <input class="form-control" :name="'custom['+i+'][value]'" type="text" v-model="custom.value">
+                        <input class="form-control" :name="'menu[custom]['+i+'][value]'" type="text" v-model="custom.value">
                         <span class="help-block">Custom Field Value</span>
                     </div>
                 </div>

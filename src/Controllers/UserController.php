@@ -45,12 +45,12 @@ class UserController extends BaseController
     {
         $user = DB::transaction(function () use ($request) {
             $user = User::create($request->data());
-            if ($request->has('role.id')) {
-                $role = Role::findOrFail($request->input('role.id'));
+            if ($request->has('user.role.id')) {
+                $role = Role::findOrFail($request->input('user.role.id'));
                 $user->attachRole($role);
             }
-            if ($request->hasFile('image')) {
-                fw_upload_image($request->file('image'), $user, false);
+            if ($request->hasFile('user.image')) {
+                fw_upload_image($request->file('user.image'), $user, false);
             }
 
             return $user;
@@ -73,15 +73,15 @@ class UserController extends BaseController
     {
         $user = DB::transaction(function () use ($request, $user) {
             $user->update($request->data());
-            if ($request->has('role.id')) {
-                $role = Role::findOrFail($request->input('role.id'));
+            if ($request->has('user.role.id')) {
+                $role = Role::findOrFail($request->input('user.role.id'));
                 $user->detachRoles($user->roles);
                 $user->attachRole($role);
             }
-            if ($request->hasFile('image')) {
-                fw_upload_image($request->file('image'), $user, true, 'photo');
-            } elseif ($request->has('image')) {
-                $image = Image::find($request->get('image'));
+            if ($request->hasFile('user.image')) {
+                fw_upload_image($request->file('user.image'), $user, true, 'photo');
+            } elseif ($request->has('user.image')) {
+                $image = Image::find($request->input('user.image'));
                 if ($image) {
                     $user->images()->detach();
                     $user->images()->save($image, [ 'slug' => 'photo' ]);
