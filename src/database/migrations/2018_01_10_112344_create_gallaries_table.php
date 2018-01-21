@@ -19,8 +19,8 @@ class CreateGallariesTable extends Migration
             $table->integer('user_id');
             $table->string('title');
             $table->string('slug');
-            $table->integer('galleryable_id');
-            $table->string('galleryable_type');
+            $table->integer('galleryable_id')->nullable();
+            $table->string('galleryable_type')->nullable();
             $table->timestamps();
         });
     }

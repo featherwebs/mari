@@ -4,7 +4,7 @@
     @endif
     <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid">
-            @include('partials.alerts')
+            @include('featherwebs::admin.partials.alerts')
             <div class="mdl-cell mdl-cell--12-col default-card-wide mdl-card mdl-shadow--2dp main-content">
                 @isset($breadcrumb)
                     <div class="mdl-card__title demo-crumbs mdl-color-text--grey-500">
