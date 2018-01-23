@@ -182,7 +182,8 @@ if ( ! function_exists('fw_upload'))
         $extension = $file->getClientOriginalExtension();
         $filename  = $file->getClientOriginalName();
         $data      = [
-            'filename' => $filename,
+            'name'     => $filename,
+            'size'     => $file->getClientSize(),
             'path'     => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public')
         ];
 
@@ -329,5 +330,15 @@ if ( ! function_exists('fw_post_type_by_slug'))
         $postType = PostType::where('slug', strtolower($slug))->first();
 
         return $postType;
+    }
+}
+
+if ( ! function_exists('fw_get_videoid_from_url'))
+{
+    function fw_get_videoid_from_url($url)
+    {
+        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
+            return $match[1];
+        }
     }
 }

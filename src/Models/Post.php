@@ -55,6 +55,11 @@ class Post extends Model
         return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
     }
 
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
