@@ -109,6 +109,20 @@
                                 <span class="help-block"></span>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="postbox" class="control-label col-sm-2">Longitude</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="postbox" name="setting[longitude]" value="{{ old('setting.longitude') ?: fw_setting('longitude') }}" class="form-control" required>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="postbox" class="control-label col-sm-2">Latitude</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="postbox" name="setting[latitude]" value="{{ old('setting.latitude') ?: fw_setting('latitude') }}" class="form-control" required>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="social">
                         <div class="form-group">
