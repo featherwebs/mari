@@ -43,13 +43,6 @@
         </a>
         @endpermission
 
-        @permission('read-post')
-        <a class="mdl-navigation__link" href="{{ route('admin.gallery.index') }}">
-            <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">camera</i>
-            Gallery
-        </a>
-        @endpermission
-
         @permission('read-page')
         <a class="mdl-navigation__link" href="{{ route('admin.page.index') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">insert_drive_file</i>Page
