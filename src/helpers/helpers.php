@@ -7,6 +7,7 @@ use Featherwebs\Mari\Models\PostType;
 use Featherwebs\Mari\Models\Setting;
 use Featherwebs\Mari\Models\Page;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\UploadedFile;
 
 if ( ! function_exists('fw_setting'))
@@ -340,5 +341,23 @@ if ( ! function_exists('fw_get_videoid_from_url'))
         if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
             return $match[1];
         }
+    }
+}
+
+if ( ! function_exists('fw_notifiables')) {
+    function fw_notifiables($withCustomNotifiables = true)
+    {
+        $notifiables = collect([]);
+        if ($withCustomNotifiables) {
+            $notifiables = collect(explode(',', fw_setting('notification-emails')));
+        }
+        $admins = User::withRole('admin')->get();
+
+        return $notifiables->map(function ($u) {
+            return ( new User )->forceFill([
+                'email' => $u,
+            ]);
+        })->merge($admins);
+
     }
 }
