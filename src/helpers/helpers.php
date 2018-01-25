@@ -7,7 +7,7 @@ use Featherwebs\Mari\Models\PostType;
 use Featherwebs\Mari\Models\Setting;
 use Featherwebs\Mari\Models\Page;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User;
+use App\User;
 use Illuminate\Http\UploadedFile;
 
 if ( ! function_exists('fw_setting'))
