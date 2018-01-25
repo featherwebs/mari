@@ -14,8 +14,8 @@ class MenusTableSeeder extends Seeder
     public function run()
     {
         $menu = [
-            'slug'  => 'home',
-            'title' => 'Home',
+            'slug'  => 'main',
+            'title' => 'Main',
         ];
 
         $submenus = [
