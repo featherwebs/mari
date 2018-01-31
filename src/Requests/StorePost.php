@@ -48,4 +48,13 @@ class StorePost extends FormRequest
             'is_featured'      => $this->get('is_featured', 'false') == 'true'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'images.*.file.mimetypes'  => 'Invalid image format. Only JPG, PNG and BMP filetypes are supported',
+            'images.*.file.max'        => 'Images should not be more than 2MB',
+            'images.*.file.dimensions' => 'Images should be 1920x1080 px or less',
+        ];
+    }
 }

@@ -22,7 +22,16 @@ class StoreMedia extends FormRequest
     public function rules()
     {
         return [
-            'files.*' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048'
+            'files.*' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048|dimensions:max_width=1920,max_height=1080'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'files.*.mimetypes'  => 'Invalid image format. Only JPG, PNG and BMP filetypes are supported',
+            'files.*.max'        => 'Images should not be more than 2MB',
+            'files.*.dimensions' => 'Images should be 1920x1080 px or less',
         ];
     }
 }
