@@ -10,6 +10,7 @@ use \Featherwebs\Mari\Controllers\RoleController;
 use \Featherwebs\Mari\Controllers\SubMenuController;
 use \Featherwebs\Mari\Controllers\SettingController;
 use \Featherwebs\Mari\Controllers\MediaController;
+use \Featherwebs\Mari\Controllers\SupportController;
 use \Featherwebs\Mari\Controllers\UserController;
 
 Route::group([ 'middleware' => 'web' ], function () {
@@ -83,6 +84,9 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::get('post-type/{postType}/edit', PostTypeController::class.'@edit')->name('post-type.edit')->middleware('permission:update-post-type');
         Route::put('post-type/{postType}', PostTypeController::class.'@update')->name('post-type.update')->middleware('permission:update-post-type');
         Route::delete('post-type/{postType}', PostTypeController::class.'@destroy')->name('post-type.destroy')->middleware('permission:delete-post-type');
+
+        Route::resource('support', SupportController::class)->only('index', 'create', 'show');
+        Route::get('support/{slug}/message/create', SupportController::class.'@messageCreate')->name('support.message.create');
 
         if (is_readable(base_path('routes/mari.php')))
         {

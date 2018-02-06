@@ -3,6 +3,9 @@
         <span class="mdl-layout-title">{{ $heading or 'Home' }}</span>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="{{ route('admin.support.index') }}" title="Support">
+                <i class="material-icons">headset_mic</i>
+            </a>
             <a class="mdl-navigation__link" href="{{ url('/') }}" title="Visit Site" target="_blank">
                 <i class="material-icons">desktop_windows</i>
             </a>
@@ -35,11 +38,13 @@
         <a class="mdl-navigation__link" href="{{ route('admin.home') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home
         </a>
+
         @permission('read-media')
         <a class="mdl-navigation__link" href="{{ route('admin.media.index') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">perm_media</i>
             Media
         </a>
+
         @endpermission
         @permission('read-page')
         <a class="mdl-navigation__link" href="{{ route('admin.page.index') }}">
@@ -80,6 +85,10 @@
             Users
         </a>
         @endpermission
+        <a class="mdl-navigation__link" href="{{ route('admin.support.index') }}">
+            <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">headset_mic</i>
+            Support
+        </a>
         @permission('read-setting')
         <a class="mdl-navigation__link" href="{{ route('admin.setting.index') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i>

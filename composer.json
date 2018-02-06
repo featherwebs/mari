@@ -14,6 +14,7 @@
     "yajra/laravel-datatables-oracle": "8.0",
     "intervention/image": "2.4",
     "venturecraft/revisionable": "1.*",
+    "guzzlehttp/guzzle": "^6.3",
     "composer-plugin-api": "^1.0"
   },
   "authors": [
