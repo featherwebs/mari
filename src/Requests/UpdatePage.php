@@ -28,7 +28,7 @@ class UpdatePage extends FormRequest
             'page.view'          => '',
             'page.content'       => '',
             'page.page_id'       => 'exists:pages,id|nullable',
-            'page.images.*.file' => 'image'
+            'page.images.*.file' => 'image|max:5120|dimensions:max_width=3840,max_height=2160'
         ];
     }
 

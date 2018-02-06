@@ -24,10 +24,10 @@
             <div class="panel">
                 <table id="page-datatable" class="mdl-data-table" width="100%">
                     <thead>
-                    <th>SN</th>
-                    <th>Title</th>
-                    <th>Published</th>
-                    <th>Action</th>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Published</th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
                     </tbody>

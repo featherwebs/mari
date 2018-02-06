@@ -318,4 +318,7 @@
     .mdl-components__default {
         background-color: #d8d8d8;
     }
+    .mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
+        padding: 10px 40px;
+    }
 </style>

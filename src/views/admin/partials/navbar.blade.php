@@ -35,17 +35,12 @@
         <a class="mdl-navigation__link" href="{{ route('admin.home') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home
         </a>
-
         @permission('read-media')
         <a class="mdl-navigation__link" href="{{ route('admin.media.index') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">perm_media</i>
             Media
         </a>
-
-<<<<<<< HEAD
         @endpermission
-=======
->>>>>>> 27119758f2cb5b5e261b5f55a8b804d161d62b78
         @permission('read-page')
         <a class="mdl-navigation__link" href="{{ route('admin.page.index') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">insert_drive_file</i>Page
