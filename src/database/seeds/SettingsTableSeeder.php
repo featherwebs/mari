@@ -66,7 +66,7 @@ class SettingsTableSeeder extends Seeder
             ],
             [
                 'slug'      => 'notification-emails',
-                'value'     => 'admin@gyanodaya.edu.np',
+                'value'     => 'admin@email.com',
                 'is_custom' => 0
             ],
             [
@@ -77,6 +77,21 @@ class SettingsTableSeeder extends Seeder
             [
                 'slug'      => 'homepage',
                 'value'     => '1',
+                'is_custom' => 0
+            ],
+            [
+                'slug'      => 'longitude',
+                'value'     => 85.317911,
+                'is_custom' => 0
+            ],
+            [
+                'slug'      => 'latitude',
+                'value'     => 27.685475,
+                'is_custom' => 0
+            ],
+            [
+                'slug'      => 'support_token',
+                'value'     => '',
                 'is_custom' => 0
             ],
         ];

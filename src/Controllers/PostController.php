@@ -21,7 +21,7 @@ class PostController extends BaseController
     public function api(Request $request)
     {
         $type  = PostType::whereSlug($request->get('post_type', 'news'))->first();
-        $posts = Post::with('postType', 'tags');
+        $posts = Post::with('postType', 'tags', 'files');
 
         if ($type) {
             $posts = $posts->where('post_type_id', $type->id);
@@ -32,7 +32,10 @@ class PostController extends BaseController
 
     public function index(PostType $postType)
     {
-        return view('featherwebs::admin.post.index', compact('postType'));
+        return view()->first([
+            'admin.posts.' . $postType->slug . '.index',
+            'featherwebs::admin.post.index'
+        ], compact('postType'));
     }
 
     public function create(PostType $postType)
@@ -109,7 +112,7 @@ class PostController extends BaseController
                 if ($image_id) {
                     if ($image && $image instanceof UploadedFile) {
                         $img = Image::find($image_id);
-                        if($img) {
+                        if ($img) {
                             $post->images()->detach($img);
                         }
                         fw_upload_image($image, $post, $single = false, $slug);
