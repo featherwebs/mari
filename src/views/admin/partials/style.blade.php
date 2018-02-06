@@ -304,4 +304,21 @@
         -ms-flex-align: center;
         align-items: center;
     }
+    .mdl-components__warning {
+        background-color: #FFF9C4;
+    }
+    .mdl-components__success {
+        background-color: #8bc34a;
+        color: white;
+    }
+    .mdl-components__danger {
+        background-color: #e94136;
+        color: white;
+    }
+    .mdl-components__default {
+        background-color: #d8d8d8;
+    }
+    .mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
+        padding: 10px 40px;
+    }
 </style>

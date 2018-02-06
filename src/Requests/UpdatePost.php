@@ -28,7 +28,7 @@ class UpdatePost extends FormRequest
             'post.view'          => '',
             'post.content'       => '',
             'post.post_type_id'  => 'required|exists:post_types,id',
-            'post.images.*.file' => 'image'
+            'post.images.*.file' => 'image|max:5120|dimensions:max_width=3840,max_height=2160'
         ];
     }
 

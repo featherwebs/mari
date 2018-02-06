@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGallariesTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateGallariesTable extends Migration
      */
     public function up()
     {
-        Schema::create('galleries', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('user_id');
-            $table->string('title');
-            $table->string('slug');
-            $table->integer('galleryable_id');
-            $table->string('galleryable_type');
+            $table->string('name')->nullable();
+            $table->string('path');
+            $table->string('size')->nullable();
+            $table->integer('fileable_id')->unsigned();
+            $table->string('fileable_type');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateGallariesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gallaries');
+        Schema::dropIfExists('files');
     }
 }

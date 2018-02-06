@@ -30,7 +30,7 @@ class StorePage extends FormRequest
             'page.page_id'           => 'exists:pages,id|nullable',
             'page.images.*.id'       => '',
             'page.images.*.image_id' => '',
-            'page.images.*.file'     => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:2048'
+            'page.images.*.file'     => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:5120|dimensions:max_width=3840,max_height=2160'
         ];
     }
 
