@@ -89,6 +89,11 @@ class SettingsTableSeeder extends Seeder
                 'value'     => 27.685475,
                 'is_custom' => 0
             ],
+            [
+                'slug'      => 'support_token',
+                'value'     => '',
+                'is_custom' => 0
+            ],
         ];
 
         Setting::insert($settings);

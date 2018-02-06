@@ -22,21 +22,21 @@ class UpdateUser extends FormRequest
     public function rules()
     {
         return [
-            'name'     => 'required|min:3',
-            'email'    => 'required|email|unique:users,email,' . $this->user->id,
-            'username' => 'required|min:3|unique:users,username,' . $this->user->id,
-            'password' => 'confirmed',
-            'role.id'  => 'nullable|exists:roles,id'
+            'user.name'     => 'required|min:3',
+            'user.email'    => 'required|email|unique:users,email,' . $this->user['id'],
+            'user.username' => 'required|min:3|unique:users,username,' . $this->user['id'],
+            'user.password' => 'confirmed',
+            'user.role.id'  => 'nullable|exists:roles,id'
         ];
     }
 
     public function data()
     {
         $data = [
-            'name'      => $this->get('name'),
-            'email'     => $this->get('email'),
-            'username'  => $this->get('username'),
-            'is_active' => $this->get('is_active', 'false') == 'true',
+            'name'      => $this->input('user.name'),
+            'email'     => $this->input('user.email'),
+            'username'  => $this->input('user.username'),
+            'is_active' => $this->input('user.is_active', 'false') == 'true',
         ];
 
         if ( ! empty($this->get('password'))) {

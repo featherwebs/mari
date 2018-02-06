@@ -22,22 +22,22 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            'name'     => 'required|min:3',
-            'email'    => 'required|email|unique:users,email',
-            'username' => 'required|min:3|unique:users,username',
-            'password' => 'required|min:6|confirmed',
-            'role.id'  => 'required|exists:roles,id'
+            'user.name'     => 'required|min:3',
+            'user.email'    => 'required|email|unique:users,email',
+            'user.username' => 'required|min:3|unique:users,username',
+            'user.password' => 'required|min:6|confirmed',
+            'user.role.id'  => 'required|exists:roles,id'
         ];
     }
 
     public function data()
     {
         return [
-            'name'      => $this->get('name'),
-            'email'     => $this->get('email'),
-            'username'  => $this->get('username'),
-            'password'  => bcrypt($this->get('password')),
-            'is_active' => $this->get('is_active', 'false') == 'true',
+            'name'      => $this->input('user.name'),
+            'email'     => $this->input('user.email'),
+            'username'  => $this->input('user.username'),
+            'password'  => bcrypt($this->input('user.password')),
+            'is_active' => $this->input('user.is_active', 'false') == 'true',
         ];
     }
 }

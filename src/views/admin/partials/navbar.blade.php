@@ -35,20 +35,17 @@
         <a class="mdl-navigation__link" href="{{ route('admin.home') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home
         </a>
-
         @permission('read-media')
         <a class="mdl-navigation__link" href="{{ route('admin.media.index') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">perm_media</i>
             Media
         </a>
         @endpermission
-
         @permission('read-page')
         <a class="mdl-navigation__link" href="{{ route('admin.page.index') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">insert_drive_file</i>Page
         </a>
         @endpermission
-
         @permission('read-post')
         @foreach(fw_post_types() as $type)
             <a class="mdl-navigation__link" href="{{ route('admin.post.index', $type->slug) }}">
