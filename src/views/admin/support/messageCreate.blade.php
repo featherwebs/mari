@@ -15,7 +15,7 @@
                 </ol>
             </nav>
         @endslot
-        <form action="http://control.featherwebs.test/api/support/ticket/{{ $slug }}/message/store" method="POST" enctype="multipart/form-data">
+        <form action="{{ env('SUPPORT_API_URL') }}support/ticket/{{ $slug }}/message/store" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input name="api_token" value="{{ env('SUPPORT_TOKEN') }}" type="hidden">
             @include('featherwebs::admin.support.messageForm')

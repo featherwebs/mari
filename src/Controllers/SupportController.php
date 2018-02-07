@@ -14,8 +14,12 @@ class SupportController extends Controller
 
     public function __construct()
     {
+        if ( ! ( env('SUPPORT_TOKEN') && env('SUPPORT_API_URL') )) {
+            return abort(404, 'SUPPORT TOKEN MISSING');
+        }
+
         $this->client = new Client([
-            'base_uri' => 'http://control.featherwebs.test/api/',
+            'base_uri' => env('SUPPORT_API'),
             'timeout'  => 2.0,
         ]);
     }
@@ -26,19 +30,12 @@ class SupportController extends Controller
      */
     public function index()
     {
-        try
-        {
-            if ( ! env('SUPPORT_TOKEN'))
-            {
-                return abort(404, 'SUPPORT TOKEN MISSING');
-            }
-
+        try {
             $url = "support/ticket?api_token=" . env('SUPPORT_TOKEN');
 
             $response = $this->client->request("GET", $url);
             $tickets  = json_decode($response->getBody());
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return abort(404);
         }
 
@@ -51,25 +48,15 @@ class SupportController extends Controller
      */
     public function create()
     {
-        try
-        {
-            if ( ! env('SUPPORT_TOKEN'))
-            {
-                return abort(404, 'SUPPORT TOKEN MISSING');
-            }
-
-            if (request()->has('success'))
-            {
+        try {
+            if (request()->has('success')) {
                 return redirect()
                     ->route('admin.support.index')
                     ->with('success', 'Ticket has been created successfully.');
             }
 
-            if (request()->has('error'))
-            {
-                return redirect()
-                    ->route('admin.support.index')
-                    ->with('error', 'Ticket could not be created.');
+            if (request()->has('error')) {
+                return redirect()->route('admin.support.index')->with('error', 'Ticket could not be created.');
             }
 
             $url         = "support/ticket-types?api_token=" . env('SUPPORT_TOKEN');
@@ -77,8 +64,7 @@ class SupportController extends Controller
             $ticketTypes = json_decode($response->getBody());
             $priorities  = [ 'HIGH', 'NORMAL', 'LOW' ];
             $statuses    = [ 'PENDING', 'OPEN', 'REJECTED', 'RESOLVED', 'CLOSED' => 'CLOSED' ];
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return abort(404);
         }
 
@@ -94,14 +80,12 @@ class SupportController extends Controller
     {
         $url = "support/ticket/" . $slug . "?api_token=" . env('SUPPORT_TOKEN');
 
-//        try
-//        {
+        try {
             $response = $this->client->request("GET", $url);
             $ticket   = json_decode($response->getBody());
-//        } catch (Exception $e)
-//        {
-//            return abort(404);
-//        }
+        } catch (Exception $e) {
+            return abort(404);
+        }
 
         return view('featherwebs::admin.support.show', compact('ticket'));
     }
@@ -111,18 +95,14 @@ class SupportController extends Controller
      */
     public function messageCreate($slug)
     {
-        if (request()->has('success'))
-        {
+        if (request()->has('success')) {
             return redirect()
                 ->route('admin.support.show', $slug)
                 ->with('success', 'Message has been created successfully.');
         }
 
-        if (request()->has('error'))
-        {
-            return redirect()
-                ->route('admin.support.show', $slug)
-                ->with('error', 'Message could not be created.');
+        if (request()->has('error')) {
+            return redirect()->route('admin.support.show', $slug)->with('error', 'Message could not be created.');
         }
 
         return view('featherwebs::admin.support.messageCreate', compact('slug'));
