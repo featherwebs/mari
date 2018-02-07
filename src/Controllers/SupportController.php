@@ -19,7 +19,7 @@ class SupportController extends Controller
         }
 
         $this->client = new Client([
-            'base_uri' => env('SUPPORT_API'),
+            'base_uri' => env('SUPPORT_API_URL'),
             'timeout'  => 2.0,
         ]);
     }
