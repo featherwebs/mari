@@ -182,7 +182,6 @@ if ( ! function_exists('fw_thumbnail')) {
     function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "")
     {
         $text    = empty($slug) ? env('APP_NAME') : $slug;
-        $default = "http://via.placeholder.com/{$width}x{$height}?text=[" . $text . "]";
         if ($entity && $entity instanceof Image) {
             if ( ! $width && ! $height) {
                 return $entity->url;
@@ -216,6 +215,14 @@ if ( ! function_exists('fw_thumbnail')) {
 
             return $image->getThumbnail($width, $height);
         }
+
+        if(!$width && !$height) {
+            $width = 150;
+        }
+        if($width && !$height) {
+            $height = $width;
+        }
+        $default = "http://via.placeholder.com/{$width}x{$height}?text=[" . $text . "]";
 
         return $default;
     }
