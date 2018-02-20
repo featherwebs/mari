@@ -179,7 +179,7 @@ if ( ! function_exists('fw_fetch_data')) {
     }
 }
 if ( ! function_exists('fw_thumbnail')) {
-    function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "")
+    function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "", $useDefault = true)
     {
         $text    = empty($slug) ? env('APP_NAME') : $slug;
         if ($entity && $entity instanceof Image) {
@@ -215,6 +215,9 @@ if ( ! function_exists('fw_thumbnail')) {
 
             return $image->getThumbnail($width, $height);
         }
+
+        if(!$useDefault)
+            return false;
 
         if(!$width && !$height) {
             $width = 150;
