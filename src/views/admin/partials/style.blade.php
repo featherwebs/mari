@@ -321,4 +321,7 @@
     .mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
         padding: 10px 40px;
     }
+    [data-scrollbar] {
+        position: fixed !important;
+    }
 </style>
