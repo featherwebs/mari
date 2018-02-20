@@ -27,7 +27,7 @@ class StorePost extends FormRequest
             'post.view'          => '',
             'post.content'       => '',
             'post.post_type_id'  => 'required|exists:post_types,id',
-            'post.images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:5120|dimensions:max_width=3840,max_height=2160'
+            'post.images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp,image/gif|max:5120|dimensions:max_width=3840,max_height=2160'
         ];
     }
 
@@ -36,7 +36,7 @@ class StorePost extends FormRequest
         return [
             'title'            => $this->input('post.title'),
             'sub_title'        => $this->input('post.sub_title'),
-            'slug'             => str_slug($this->get('post.slug', $this->get('post.title'))),
+            'slug'             => str_slug($this->input('post.slug', $this->input('post.title'))),
             'view'             => $this->input('post.view', 'default'),
             'content'          => $this->input('post.content'),
             'custom'           => $this->input('post.custom', []),
