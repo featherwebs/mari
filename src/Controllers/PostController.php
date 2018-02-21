@@ -56,19 +56,7 @@ class PostController extends BaseController
         $post = DB::transaction(function () use ($request) {
             $post = Post::create($request->data());
             $post->syncTags($request->input('post.tags'));
-            foreach ($request->input('post.images', []) as $k => $img) {
-                $id    = $request->input('post.images.' . $k . '.id');
-                $image = $request->file('post.images.' . $k . '.file');
-                $slug  = $request->input('post.images.' . $k . '.pivot.slug');
-                if ($image && $image instanceof UploadedFile) {
-                    fw_upload_image($image, $post, $single = false, $slug);
-                } elseif ($id) {
-                    $image = Image::find($id);
-                    if ($image) {
-                        $post->images()->save($image, [ 'slug' => $slug ]);
-                    }
-                }
-            }
+            $post->syncImages($request);
 
             return $post;
         });
@@ -96,44 +84,7 @@ class PostController extends BaseController
         DB::transaction(function () use ($request, $post) {
             $post->update($request->data());
             $post->syncTags($request->input('post.tags'));
-
-            // Delete images marked to be deleted
-            $deleted_image_ids = $request->input('post.deleted_image_ids');
-            if ( ! empty($deleted_image_ids)) {
-                $post->images()->whereIn('id', $deleted_image_ids)->detach();
-            }
-            foreach ($request->input('post.images', []) as $k => $img) {
-                $id       = $request->input('post.images.' . $k . '.id'); // new image id
-                $image_id = $request->input('post.images.' . $k . '.image_id'); // existing image id
-                $image    = $request->file('post.images.' . $k . '.file'); // file
-                $slug     = $request->input('post.images.' . $k . '.pivot.slug'); // slug
-
-                // if existing image update the image/slug else create a new image
-                if ($image_id) {
-                    if ($image && $image instanceof UploadedFile) {
-                        $img = Image::find($image_id);
-                        if ($img) {
-                            $post->images()->detach($img);
-                        }
-                        fw_upload_image($image, $post, $single = false, $slug);
-                    } elseif ($id) {
-                        $image = Image::find($image_id);
-                        $post->images()->detach($image);
-                        $image = Image::find($id);
-                        $post->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
-                    } else {
-                        $post->images()->find($image_id)->pivot->update([ 'slug' => str_slug($slug, '_') ]);
-                    }
-                } else {
-                    if ($image && $image instanceof UploadedFile) {
-                        fw_upload_image($image, $post, $single = false, $slug);
-                    } elseif ($id) {
-                        $image = Image::find($id);
-                        $post->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
-                    }
-                }
-            }
-
+            $post->syncImages($request);
             return $post;
         });
 
@@ -166,7 +117,7 @@ class PostController extends BaseController
 
     public function archive(Request $request)
     {
-        $posts = Post::published();
+        $posts = Post::published()->latest();
         $title = "Posts";
 
         if ($request->has('q')) {

@@ -18,7 +18,7 @@
 <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50" data-scrollbar>
     <a href="{{ route('admin.profile.edit') }}" class="mdl-color-text--blue-grey-50" title="Goto Profile">
         <header class="demo-drawer-header">
-            <img src="{{ fw_thumbnail(auth()->user()) }}" class="demo-avatar">
+            <img src="{{ fw_thumbnail(auth()->user(), 64, 64) }}" class="demo-avatar">
             <div class="demo-avatar-dropdown">
                 <span>{{ auth()->user()->email }}</span>
                 <div class="mdl-layout-spacer"></div>

@@ -76,7 +76,6 @@
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="image">
-            <input v-for="img in deleted_image_ids" name="deleted_image_ids[]" type="hidden" :value="img">
             <div v-for="(field,i) in page.images" class="panel">
                 <div class="panel-body">
                     <div class="row">
@@ -95,8 +94,7 @@
                                     <div class="form-group">
                                         <label :for="'images['+i+'][file]'">Image Source:</label>
                                         <div class="input-group">
-                                            <input v-if="field.id" :name="'page[images]['+i+'][image_id]'" type="hidden" :value="field.id">
-                                            <image-selector :name="'page[images]['+i+'][id]'" :file-name="'page[images]['+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+i+'][file]'"/>
+                                            <image-selector :name="'page[images]['+i+'][id]'" :value="field.id ? field.id: null" :file-name="'page[images]['+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+i+'][file]'"/>
                                         </div>
                                     </div>
                                     <div class="form-group">

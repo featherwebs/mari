@@ -41,19 +41,7 @@ class PageController extends BaseController
     {
         $page = DB::transaction(function () use ($request) {
             $page = Page::create($request->data());
-            foreach ($request->input('page.images', []) as $k => $img) {
-                $id    = $request->input('page.images.' . $k . '.id');
-                $image = $request->file('page.images.' . $k . '.file');
-                $slug  = $request->input('page.images.' . $k . '.pivot.slug');
-                if ($image && $image instanceof UploadedFile) {
-                    fw_upload_image($image, $page, $single = false, $slug);
-                } elseif ($id) {
-                    $image = Image::find($id);
-                    if ($image) {
-                        $page->images()->save($image, [ 'slug' => $slug ]);
-                    }
-                }
-            }
+            $page->syncImages($request);
 
             return $page;
         });
@@ -78,43 +66,7 @@ class PageController extends BaseController
     {
         DB::transaction(function () use ($request, $page) {
             $page->update($request->data());
-
-            // Delete images marked to be deleted
-            $deleted_image_ids = $request->get('deleted_image_ids');
-            if ( ! empty($deleted_image_ids)) {
-                $page->images()->whereIn('id', $deleted_image_ids)->detach();
-            }
-            foreach ($request->input('page.images', []) as $k => $img) {
-                $id       = $request->input('page.images.' . $k . '.id');
-                $image_id = $request->input('page.images.' . $k . '.image_id');
-                $image    = $request->file('page.images.' . $k . '.file');
-                $slug     = $request->input('page.images.' . $k . '.pivot.slug');
-
-                // if existing image update the image/slug else create a new image
-                if ($image_id) {
-                    if ($image && $image instanceof UploadedFile) {
-                        $img = Image::find($image_id);
-                        if($img) {
-                            $page->images()->detach($img);
-                        }
-                        fw_upload_image($image, $page, $single = false, $slug);
-                    } elseif ($id) {
-                        $image = Image::find($image_id);
-                        $page->images()->detach($image);
-                        $image = Image::find($id);
-                        $page->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
-                    } else {
-                        $page->images()->find($image_id)->pivot->update([ 'slug' => str_slug($slug, '_') ]);
-                    }
-                } else {
-                    if ($image && $image instanceof UploadedFile) {
-                        fw_upload_image($image, $page, $single = false, $slug);
-                    } elseif ($id) {
-                        $image = Image::find($id);
-                        $page->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
-                    }
-                }
-            }
+            $page->syncImages($request);
 
             return $page;
         });

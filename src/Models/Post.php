@@ -4,6 +4,8 @@ namespace Featherwebs\Mari\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Post extends Model
@@ -85,6 +87,24 @@ class Post extends Model
         }
 
         $this->tags()->sync(array_values($ids));
+    }
+
+    public function syncImages(Request $request)
+    {
+        $this->images()->detach();
+
+        foreach ($request->input('post.images', []) as $k => $img) {
+            $id    = $request->input('post.images.' . $k . '.id');
+            $image = $request->file('post.images.' . $k . '.file');
+            $slug = $request->input('post.images.' . $k . '.pivot.slug');
+
+            if ($image && $image instanceof UploadedFile) {
+                fw_upload_image($image, $this, $single = false, $slug);
+            } elseif ( ! empty($id)) {
+                $image = Image::find($id);
+                $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+            }
+        }
     }
 
     public function scopePublished($query, $isPublished = true)

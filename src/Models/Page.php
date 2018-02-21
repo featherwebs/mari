@@ -3,6 +3,8 @@
 namespace Featherwebs\Mari\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Page extends Model
@@ -118,4 +120,21 @@ class Page extends Model
         $this->attributes['slug'] = $slug;
     }
 
+    public function syncImages(Request $request)
+    {
+        $this->images()->detach();
+
+        foreach ($request->input('page.images', []) as $k => $img) {
+            $id    = $request->input('page.images.' . $k . '.id');
+            $image = $request->file('page.images.' . $k . '.file');
+            $slug = $request->input('page.images.' . $k . '.pivot.slug');
+
+            if ($image && $image instanceof UploadedFile) {
+                fw_upload_image($image, $this, $single = false, $slug);
+            } elseif ( ! empty($id)) {
+                $image = Image::find($id);
+                $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+            }
+        }
+    }
 }
