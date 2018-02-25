@@ -3,7 +3,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
             <a href="#main" role="tab" data-toggle="tab">Main Content</a></li>
-        <li role="presentation" v-if="post.images.length">
+        <li role="presentation" v-if="post_type_images.length">
             <a href="#image" role="tab" data-toggle="tab">Images</a></li>
         @if(fw_post_alias_visible($postType, 'meta'))
             <li role="presentation">
@@ -105,31 +105,26 @@
                 </div>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="image" v-if="post.images.length">
-            <div v-for="(field,i) in post.images" class="panel">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="col-sm-1">
-                                    @{{ field.title }}
+        <div role="tabpanel" class="tab-pane" id="image" v-if="post_type_images.length">
+            <div v-for="pt in post_type_images">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>@{{ pt.title }}</b>
+                        <a href="javascript:void(0)" class="btn btn-default pull-right" @click="addImageField(pt.slug)" v-if="pt.type == 'multiple-images'">+ Add Image</a>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row" v-for="chunk in _.chunk(post.images.filter(i => i.pivot.slug.toLowerCase() == pt.slug.toLowerCase()), 4)">
+                            <div class="col-sm-3" v-for="(field,i) in chunk">
+                                <div class="thumbnail">
+                                    <img :alt="field.title" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
                                 </div>
-                                <div class="col-sm-2">
-                                    <div class="thumbnail">
-                                        <img :alt="field.title" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
-                                    </div>
+                                <div class="form-group text-center">
+                                    <image-selector :name="'post[images]['+pt.slug+i+'][id]'" :value="field.id ? field.id: null" :file-name="'post[images]['+pt.slug+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+pt.slug+i+'][file]'"/>
                                 </div>
-                                <div class="col-sm-9">
-                                    <div class="form-group">
-                                        <label :for="'images['+i+'][file]'">Image Source:</label>
-                                        <div class="input-group">
-                                            <image-selector :name="'post[images]['+i+'][id]'" :value="field.id ? field.id: null" :file-name="'post[images]['+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+i+'][file]'"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group hidden">
-                                        <label :for="'images['+i+'][slug]'">Image Slug: </label>
-                                        <input class="form-control" :name="'post[images]['+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
-                                    </div>
+                                <div class="form-group hidden">
+                                    <label :for="'images['+pt.slug+i+'][slug]'">Image Slug: </label>
+                                    <input class="form-control" :name="'post[images]['+pt.slug+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
                                 </div>
                             </div>
                         </div>
@@ -168,7 +163,7 @@
 @endpush
 
 @push('scripts')
-    <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script>
         @if($p = old('post', isset($post) ? $post : null))

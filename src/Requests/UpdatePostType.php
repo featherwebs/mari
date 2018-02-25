@@ -28,10 +28,25 @@ class UpdatePostType extends FormRequest
 
     public function data()
     {
+        $customData = [];
+
+        foreach($this->input('custom', []) as $c)
+        {
+            array_push($customData, [
+                "pivot" => [
+                    "slug" => strtolower($c['pivot']['slug'])
+                ],
+                "slug" => strtolower($c['slug']),
+                "type" => strtolower($c['type']),
+                "title" => $c['title'],
+                "default" => $c['default']
+            ]);
+        }
+
         return [
             'title'  => $this->get('title'),
             'slug'   => str_slug($this->get('title')),
-            'custom' => $this->input('custom', []),
+            'custom' => $customData,
             'alias'  => $this->input('alias', []),
         ];
     }

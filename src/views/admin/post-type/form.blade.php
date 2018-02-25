@@ -37,7 +37,7 @@
             <h4>Custom Fields</h4>
         </div>
         <div class="col-xs-6">
-            <a class="pull-right" href="javascript:void(0);" @click="addCustomField">+ Add</a>
+            <a class="pull-right btn btn-default" href="javascript:void(0);" @click="addCustomField">+ Add</a>
         </div>
     </div>
     <div class="row" v-for="(field,i) in post_type.custom">
@@ -85,8 +85,8 @@
 @push('scripts')
     <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
     <script>
-                @if(isset($postType))
-        let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
+        @if(isset($postType))
+            let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
         @endif
 
         {{--@if($p = old('post_type', isset($postType)?$postType:null))--}}

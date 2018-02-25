@@ -191,7 +191,7 @@
 </div>
 
 @push('scripts')
-    <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/ckeditor.js"></script>
     <script>
         @if($page = old('page', isset($page) ? $page : null))
             let page = JSON.parse('{!! addslashes(json_encode($page)) !!}');
