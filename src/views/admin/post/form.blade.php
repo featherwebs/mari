@@ -118,9 +118,10 @@
                             <div class="col-sm-3" v-for="(field,i) in chunk">
                                 <div class="thumbnail">
                                     <img :alt="field.title" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
+                                    <a href="javascript:void(0);" class="text-danger" @click="removeImageField(field)" v-if="pt.type == 'multiple-images'"><i class="material-icons">close</i></a>
                                 </div>
                                 <div class="form-group text-center">
-                                    <image-selector :name="'post[images]['+pt.slug+i+'][id]'" :value="field.id ? field.id: null" :file-name="'post[images]['+pt.slug+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+pt.slug+i+'][file]'"/>
+                                    <image-selector :name="'post[images]['+pt.slug+i+'][id]'" :value="field.id ? field.id: null" :file-name="'post[images]['+pt.slug+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+pt.slug+i+'][file]'"></image-selector>
                                 </div>
                                 <div class="form-group hidden">
                                     <label :for="'images['+pt.slug+i+'][slug]'">Image Slug: </label>
@@ -160,6 +161,17 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+    <style>
+        .thumbnail {
+            position:relative;
+        }
+        .thumbnail a {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px 7px;
+        }
+    </style>
 @endpush
 
 @push('scripts')
