@@ -114,7 +114,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="panel-body">
-                        <div class="row" v-for="chunk in _.chunk(post.images.filter(i => i.pivot.slug.toLowerCase() == pt.slug.toLowerCase()), 4)">
+                        <div class="row" v-for="chunk in _.chunk(post.images.filter(i => i.slug == pt.slug || i.pivot.slug == pt.slug), 4)">
                             <div class="col-sm-3" v-for="(field,i) in chunk">
                                 <div class="thumbnail">
                                     <img :alt="field.title" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
