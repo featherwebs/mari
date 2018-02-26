@@ -28,7 +28,7 @@ class PostType extends Model
         $customCollection = collect($this->custom);
 
         $custom = $customCollection->where('slug', $slug)->first();
-        if ($custom['type'] == 'select') {
+        if (array_key_exists('type', $custom) && array_key_exists('options', $custom) && $custom['type'] == 'select') {
             $custom['options'] = explode(PHP_EOL, $custom['options']);
         }
 

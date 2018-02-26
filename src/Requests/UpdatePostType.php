@@ -33,13 +33,14 @@ class UpdatePostType extends FormRequest
         foreach($this->input('custom', []) as $c)
         {
             array_push($customData, [
-                "pivot" => [
-                    "slug" => strtolower($c['pivot']['slug'])
+                'pivot' => [
+                    'slug' => strtolower($c['pivot']['slug'])
                 ],
-                "slug" => strtolower($c['slug']),
-                "type" => strtolower($c['type']),
-                "title" => $c['title'],
-                "default" => $c['default']
+                'slug' => strtolower($c['slug']),
+                'type' => strtolower($c['type']),
+                'title' => $c['title'],
+                'default' => $c['default'],
+                'options' => array_key_exists('options', $c) ? $c['options'] : []
             ]);
         }
 
