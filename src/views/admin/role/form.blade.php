@@ -45,7 +45,6 @@
 @endpush
 
 @push('scripts')
-    <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
     <script>
                 @if(isset($role))
         let role = JSON.parse('{!! addslashes(json_encode($role)) !!}');
