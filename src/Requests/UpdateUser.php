@@ -39,8 +39,8 @@ class UpdateUser extends FormRequest
             'is_active' => $this->input('user.is_active', 'false') == 'true',
         ];
 
-        if ( ! empty($this->get('password'))) {
-            $data['password'] = bcrypt($this->get('password'));
+        if ( ! empty($this->input('user.password'))) {
+            $data['password'] = bcrypt($this->input('user.password'));
         }
 
         return $data;
