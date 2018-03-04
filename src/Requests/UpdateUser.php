@@ -12,7 +12,7 @@ class UpdateUser extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user['id'] == auth()->id() || auth()->user()->can('update-user');
     }
 
     /**

@@ -68,7 +68,7 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::post('user', UserController::class.'@store')->name('user.store')->middleware('permission:create-user');
         Route::get('user/{user}', UserController::class.'@show')->name('user.show')->middleware('permission:read-user');
         Route::get('user/{user}/edit', UserController::class.'@edit')->name('user.edit')->middleware('permission:update-user');
-        Route::put('user/{user}', UserController::class.'@update')->name('user.update')->middleware('permission:update-user');
+        Route::put('user/{user}', UserController::class.'@update')->name('user.update');
         Route::delete('user/{user}', UserController::class.'@destroy')->name('user.destroy')->middleware('permission:delete-user');
 
         Route::get('setting', SettingController::class.'@index')->name('setting.index')->middleware('permission:read-setting');

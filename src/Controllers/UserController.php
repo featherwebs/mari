@@ -68,7 +68,7 @@ class UserController extends BaseController
         } else {
             $roles = Role::superAdmin(false)->get();
         }
-        
+
         $user->load('images', 'roles');
 
         return view('featherwebs::admin.user.edit', compact('user', 'roles'));
@@ -96,8 +96,8 @@ class UserController extends BaseController
             return $user;
         });
 
-        if ($request->has('profile')) {
-            return redirect()->back()->withSuccess(trans('messages.update_success', [ 'entity' => "Profile" ]));
+        if ($request->has('user.profile')) {
+            return redirect()->route('admin.profile')->withSuccess(trans('messages.update_success', [ 'entity' => "Profile" ]));
         }
 
         return redirect()

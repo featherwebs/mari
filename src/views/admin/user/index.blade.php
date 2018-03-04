@@ -77,9 +77,9 @@
                         actions += '<input type="hidden" name="_method" value="DELETE">';
                         actions += '<input type="hidden" name="_token" value="'+$('[name=csrf-token]').attr('content')+'">';
 
-                        actions += '<a href="/admin/user/' + data +'/edit" class="mdl-button mdl-js-button"><i class="material-icons">edit</i></a>';
+                        actions += '<a href="/admin/user/' + data +'/edit" class="mdl-button mdl-js-button" title="Edit"><i class="material-icons">edit</i></a>';
 
-                        actions += '<button onclick="return confirm(\'Are you sure?\')" class="mdl-button mdl-js-button mdl-color-text--red"><i class="material-icons">delete</i></button>';
+                        actions += '<button onclick="return confirm(\'Are you sure?\')" class="mdl-button mdl-js-button mdl-color-text--red" title="Delete"><i class="material-icons">delete</i></button>';
                         actions += '</form>';
 
                         return actions;
