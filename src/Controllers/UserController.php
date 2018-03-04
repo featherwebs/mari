@@ -63,7 +63,12 @@ class UserController extends BaseController
 
     public function edit(User $user)
     {
-        $roles = Role::all();
+        if (auth()->user()->isSuperAdmin()) {
+            $roles = Role::all();
+        } else {
+            $roles = Role::superAdmin(false)->get();
+        }
+        
         $user->load('images', 'roles');
 
         return view('featherwebs::admin.user.edit', compact('user', 'roles'));
