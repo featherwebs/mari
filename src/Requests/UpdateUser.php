@@ -36,7 +36,7 @@ class UpdateUser extends FormRequest
             'name'      => $this->input('user.name'),
             'email'     => $this->input('user.email'),
             'username'  => $this->input('user.username'),
-            'is_active' => $this->input('user.is_active', 'false') == 'true',
+            'is_active' => $this->input('user.is_active', 0) == 1,
         ];
 
         if ( ! empty($this->input('user.password'))) {

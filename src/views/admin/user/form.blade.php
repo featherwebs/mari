@@ -62,11 +62,11 @@
                 <label class="control-label col-sm-2">Active</label>
                 <div class="col-sm-10">
                     <label>
-                        <input type="radio" name="user[is_active]" :value="true" v-model="user.is_active">
+                        <input type="radio" name="user[is_active]" :value="1" v-model="user.is_active">
                         Yes
                     </label>
                     <label>
-                        <input type="radio" name="user[is_active]" id="is_active" :value="false" v-model="user.is_active">
+                        <input type="radio" name="user[is_active]" id="is_active" :value="0" v-model="user.is_active">
                         No
                     </label>
                 </div>

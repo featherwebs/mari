@@ -37,7 +37,7 @@ class StoreUser extends FormRequest
             'email'     => $this->input('user.email'),
             'username'  => $this->input('user.username'),
             'password'  => bcrypt($this->input('user.password')),
-            'is_active' => $this->input('user.is_active', 'false') == 'true',
+            'is_active' => $this->input('user.is_active', 0) == 1,
         ];
     }
 }
