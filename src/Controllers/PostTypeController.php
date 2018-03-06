@@ -26,7 +26,9 @@ class PostTypeController extends BaseController
 
     public function create()
     {
-        return view('featherwebs::admin.post-type.create');
+        $postTypes = PostType::all();
+
+        return view('featherwebs::admin.post-type.create', compact('postTypes'));
     }
 
     public function store(StorePostType $request)
@@ -44,7 +46,9 @@ class PostTypeController extends BaseController
 
     public function edit(PostType $postType)
     {
-        return view('featherwebs::admin.post-type.edit', compact('postType'));
+        $postTypes = PostType::all();
+
+        return view('featherwebs::admin.post-type.edit', compact('postType', 'postTypes'));
     }
 
     public function update(UpdatePostType $request, PostType $postType)

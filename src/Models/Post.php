@@ -22,21 +22,15 @@ class Post extends Model
         'meta_description',
         'meta_keywords',
         'content',
-        'custom',
         'view',
         'is_published',
         'is_featured'
     ];
 
     protected $casts = [
-        'custom'       => 'json',
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
         'created_at'   => 'date'
-    ];
-
-    protected $dontKeepRevisionOf = [
-        'custom'
     ];
 
     protected $revisionFormattedFields = [
@@ -46,6 +40,11 @@ class Post extends Model
     protected $revisionFormattedFieldNames = [
         'is_published' => 'Published Status'
     ];
+
+    public function custom()
+    {
+        return $this->morphMany(CustomField::class, 'customable');
+    }
 
     public function getRouteKeyName()
     {
@@ -119,14 +118,8 @@ class Post extends Model
 
     public function getCustom($slug = false, $default = "-")
     {
-        $custom = collect($this->custom);
-        if ( ! $slug) {
-            return $custom;
-        }
-
-        if ($custom->where('slug', $slug)->count() > 0
-            && array_key_exists('value', $custom->where('slug', $slug)->first())) {
-            return $custom->where('slug', $slug)->first()['value'];
+        if ($custom = $this->custom()->where('slug', $slug)->first()) {
+            return $custom->value;
         }
 
         return $default;
@@ -166,5 +159,12 @@ class Post extends Model
         }
 
         $this->attributes['slug'] = $slug;
+    }
+
+    public function delete()
+    {
+        $this->custom()->delete();
+
+        parent::delete();
     }
 }

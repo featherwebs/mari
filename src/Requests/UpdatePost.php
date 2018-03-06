@@ -49,4 +49,20 @@ class UpdatePost extends FormRequest
             'is_featured'      => $this->input('post.is_featured', 'false') == 'true'
         ];
     }
+
+    public function customData()
+    {
+        if(!$this->input('post.custom', false))
+            return false;
+
+        $data = [];
+        foreach ($this->input('post.custom', []) as $custom) {
+            array_push($data, [
+                'slug' => $custom['slug'],
+                'value' => $custom['value']
+            ]);
+        }
+
+        return $data;
+    }
 }

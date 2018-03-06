@@ -42,19 +42,26 @@ class PostController extends BaseController
     {
         $tags      = Tag::pluck('title', 'id')->unique();
         $postTypes = PostType::all();
+        $posts = Post::select('post_type_id', 'id', 'title')->get()->toArray();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         })->filter(function ($item) {
             return $item != 'index';
         });
 
-        return view('featherwebs::admin.post.create', compact('tags', 'postTypes', 'templates', 'postType'));
+        return view('featherwebs::admin.post.create', compact('tags', 'postTypes', 'templates', 'postType', 'posts'));
     }
 
     public function store(StorePost $request)
     {
         $post = DB::transaction(function () use ($request) {
             $post = Post::create($request->data());
+            if($request->customdata()){
+                foreach($request->customData() as $customData)
+                {
+                    $post->custom()->create($customData);
+                }
+            }
             $post->syncTags($request->input('post.tags'));
             $post->syncImages($request);
 
@@ -68,21 +75,29 @@ class PostController extends BaseController
 
     public function edit(Post $post)
     {
-        $post->load('images', 'tags', 'postType');
+        $post->load('images', 'tags', 'postType', 'custom');
         $tags      = Tag::pluck('title', 'id')->unique();
         $postTypes = PostType::all();
+        $posts = Post::select('post_type_id', 'id', 'title')->get()->toArray();
         $postType  = $post->postType;
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         });
 
-        return view('featherwebs::admin.post.edit', compact('post', 'tags', 'postTypes', 'templates', 'postType'));
+        return view('featherwebs::admin.post.edit', compact('post', 'tags', 'postTypes', 'templates', 'postType', 'posts'));
     }
 
     public function update(UpdatePost $request, Post $post)
     {
         DB::transaction(function () use ($request, $post) {
             $post->update($request->data());
+            if($request->customdata()){
+                $post->custom()->delete();
+                foreach($request->customData() as $customData)
+                {
+                    $post->custom()->create($customData);
+                }
+            }
             $post->syncTags($request->input('post.tags'));
             $post->syncImages($request);
             return $post;

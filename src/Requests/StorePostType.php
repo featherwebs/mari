@@ -40,6 +40,7 @@ class StorePostType extends FormRequest
                 'type' => strtolower($c['type']),
                 'title' => $c['title'],
                 'default' => $c['default'],
+                'id' => array_key_exists('id', $c) ? $c['id'] : '',
                 'options' => array_key_exists('options', $c) ? $c['options'] : []
             ]);
         }

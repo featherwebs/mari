@@ -64,6 +64,12 @@
                         <textarea class="form-control" :name="'custom['+i+'][options]'" v-model="field.options" rows="3"></textarea>
                         <span class="help-block">Options</span>
                     </div>
+                    <div class="col-xs-12" v-if="field.type=='post-type'">
+                        <select class="form-control" :name="'custom['+i+'][id]'" v-model="field.id">
+                            <option v-for="post in post_types" :value="post.id" v-html="post.title"></option>
+                        </select>
+                        <span class="help-block">Options</span>
+                    </div>
                 </div>
             </div>
             <div class="col-xs-4">
@@ -86,6 +92,10 @@
     <script>
         @if(isset($postType))
             let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
+        @endif
+
+        @if(isset($postTypes))
+            let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
         @endif
 
         {{--@if($p = old('post_type', isset($postType)?$postType:null))--}}

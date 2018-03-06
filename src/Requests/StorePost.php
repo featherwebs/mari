@@ -39,7 +39,6 @@ class StorePost extends FormRequest
             'slug'             => str_slug($this->input('post.slug', $this->input('post.title'))),
             'view'             => $this->input('post.view', 'default'),
             'content'          => $this->input('post.content'),
-            'custom'           => $this->input('post.custom', []),
             'post_type_id'     => $this->input('post.post_type_id'),
             'meta_title'       => $this->input('post.meta_title'),
             'meta_description' => $this->input('post.meta_description'),
@@ -47,6 +46,22 @@ class StorePost extends FormRequest
             'is_published'     => $this->input('post.is_published', 'false') == 'true',
             'is_featured'      => $this->input('post.is_featured', 'false') == 'true'
         ];
+    }
+
+    public function customData()
+    {
+        if(!$this->input('post.custom', false))
+            return false;
+
+        $data = [];
+        foreach ($this->input('post.custom', []) as $custom) {
+            array_push($data, [
+                'slug' => $custom['slug'],
+                'value' => $custom['value']
+            ]);
+        }
+
+        return $data;
     }
 
     public function messages()

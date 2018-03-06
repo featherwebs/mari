@@ -52,6 +52,7 @@
                     <span class="help-block">Main Content of the Post</span>
                 </div>
             </div>
+
             <div class="form-group" v-for="(field,i) in post.custom">
                 <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">@{{ field.title }}</label>
                 <div class="col-sm-10">
@@ -64,6 +65,9 @@
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
                     <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
                         <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
+                    </select>
+                    <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'">
+                        <option v-for="post in posts.filter(p => p.post_type_id == field.id)" :value="post.id" v-html="post.title"></option>
                     </select>
                     <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor.mini"></ckeditor>
                     <span class="help-block"></span>
@@ -184,6 +188,9 @@
         @endif
         @if(!empty($postType))
             let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
+        @endif
+        @if(!empty($posts))
+            let posts = JSON.parse('{!! addslashes(json_encode($posts)) !!}');
         @endif
         @if(isset($tags))
             let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
