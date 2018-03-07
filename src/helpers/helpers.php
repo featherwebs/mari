@@ -47,7 +47,7 @@ if ( ! function_exists('fw_menu')) {
 if ( ! function_exists('fw_posts_by_tag')) {
     function fw_posts_by_tag($tags, $limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images')->published()->whereHas('tags', function ($q) use ($tags) {
+        $posts = Post::with('tags', 'images', 'custom')->published()->whereHas('tags', function ($q) use ($tags) {
             if (is_array($tags)) {
                 $q->whereIn('slug', $tags);
             } else {
@@ -69,7 +69,7 @@ if ( ! function_exists('fw_posts_by_tag')) {
 if ( ! function_exists('fw_posts_by_category')) {
     function fw_posts_by_category($category, $limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images')->published()->whereHas('postType', function ($q) use ($category) {
+        $posts = Post::with('tags', 'images', 'custom')->published()->whereHas('postType', function ($q) use ($category) {
             if (is_array($category)) {
                 $q->whereIn('slug', $category);
             } else {
@@ -91,13 +91,13 @@ if ( ! function_exists('fw_posts_by_category')) {
 if ( ! function_exists('fw_post_by_slug')) {
     function fw_post_by_slug($slug)
     {
-        return Post::with('tags', 'images')->published()->where('slug', $slug)->first();
+        return Post::with('tags', 'images', 'custom')->published()->where('slug', $slug)->first();
     }
 }
 if ( ! function_exists('fw_posts')) {
     function fw_posts($limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images')->published();
+        $posts = Post::with('tags', 'images', 'custom')->published();
         if ($limit) {
             $posts = $posts->limit($limit);
         }
