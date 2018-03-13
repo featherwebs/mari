@@ -153,6 +153,9 @@ class PostController extends BaseController
 
         $posts = $posts->paginate($request->get('limit', 12))->appends($request->except('page'));
 
-        return view('posts.index', compact('posts', 'title'));
+        return view()->first([
+            'postTypes.' . $type->slug,
+            'postTypes.default'
+        ], compact('posts', 'title'));
     }
 }

@@ -134,8 +134,14 @@ class Post extends Model
         return $this->images()->wherePivot('slug', $slug)->first();
     }
 
-    public function scopeType($query, $id)
+    public function scopeType($query, $slugid)
     {
+        $id = $slugid;
+
+        $postType = PostType::whereSlug($slug)->first();
+        if($postType)
+            $id = $postType->id;
+            
         return $query->where('post_type_id', $id);
     }
 
