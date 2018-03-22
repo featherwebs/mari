@@ -30,7 +30,7 @@
                         <a href="#contact" role="tab" data-toggle="tab">Contact</a></li>
                     <li role="presentation">
                         <a href="#social" role="tab" data-toggle="tab">Social</a></li>
-                    <li role="presentation" class="hidden">
+                    <li role="presentation">
                         <a href="#custom" role="tab" data-toggle="tab">Custom</a></li>
                 </ul>
 

@@ -138,7 +138,7 @@ class Post extends Model
     {
         $id = $slugid;
 
-        $postType = PostType::whereSlug($slug)->first();
+        $postType = PostType::whereSlug($slugid)->first();
         if($postType)
             $id = $postType->id;
             
