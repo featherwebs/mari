@@ -27,6 +27,7 @@ class Post extends Model
         'is_featured'
     ];
 
+    protected $appends = ['url'];
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
@@ -95,7 +96,7 @@ class Post extends Model
         foreach ($request->input('post.images', []) as $k => $img) {
             $id    = $request->input('post.images.' . $k . '.id');
             $image = $request->file('post.images.' . $k . '.file');
-            $slug = $request->input('post.images.' . $k . '.pivot.slug');
+            $slug  = $request->input('post.images.' . $k . '.pivot.slug');
 
             if ($image && $image instanceof UploadedFile) {
                 fw_upload_image($image, $this, $single = false, $slug);
@@ -125,23 +126,48 @@ class Post extends Model
         return $default;
     }
 
-    public function getImage($slug = false)
+    public function getImage($slug = false, $multiple = false)
     {
         if ( ! $slug) {
             return $this->images;
         }
 
-        return $this->images()->wherePivot('slug', $slug)->first();
+        $builder = $this->images()->wherePivot('slug', $slug);
+
+        if ($multiple) {
+            return $builder->get();
+        }
+
+        return $builder->first();
+    }
+
+    public function getFile($slug = false, $obj = false)
+    {
+        if ( ! $slug) {
+            return $this->files;
+        }
+
+        $file = $this->files()->whereSlug($slug)->first();
+
+        if ($file) {
+            if ( ! $obj) {
+                return $file->url;
+            } else {
+                return $file;
+            }
+        }
+
+        return false;
     }
 
     public function scopeType($query, $slugid)
     {
-        $id = $slugid;
-
+        $id       = $slugid;
         $postType = PostType::whereSlug($slugid)->first();
-        if($postType)
+        if ($postType) {
             $id = $postType->id;
-            
+        }
+
         return $query->where('post_type_id', $id);
     }
 
@@ -150,17 +176,17 @@ class Post extends Model
         $count  = '';
         $slug   = $value;
         $exists = true;
-        while ( $exists) {
+        while ($exists) {
 
-            if($this->exists)
+            if ($this->exists) {
                 $exists = self::where('slug', $slug)->where('id', '!=', $this->id)->count() > 0;
-            else {
+            } else {
                 $exists = self::where('slug', $slug)->count() > 0;
             }
 
             if ($exists) {
                 $count = intval($count) + 1;
-                $slug = $value . '-' . intval($count);
+                $slug  = $value . '-' . intval($count);
             }
         }
 
@@ -172,5 +198,10 @@ class Post extends Model
         $this->custom()->delete();
 
         parent::delete();
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('post', $this->slug);
     }
 }

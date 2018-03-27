@@ -23,16 +23,33 @@ class UpdateMenu extends FormRequest
     {
         return [
             'menu.title' => 'required',
-            'menu.slug'  => 'required|min:3'
+            'menu.slug'  => 'required|min:3',
+            'sub_menu'   => 'required|array|min:1'
         ];
     }
 
     public function data()
     {
         return [
-            'title'  => $this->input('menu.title'),
-            'slug'   => $this->input('menu.slug'),
-            'custom' => $this->input('menu.custom')
+            'title' => $this->input('menu.title'),
+            'slug'  => $this->input('menu.slug')
         ];
+    }
+
+    public function subMenuData()
+    {
+        $order  = 1;
+        $result = [];
+        foreach ($this->input('sub_menu') as $item)
+        {
+            array_push($result, [
+                'order'   => $order,
+                'title'   => empty($item['title']) ? '' : $item['title'],
+                'url'     => empty($item['url']) ? '' : $item['url'],
+            ]);
+            $order ++;
+        }
+
+        return $result;
     }
 }

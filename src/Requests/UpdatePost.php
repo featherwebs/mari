@@ -52,15 +52,18 @@ class UpdatePost extends FormRequest
 
     public function customData()
     {
-        if(!$this->input('post.custom', false))
+        if ( ! $this->input('post.custom', false)) {
             return false;
+        }
 
         $data = [];
         foreach ($this->input('post.custom', []) as $custom) {
-            array_push($data, [
-                'slug' => $custom['slug'],
-                'value' => $custom['value']
-            ]);
+            if ( ! ( $custom['type'] == 'file' )) {
+                array_push($data, [
+                    'slug'  => $custom['slug'],
+                    'value' => $custom['value']
+                ]);
+            }
         }
 
         return $data;

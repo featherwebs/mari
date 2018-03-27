@@ -27,7 +27,8 @@ class StorePost extends FormRequest
             'post.view'          => '',
             'post.content'       => '',
             'post.post_type_id'  => 'required|exists:post_types,id',
-            'post.images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp,image/gif|max:5120|dimensions:max_width=3840,max_height=2160'
+            'post.images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp,image/gif|max:5120|dimensions:max_width=3840,max_height=2160',
+            'post.custom.*.file'  => 'nullable|max:10240'
         ];
     }
 
@@ -50,15 +51,18 @@ class StorePost extends FormRequest
 
     public function customData()
     {
-        if(!$this->input('post.custom', false))
+        if ( ! $this->input('post.custom', false)) {
             return false;
+        }
 
         $data = [];
         foreach ($this->input('post.custom', []) as $custom) {
-            array_push($data, [
-                'slug' => $custom['slug'],
-                'value' => $custom['value']
-            ]);
+            if ( ! ($custom['type'] == 'file')) {
+                array_push($data, [
+                    'slug'  => $custom['slug'],
+                    'value' => $custom['value']
+                ]);
+            }
         }
 
         return $data;

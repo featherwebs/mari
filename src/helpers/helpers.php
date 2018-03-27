@@ -47,7 +47,7 @@ if ( ! function_exists('fw_menu')) {
 if ( ! function_exists('fw_posts_by_tag')) {
     function fw_posts_by_tag($tags, $limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images', 'custom')->published()->whereHas('tags', function ($q) use ($tags) {
+        $posts = Post::with('tags', 'images', 'custom', 'files')->published()->whereHas('tags', function ($q) use ($tags) {
             if (is_array($tags)) {
                 $q->whereIn('slug', $tags);
             } else {
@@ -69,13 +69,15 @@ if ( ! function_exists('fw_posts_by_tag')) {
 if ( ! function_exists('fw_posts_by_category')) {
     function fw_posts_by_category($category, $limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images', 'custom')->published()->whereHas('postType', function ($q) use ($category) {
-            if (is_array($category)) {
-                $q->whereIn('slug', $category);
-            } else {
-                $q->where('slug', $category);
-            }
-        });
+        $posts = Post::with('tags', 'images', 'custom', 'files')
+                     ->published()
+                     ->whereHas('postType', function ($q) use ($category) {
+                         if (is_array($category)) {
+                             $q->whereIn('slug', $category);
+                         } else {
+                             $q->where('slug', $category);
+                         }
+                     });
 
         if ($limit) {
             $posts = $posts->take($limit);
@@ -91,13 +93,19 @@ if ( ! function_exists('fw_posts_by_category')) {
 if ( ! function_exists('fw_post_by_slug')) {
     function fw_post_by_slug($slug)
     {
-        return Post::with('tags', 'images', 'custom')->published()->where('slug', $slug)->first();
+        return Post::with('tags', 'images', 'custom', 'files')->published()->where('slug', $slug)->first();
+    }
+}
+if ( ! function_exists('fw_post_by_id')) {
+    function fw_post_by_id($id)
+    {
+        return Post::with('tags', 'images', 'custom', 'files')->published()->find($id);
     }
 }
 if ( ! function_exists('fw_posts')) {
     function fw_posts($limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images', 'custom')->published();
+        $posts = Post::with('tags', 'images', 'custom', 'files')->published();
         if ($limit) {
             $posts = $posts->limit($limit);
         }
@@ -146,14 +154,15 @@ if ( ! function_exists('fw_upload_image')) {
     }
 }
 if ( ! function_exists('fw_upload')) {
-    function fw_upload(UploadedFile $file, Model $model, $single = true)
+    function fw_upload(UploadedFile $file, Model $model, $single = true, $slug = null)
     {
         $extension = $file->getClientOriginalExtension();
         $filename  = $file->getClientOriginalName();
         $data      = [
             'name' => $filename,
             'size' => $file->getClientSize(),
-            'path' => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public')
+            'path' => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public'),
+            'slug' => $slug
         ];
 
         if ($single) {
@@ -181,7 +190,7 @@ if ( ! function_exists('fw_fetch_data')) {
 if ( ! function_exists('fw_thumbnail')) {
     function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "", $useDefault = true)
     {
-        $text    = empty($slug) ? env('APP_NAME') : $slug;
+        $text = empty($slug) ? env('APP_NAME') : $slug;
         if ($entity && $entity instanceof Image) {
             if ( ! $width && ! $height) {
                 return $entity->url;
@@ -216,13 +225,14 @@ if ( ! function_exists('fw_thumbnail')) {
             return $image->getThumbnail($width, $height);
         }
 
-        if(!$useDefault)
+        if ( ! $useDefault) {
             return false;
+        }
 
-        if(!$width && !$height) {
+        if ( ! $width && ! $height) {
             $width = 150;
         }
-        if($width && !$height) {
+        if ($width && ! $height) {
             $height = $width;
         }
         $default = "http://via.placeholder.com/{$width}x{$height}?text=[" . $text . "]";

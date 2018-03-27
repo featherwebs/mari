@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
-    protected $fillable = [ 'name', 'path', 'size', 'fileable_id', 'fileable_type' ];
+    protected $fillable = [ 'name', 'slug', 'path', 'size', 'fileable_id', 'fileable_type' ];
 
     protected $appends = [ 'url' ];
 

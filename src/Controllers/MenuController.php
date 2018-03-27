@@ -2,6 +2,8 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use Featherwebs\Mari\Models\Post;
+use Featherwebs\Mari\Models\PostType;
 use Featherwebs\Mari\Requests\StoreMenu;
 use Featherwebs\Mari\Requests\UpdateMenu;
 use Featherwebs\Mari\Models\Menu;
@@ -27,53 +29,72 @@ class MenuController extends BaseController
 
     public function create()
     {
-        return view('featherwebs::admin.menu.create');
+        $pages     = Page::all()->map(function ($page) {
+            if ($page->id == fw_setting('homepage')) {
+                return [ 'title' => 'Home', 'url' => url('/') ];
+            } else {
+                return [ 'title' => $page->title, 'url' => $page->url ];
+            }
+        });
+        $postTypes = PostType::all();
+        $posts     = Post::all();
+
+        return view('featherwebs::admin.menu.create', compact('pages', 'posts', 'postTypes'));
     }
 
     public function store(StoreMenu $request)
     {
         $menu = DB::transaction(function () use ($request) {
-            return Menu::create($request->data());
+            $menu = Menu::create($request->data());
+            foreach ($request->subMenuData() as $data) {
+                $menu->subMenus()->create($data);
+            }
+
+            return $menu;
         });
 
-        return redirect()->route('admin.menu.index')->withSuccess(trans('messages.create_success', [ 'entity' => "Menu '" . str_limit($menu->title, 20) . "'" ]));
-    }
-
-    public function show(Menu $menu)
-    {
-        $menu->load('subMenus');
-        $pages = Page::all()->map(function ($page) {
-            if ($page->id == fw_setting('homepage'))
-            {
-                return [ 'title' => 'Home', 'url' => url('/') ];
-            }
-            else
-            {
-                return [ 'title' => $page->title, 'url' => $page->url ];
-            }
-        });
-
-        return view('featherwebs::admin.menu.show', compact('menu', 'pages'));
+        return redirect()
+            ->route('admin.menu.index')
+            ->withSuccess(trans('messages.create_success', [ 'entity' => "Menu '" . str_limit($menu->title, 20) . "'" ]));
     }
 
     public function edit(Menu $menu)
     {
-        return view('featherwebs::admin.menu.edit', compact('menu'));
+        $menu->load('subMenus');
+        $pages     = Page::all()->map(function ($page) {
+            if ($page->id == fw_setting('homepage')) {
+                return [ 'title' => 'Home', 'url' => url('/') ];
+            } else {
+                return [ 'title' => $page->title, 'url' => $page->url ];
+            }
+        });
+        $postTypes = PostType::all();
+        $posts     = Post::all();
+
+        return view('featherwebs::admin.menu.edit', compact('menu', 'pages', 'posts', 'postTypes'));
     }
 
     public function update(UpdateMenu $request, Menu $menu)
     {
         DB::transaction(function () use ($request, $menu) {
             $menu->update($request->data());
+            $menu->subMenus()->delete();
+            foreach ($request->subMenuData() as $data) {
+                $menu->subMenus()->create($data);
+            }
         });
 
-        return redirect()->route('admin.menu.edit', $menu->slug)->withSuccess(trans('messages.update_success', [ 'entity' => "Menu '" . str_limit($menu->title, 20) . "'" ]));
+        return redirect()
+            ->route('admin.menu.show', $menu->slug)
+            ->withSuccess(trans('messages.update_success', [ 'entity' => "Menu '" . str_limit($menu->title, 20) . "'" ]));
     }
 
     public function destroy(Menu $menu)
     {
         $menu->delete();
 
-        return redirect()->route('admin.menu.index')->withSuccess(trans('messages.delete_success', [ 'entity' => "Menu '" . str_limit($menu->title, 20) . "'" ]));
+        return redirect()
+            ->route('admin.menu.index')
+            ->withSuccess(trans('messages.delete_success', [ 'entity' => "Menu '" . str_limit($menu->title, 20) . "'" ]));
     }
 }

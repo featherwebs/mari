@@ -21,7 +21,7 @@ class PostController extends BaseController
     public function api(Request $request)
     {
         $type  = PostType::whereSlug($request->get('post_type', 'news'))->first();
-        $posts = Post::with('postType', 'tags', 'files');
+        $posts = Post::with('postType', 'tags', 'files', 'custom');
 
         if ($type) {
             $posts = $posts->where('post_type_id', $type->id);
@@ -42,7 +42,7 @@ class PostController extends BaseController
     {
         $tags      = Tag::pluck('title', 'id')->unique();
         $postTypes = PostType::all();
-        $posts = Post::select('post_type_id', 'id', 'title')->get()->toArray();
+        $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
         })->filter(function ($item) {
@@ -56,10 +56,17 @@ class PostController extends BaseController
     {
         $post = DB::transaction(function () use ($request) {
             $post = Post::create($request->data());
-            if($request->customdata()){
-                foreach($request->customData() as $customData)
-                {
+            if ($request->customdata()) {
+                foreach ($request->customData() as $customData) {
                     $post->custom()->create($customData);
+                }
+            }
+
+            if ($request->hasFile('post.custom.*.file')) {
+                foreach ($request->input('post.custom') as $key => $custom) {
+                    if ($file = $request->file('post.custom.' . $key . '.file')) {
+                        fw_upload($file, $post, false, $custom['slug']);
+                    }
                 }
             }
             $post->syncTags($request->input('post.tags'));
@@ -75,10 +82,10 @@ class PostController extends BaseController
 
     public function edit(Post $post)
     {
-        $post->load('images', 'tags', 'postType', 'custom');
+        $post->load('images', 'tags', 'postType', 'custom', 'files');
         $tags      = Tag::pluck('title', 'id')->unique();
         $postTypes = PostType::all();
-        $posts = Post::select('post_type_id', 'id', 'title')->get()->toArray();
+        $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
         $postType  = $post->postType;
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
@@ -91,15 +98,26 @@ class PostController extends BaseController
     {
         DB::transaction(function () use ($request, $post) {
             $post->update($request->data());
-            if($request->customdata()){
+            if ($request->customdata()) {
                 $post->custom()->delete();
-                foreach($request->customData() as $customData)
-                {
+                foreach ($request->customData() as $customData) {
                     $post->custom()->create($customData);
                 }
             }
+
+            if ($request->hasFile('post.custom.*.file')) {
+                foreach ($request->input('post.custom') as $key => $custom) {
+                    if ($file = $request->file('post.custom.' . $key . '.file')) {
+                        if($existingFile = $post->files()->whereSlug($custom['slug'])->first())
+                            $existingFile->delete();
+                        fw_upload($file, $post, false, $custom['slug']);
+                    }
+                }
+            }
+
             $post->syncTags($request->input('post.tags'));
             $post->syncImages($request);
+
             return $post;
         });
 
@@ -122,7 +140,7 @@ class PostController extends BaseController
     public function show(Post $post)
     {
         $view = 'default';
-        $post->load('images', 'tags', 'postType');
+        $post->load('images', 'tags', 'postType', 'files');
         if ( ! empty($post->view) && view()->exists('posts.' . $post->view)) {
             $view = $post->view;
         }

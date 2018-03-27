@@ -156,13 +156,9 @@
                                     <span class="help-block"></span>
                                 </div>
                                 <div class="col-sm-1">
-                                    <form method="POST" action="{{ route('admin.setting.destroy', $setting->id) }}">
-                                        {{ method_field('DELETE') }}
-                                        {{ csrf_field() }}
-                                        <button class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?');">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button class="btn btn-danger btn-xs btn-delete" data-url="{{ route('admin.setting.destroy', $setting->id) }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                         @empty
@@ -223,9 +219,31 @@
             </div>
         </div>
     </form>
+    <form method="POST" id="delete-form">
+        {{ method_field('DELETE') }}
+        {{ csrf_field() }}
+    </form>
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+
+                var url = $(this).data('url');
+                if(url) {
+                    if(confirm('Are you sure?')) {
+                        $form = $('#delete-form');
+                        $form.attr('action', url);
+                        $form.submit();
+                    }
+                } else {
+                    alert('Something went wrong!')
+                }
+            });
+        });
+    </script>
     <script type="text/javascript">
         @php
             include base_path().'/vendor/featherwebs/mari/src/public/js/dist/setting.js';

@@ -63,6 +63,7 @@
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="text" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
+                    <input class="form-control" :name="'post[custom]['+i+'][file]'" type="file" :id="'custom-'+i+'-value'" v-if="field.type=='file'">
                     <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
                         <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
                     </select>
