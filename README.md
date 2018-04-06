@@ -61,6 +61,35 @@ php artisan db:seed --class="Featherwebs\Mari\Seeder\MariSeeder"
 
 to `routeMiddleware` array in `app/Http/Kernel.php`.
 
+8)  You also need to add the following:
+
+```php
+    'uploads' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public/files/uploads'),
+        'url' => env('APP_URL').'/storage/files/uploads',
+        'visibility' => 'public',
+    ],
+```
+
+to `disks` array in `config/filesystems.php`.
+9)  You also need to add the following:
+
+```php
+    ImageWasUploaded::class => [
+                ImageUploaded::class,
+            ],
+            ImageIsRenaming::class => [
+                ImageRenamed::class
+            ],
+            ImageWasDeleted::class => [
+                ImageDeleted::class
+            ],
+```
+
+to `listen` array in `App/Listeners/EventServiceProvider`.
+
+
 
 ## Contributing
 

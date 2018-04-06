@@ -64,6 +64,7 @@
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
                     <input class="form-control" :name="'post[custom]['+i+'][file]'" type="file" :id="'custom-'+i+'-value'" v-if="field.type=='file'">
+                    {{--<image-selector :name="'post[custom]['+i+'][file]'" v-if="field.type=='file'" type="file"></image-selector>--}}
                     <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
                         <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
                     </select>
@@ -121,12 +122,9 @@
                     <div class="panel-body">
                         <div class="row" v-for="chunk in _.chunk(post.images.filter(i => i.slug == pt.slug || i.pivot.slug == pt.slug), 4)">
                             <div class="col-sm-3" v-for="(field,i) in chunk">
-                                <div class="thumbnail">
-                                    <img :alt="field.title" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
-                                    <a href="javascript:void(0);" class="text-danger" @click="removeImageField(field)" v-if="pt.type == 'multiple-images'"><i class="material-icons">close</i></a>
-                                </div>
                                 <div class="form-group text-center">
-                                    <image-selector :name="'post[images]['+pt.slug+i+'][id]'" :value="field.id ? field.id: null" :file-name="'post[images]['+pt.slug+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+pt.slug+i+'][file]'"></image-selector>
+                                    <a href="javascript:void(0);" class="text-danger" @click="removeImageField(field)" v-if="pt.type == 'multiple-images'"><i class="material-icons">close</i></a>
+                                    <image-selector :name="'post[images]['+pt.slug+i+'][path]'" :value="field.url"></image-selector>
                                 </div>
                                 <div class="form-group hidden">
                                     <label :for="'images['+pt.slug+i+'][slug]'">Image Slug: </label>
@@ -180,8 +178,8 @@
 @endpush
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/ckeditor.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/plugins/divarea/plugin.js"></script>
+    <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script>
         @if($p = old('post', isset($post) ? $post : null))

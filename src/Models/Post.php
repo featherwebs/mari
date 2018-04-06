@@ -27,7 +27,7 @@ class Post extends Model
         'is_featured'
     ];
 
-    protected $appends = ['url'];
+    protected $appends = [ 'url' ];
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
@@ -94,15 +94,14 @@ class Post extends Model
         $this->images()->detach();
 
         foreach ($request->input('post.images', []) as $k => $img) {
-            $id    = $request->input('post.images.' . $k . '.id');
-            $image = $request->file('post.images.' . $k . '.file');
-            $slug  = $request->input('post.images.' . $k . '.pivot.slug');
+            $path = $request->input('post.images.' . $k . '.path');
+            $slug = $request->input('post.images.' . $k . '.pivot.slug');
 
-            if ($image && $image instanceof UploadedFile) {
-                fw_upload_image($image, $this, $single = false, $slug);
-            } elseif ( ! empty($id)) {
-                $image = Image::find($id);
-                $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+            if ( ! empty($path)) {
+                $filename = basename($path);
+                $image = Image::where('path', 'like', '%'.$filename)->first();
+                if($image)
+                    $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
             }
         }
     }

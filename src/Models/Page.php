@@ -125,15 +125,14 @@ class Page extends Model
         $this->images()->detach();
 
         foreach ($request->input('page.images', []) as $k => $img) {
-            $id    = $request->input('page.images.' . $k . '.id');
-            $image = $request->file('page.images.' . $k . '.file');
+            $path = $request->input('page.images.' . $k . '.path');
             $slug = $request->input('page.images.' . $k . '.pivot.slug');
 
-            if ($image && $image instanceof UploadedFile) {
-                fw_upload_image($image, $this, $single = false, $slug);
-            } elseif ( ! empty($id)) {
-                $image = Image::find($id);
-                $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+            if ( ! empty($path)) {
+                $filename = basename($path);
+                $image = Image::where('path', 'like', '%'.$filename)->first();
+                if($image)
+                    $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
             }
         }
     }

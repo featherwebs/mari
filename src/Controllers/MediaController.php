@@ -30,16 +30,7 @@ class MediaController extends BaseController
     public function store(StoreMedia $request)
     {
         $image = DB::transaction(function () use ($request) {
-            $file = $request->file('file');
 
-            $extension = $file->getClientOriginalExtension();
-            $filename  = $file->getClientOriginalName();
-            $data      = [
-                'custom' => [ 'title' => $filename ],
-                'path'   => $file->storeAs('misc', str_random() . '.' . $extension, 'public')
-            ];
-
-            return Image::create($data);
         });
 
         return $image->id;

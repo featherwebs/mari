@@ -78,30 +78,18 @@
         <div role="tabpanel" class="tab-pane" id="image">
             <div v-for="(field,i) in page.images" class="panel">
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-1">
-                            Image Field #@{{ i+1 }}
-                        </div>
-                        <div class="col-sm-11">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <a class="pull-right btn btn-xs btn-danger" href="javascript:void(0);" class="close" @click="removeImage(i)">&times;</a>
                             <div class="form-group">
-                                <div class="col-sm-3">
-                                    <div class="thumbnail">
-                                        <img alt="Page Banner" :src="field.thumbnail ? field.thumbnail: 'http://via.placeholder.com/250x250'">
-                                    </div>
+                                <label :for="'images['+i+'][file]'">Image Source:</label>
+                                <div class="input-group">
+                                    <image-selector :name="'page[images]['+i+'][path]'" :value="field.url"></image-selector>
                                 </div>
-                                <div class="col-sm-9">
-                                    <a class="pull-right btn btn-xs btn-danger" href="javascript:void(0);" class="close" @click="removeImage(i)">&times;</a>
-                                    <div class="form-group">
-                                        <label :for="'images['+i+'][file]'">Image Source:</label>
-                                        <div class="input-group">
-                                            <image-selector :name="'page[images]['+i+'][id]'" :value="field.id ? field.id: null" :file-name="'page[images]['+i+'][file]'" @change="value => field.thumbnail = value" :id="'images['+i+'][file]'"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label :for="'images['+i+'][slug]'">Image Slug: </label>
-                                        <input class="form-control" :name="'page[images]['+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label :for="'images['+i+'][slug]'">Image Slug: </label>
+                                <input class="form-control" :name="'page[images]['+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
                             </div>
                         </div>
                     </div>
@@ -191,8 +179,8 @@
 </div>
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/ckeditor.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/plugins/divarea/plugin.js"></script>
+    <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script>
         @if($page = old('page', isset($page) ? $page : null))
             let page = JSON.parse('{!! addslashes(json_encode($page)) !!}');

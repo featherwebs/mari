@@ -7,7 +7,7 @@ use Intervention\Image\Facades\Image as InterventionImage;
 
 class Image extends Model
 {
-    const THUMB_PATH = 'thumbnails/';
+    const THUMB_PATH = 'storage/files/uploads/thumbs/';
 
     protected $fillable = [ 'id', 'path', 'custom' ];
 

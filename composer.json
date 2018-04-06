@@ -15,7 +15,10 @@
     "intervention/image": "2.4",
     "venturecraft/revisionable": "1.*",
     "guzzlehttp/guzzle": "^6.3",
-    "composer-plugin-api": "^1.0"
+    "composer-plugin-api": "^1.0",
+    "doctrine/inflector": "v1.2",
+    "unisharp/laravel-ckeditor": "^4.7",
+    "unisharp/laravel-filemanager": "~1.8"
   },
   "authors": [
     {
