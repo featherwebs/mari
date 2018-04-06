@@ -30,6 +30,8 @@ class ImageDeleted
     {
         $path = str_replace(storage_path('app/public/'), "", $event->path());
 
-        Image::where('path', $path)->first()->delete();
+        $image = Image::where('path', $path)->first();
+        if($image)
+            $image->delete();
     }
 }
