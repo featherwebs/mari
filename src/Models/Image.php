@@ -11,7 +11,7 @@ class Image extends Model
 
     protected $fillable = [ 'id', 'path', 'custom' ];
 
-    protected $appends = [ 'thumbnail', 'url', 'title' ];
+    protected $appends = [ 'thumbnail', 'url' ];
 
     protected $casts = [ 'custom' => 'array' ];
 
