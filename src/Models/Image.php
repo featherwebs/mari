@@ -7,7 +7,7 @@ use Intervention\Image\Facades\Image as InterventionImage;
 
 class Image extends Model
 {
-    const THUMB_PATH = 'storage/files/uploads/thumbs/';
+    const THUMB_PATH = 'thumbnails/';
 
     protected $fillable = [ 'id', 'path', 'custom' ];
 
@@ -34,12 +34,11 @@ class Image extends Model
 
     public function getThumbnail($width = null, $height = null)
     {
-        if ($width == null && $height == null) {
+        if (($width == null && $height == null) || !$this->file()) {
             return null;
         }
         $prefix           = 'TH_';
-        $originalFilename = $this->getCustom('title') ? str_slug($this->getCustom('title')) : explode('/', $this->path);
-        $originalFilename = $this->getCustom('title') ? $originalFilename : array_pop($originalFilename);
+        $originalFilename = $filename = basename($this->path);
         $name             = $prefix . $width . '_' . $height . '_' . $originalFilename;
         $fileLocation     = self::THUMB_PATH . $name;
         if ( ! file_exists($fileLocation)) {
@@ -71,26 +70,8 @@ class Image extends Model
         parent::delete();
     }
 
-    public function getCustom($slug, $default = "-")
-    {
-        if ( ! $slug) {
-            return $this->custom;
-        }
-
-        if ($this->custom && array_key_exists($slug, $this->custom)) {
-            return $this->custom[ $slug ];
-        }
-
-        return $default;
-    }
-
     public function getUrlAttribute()
     {
         return asset('storage/' . $this->path);
-    }
-
-    public function getTitleAttribute()
-    {
-        return $this->getCustom('title', '-');
     }
 }
