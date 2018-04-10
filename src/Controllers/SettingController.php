@@ -31,21 +31,16 @@ class SettingController extends BaseController
             }
         }
 
-        $logo = Setting::fetch('logo')->first();
+        $logo = Setting::firstOrCreate(['slug' => 'logo'])->first();
 
-        if($logo) {
-            if ($file = $request->file('setting.logo')) {
-                if ($logo && $file) {
-                    $logo->images()->detach();
-                    fw_upload_image($file, $logo, false);
-                }
-            }
-            if ($id = $request->input('setting.logo_id')) {
-                $image = Image::find($id);
-                if ($image) {
-                    $logo->images()->detach();
-                    $logo->images()->save($image);
-                }
+        $path = $request->input('setting.logo');
+
+        if ( ! empty($path)) {
+            $filename = basename($path);
+            $image = Image::where('path', 'like', '%'.$filename)->first();
+            if($image) {
+                $logo->images()->detach();
+                $logo->images()->save($image, []);
             }
         }
 

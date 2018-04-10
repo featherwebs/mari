@@ -17,7 +17,7 @@ if ( ! function_exists('fw_setting')) {
 
         if ($setting) {
             if ($setting->images()->first()) {
-                return asset($setting->images()->first()->thumbnail);
+                return asset($setting->images()->first()->url);
             }
 
             return $setting->value;
