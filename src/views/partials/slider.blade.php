@@ -11,7 +11,7 @@
         @forelse(fw_posts_by_category('slider') as $slide)
             @if($image = $slide->images()->first())
                 <div class="item{{ $loop->iteration == 1 ? ' active':'' }}">
-                    <img class="first-slide" src="{{ $image->getThumbnail(1900, 500) }}" alt="{{ $image->getCustom('title') }}">
+                    <img class="first-slide" src="{{ $image->getThumbnail(1900, 500) }}" alt="{{ $slide->title }}">
                     <div class="container">
                         <div class="carousel-caption">
                             <h1>{{ $slide->title }}</h1>

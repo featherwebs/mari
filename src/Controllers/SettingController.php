@@ -31,7 +31,7 @@ class SettingController extends BaseController
             }
         }
 
-        $logo = Setting::firstOrCreate(['slug' => 'logo'])->first();
+        $logo = Setting::firstOrCreate(['slug' => 'logo']);
 
         $path = $request->input('setting.logo');
 

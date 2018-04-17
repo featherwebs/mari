@@ -175,6 +175,10 @@
                         </div>
                     </div>
                 </div>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right" type="submit">
+                    <i class="material-icons">save</i>
+                    Save
+                </button>
             </div>
         @endcomponent
     </form>
