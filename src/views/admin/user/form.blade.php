@@ -71,29 +71,24 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="image" class="control-label col-sm-2">Avatar</label>
-                <div class="col-sm-10">
-                    <image-selector name="user[image]" @change="value => user.image.thumbnail = value" />
-                    <span class="help-block"></span>
-                </div>
-            </div>
         </div>
         <div class="col-sm-3">
             <label for="image">
-                <img alt="User Avatar" :src="user.image && user.image.thumbnail ? user.image.thumbnail: 'http://via.placeholder.com/250x250'" class="img-responsive">
+                <image-selector name="user[image]" :value="user.image && user.image.url ? user.image && user.image.url: null" />
             </label>
         </div>
     </div>
 </div>
 @push('scripts')
+    <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script>
-        @if($user = old('user', isset($user) ? $user : null))
-            var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
-        @endif
+                @if($user = old('user', isset($user) ? $user : null))
+        var user = JSON.parse('{!! addslashes(json_encode($user)) !!}');
+                @endif
 
-        @if(isset($roles))
-            var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
+                @if(isset($roles))
+        var rolesArr = JSON.parse('{!! addslashes(json_encode($roles)) !!}');
         @endif
     </script>
 

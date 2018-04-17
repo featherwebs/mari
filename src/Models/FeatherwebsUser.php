@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Models;
 
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -68,6 +69,21 @@ class FeatherwebsUser extends Authenticatable
         $superRole = Role::whereDescription('super-admin')->first();
 
         return $this->hasRole($superRole->name);
+    }
+
+    public function syncImage(Request $request)
+    {
+        $this->images()->detach();
+
+        $path = $request->input('user.image');
+        $slug = 'photo';
+
+        if ( ! empty($path)) {
+            $filename = basename($path);
+            $image = Image::where('path', 'like', '%'.$filename)->first();
+            if($image)
+                $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+        }
     }
 
     public static function boot()

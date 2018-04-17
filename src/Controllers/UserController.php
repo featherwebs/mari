@@ -49,9 +49,7 @@ class UserController extends BaseController
                 $role = Role::findOrFail($request->input('user.role.id'));
                 $user->attachRole($role);
             }
-            if ($request->hasFile('user.image')) {
-                fw_upload_image($request->file('user.image'), $user, false);
-            }
+            $user->syncImage($request);
 
             return $user;
         });
@@ -83,15 +81,7 @@ class UserController extends BaseController
                 $user->detachRoles($user->roles);
                 $user->attachRole($role);
             }
-            if ($request->hasFile('user.image')) {
-                fw_upload_image($request->file('user.image'), $user, true, 'photo');
-            } elseif ($request->has('user.image')) {
-                $image = Image::find($request->input('user.image'));
-                if ($image) {
-                    $user->images()->detach();
-                    $user->images()->save($image, [ 'slug' => 'photo' ]);
-                }
-            }
+            $user->syncImage($request);
 
             return $user;
         });
