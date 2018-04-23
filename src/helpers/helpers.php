@@ -344,3 +344,33 @@ if ( ! function_exists('fw_notifiables')) {
 
     }
 }
+if ( ! function_exists('fw_sync_images')) {
+    /*
+     *
+     */
+    function fw_sync_images($model, $images= [], $detach = true)
+    {
+        if(!is_array($images))
+            throw new Exception('Expected array');
+
+        if($detach)
+            $model->images()->detach();
+
+        foreach ($images as $k => $img) {
+
+            if(!array_key_exists('path', $img))
+                throw new Exception('Expected a key of `path`');
+
+            $path = $img['path'];
+            $slug = array_key_exists('slug', $img) ? $img['slug']: null;
+
+            if ( ! empty($path)) {
+                $filename = basename($path);
+                $image = Image::where('path', 'like', '%'.$filename)->first();
+                if($image)
+                    $model->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+            }
+        }
+
+    }
+}
