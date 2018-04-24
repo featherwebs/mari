@@ -85,7 +85,7 @@ class MenuController extends BaseController
         });
 
         return redirect()
-            ->route('admin.menu.show', $menu->slug)
+            ->route('admin.menu.edit', $menu->slug)
             ->withSuccess(trans('messages.update_success', [ 'entity' => "Menu '" . str_limit($menu->title, 20) . "'" ]));
     }
 
