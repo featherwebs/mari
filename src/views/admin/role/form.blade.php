@@ -6,7 +6,7 @@
             <span class="help-block">Role Name</span>
         </div>
     </div>
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>

@@ -324,4 +324,7 @@
     [data-scrollbar] {
         position: fixed !important;
     }
+    .help-block code {
+        float:right;
+    }
 </style>

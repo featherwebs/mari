@@ -2,7 +2,7 @@
     <div class="form-group">
         <label for="title" class="control-label col-sm-2">Name</label>
         <div class="col-sm-10">
-            <input class="form-control" name="title" type="text" v-model="post_type.title" id="title">
+            <input class="form-control" name="title" type="text" v-model="post_type.title" id="title" required pattern=".{3,}" title="3 characters minimum">
             <span class="help-block">Post Type Title</span>
         </div>
     </div>
@@ -10,8 +10,9 @@
     <div class="row">
         <div class="col-sm-2"><h6>Column</h6></div>
         <div class="col-sm-2"><h6>Visibility</h6></div>
-        <div class="col-sm-6"><h6>Alias</h6></div>
+        <div class="col-sm-4"><h6>Alias</h6></div>
         <div class="col-sm-2"><h6>Default</h6></div>
+        <div class="col-sm-2"><h6>Code Reference</h6></div>
     </div>
     <div class="row" v-for="(column, i) in post_type.alias">
         <label class="control-label col-sm-2">@{{ column.title }}</label>
@@ -21,7 +22,7 @@
                 <option :value="false" v-if="!(column.required===true || column.required==='true')">Hidden</option>
             </select>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <input class="form-control" :name="'alias['+i+'][alias]'" type="text" v-model="column.alias">
             <input type="hidden" :name="'alias['+i+'][slug]'" v-model="column.slug">
             <input type="hidden" :name="'alias['+i+'][title]'" v-model="column.title">
@@ -30,6 +31,9 @@
         </div>
         <div class="col-sm-2">
             <input class="form-control" :name="'alias['+i+'][default]'" type="text" v-model="column.default">
+        </div>
+        <div class="col-sm-2">
+            <code>$post->@{{ column.slug }}</code>
         </div>
     </div>
     <div class="row">
@@ -42,11 +46,6 @@
     </div>
     <div class="row" v-for="(field,i) in post_type.custom">
         <div class="form-group">
-            <div class="col-xs-1">
-                <button class="btn btn-xs btn-danger" type="button" @click="removeCustomField(i)">
-                    <i class="material-icons">remove</i>
-                </button>
-            </div>
             <div class="col-xs-2">
                 <input :name="'custom['+i+'][pivot][slug]'" type="hidden" v-model="field.slug">
                 <input class="form-control" :name="'custom['+i+'][slug]'" type="text" v-model="field.slug">
@@ -76,9 +75,15 @@
                 <input class="form-control" :name="'custom['+i+'][title]'" type="text" v-model="field.title">
                 <span class="help-block">Display Title</span>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                 <input class="form-control" :name="'custom['+i+'][default]'" type="text" v-model="field.default">
                 <span class="help-block">Default</span>
+            </div>
+            <div class="col-xs-2">
+                <code>$post->getCustom('@{{ field.slug }}')</code>
+                <button class="btn btn-xs btn-danger pull-right" type="button" @click="removeCustomField(i)">
+                    X
+                </button>
             </div>
         </div>
     </div>
@@ -90,12 +95,12 @@
 
 @push('scripts')
     <script>
-        @if(isset($postType))
-            let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
-        @endif
+                @if(isset($postType))
+        let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
+                @endif
 
-        @if(isset($postTypes))
-            let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
+                @if(isset($postTypes))
+        let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
         @endif
 
         {{--@if($p = old('post_type', isset($postType)?$postType:null))--}}

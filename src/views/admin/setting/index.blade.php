@@ -41,28 +41,28 @@
                             <label for="title" class="control-label col-sm-2">Title</label>
                             <div class="col-sm-10">
                                 <input type="text" id="title" name="setting[title]" value="{{ old('setting.title') ?: fw_setting('title') }}" class="form-control">
-                                <span class="help-block">Site Title</span>
+                                <span class="help-block">Site Title<code>fw_setting('title')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="description" class="control-label col-sm-2">Description</label>
                             <div class="col-sm-10">
                                 <textarea id="description" name="setting[description]" class="form-control">{{ old('setting.description') ?: fw_setting('description') }}</textarea>
-                                <span class="help-block">Site Description</span>
+                                <span class="help-block">Site Description<code>fw_setting('description')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="address" class="control-label col-sm-2">Address</label>
                             <div class="col-sm-10">
                                 <textarea id="address" name="setting[address]" class="form-control">{{ old('setting.address') ?: fw_setting('address') }}</textarea>
-                                <span class="help-block">Notificatins will be sent to this email.</span>
+                                <span class="help-block">Address shown in the website<code>fw_setting('address')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="notification-emails" class="control-label col-sm-2">Notification Email</label>
                             <div class="col-sm-10">
                                 <input type="text" id="notification-emails" name="setting[notification-emails]" value="{{ old('setting.notification-emails') ?: fw_setting('notification-emails') }}" class="form-control">
-                                <span class="help-block">Seperate each email address by <code>comma (,)</code></span>
+                                <span class="help-block">Seperate each email address by comma<code>fw_notifiables(isAdmin)</code></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -73,14 +73,14 @@
                                         <option value="{{ $id }}"{{ fw_setting('homepage') == $id ? ' selected':'' }}>{{ $page }}</option>
                                     @endforeach
                                 </select>
-                                <span class="help-block">Notificatins will be sent to this email.</span>
+                                <span class="help-block">Notificatins will be sent to this email.<code>fw_setting('homepage')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="logo" class="control-label col-sm-2">Logo</label>
                             <div class="col-sm-10">
-                                <image-selector name="setting[logo]" value="{{ fw_setting('logo') }}" />
-                                <span class="help-block">Main Logo</span>
+                                <image-selector name="setting[logo]" value="{{ fw_setting('logo') }}"></image-selector>
+                                <div class="help-block"><code>fw_setting('logo')</code></div>
                             </div>
                         </div>
                     </div>
@@ -89,35 +89,35 @@
                             <label for="phone" class="control-label col-sm-2">Phone</label>
                             <div class="col-sm-10">
                                 <textarea id="phone" name="setting[phone]" class="form-control"></textarea>
-                                <span class="help-block"></span>
+                                <span class="help-block"><code>fw_setting('phone')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="email" class="control-label col-sm-2">Email</label>
                             <div class="col-sm-10">
                                 <input type="text" id="email" name="setting[email]" value="{{ old('setting.email') ?: fw_setting('email') }}" class="form-control">
-                                <span class="help-block"></span>
+                                <span class="help-block"><code>fw_setting('email')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="postbox" class="control-label col-sm-2">Post Box</label>
                             <div class="col-sm-10">
                                 <input type="text" id="postbox" name="setting[postbox]" value="{{ old('setting.postbox') ?: fw_setting('postbox') }}" class="form-control">
-                                <span class="help-block"></span>
+                                <span class="help-block"><code>fw_setting('postbox')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="postbox" class="control-label col-sm-2">Longitude</label>
                             <div class="col-sm-10">
                                 <input type="text" id="postbox" name="setting[longitude]" value="{{ old('setting.longitude') ?: fw_setting('longitude') }}" class="form-control">
-                                <span class="help-block"></span>
+                                <span class="help-block"><code>fw_setting('longitude')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="postbox" class="control-label col-sm-2">Latitude</label>
                             <div class="col-sm-10">
                                 <input type="text" id="postbox" name="setting[latitude]" value="{{ old('setting.latitude') ?: fw_setting('latitude') }}" class="form-control">
-                                <span class="help-block"></span>
+                                <span class="help-block"><code>fw_setting('latitude')</code></span>
                             </div>
                         </div>
                     </div>
@@ -126,21 +126,21 @@
                             <label for="facebook" class="control-label col-sm-2">Facebook</label>
                             <div class="col-sm-10">
                                 <input type="text" id="facebook" name="setting[facebook]" value="{{ old('setting.facebook') ?: fw_setting('facebook') }}" class="form-control">
-                                <span class="help-block"></span>
+                                <span class="help-block"><code>fw_setting('facebook')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="twitter" class="control-label col-sm-2">Twitter</label>
                             <div class="col-sm-10">
                                 <input type="text" id="twitter" name="setting[twitter]" value="{{ old('setting.twitter') ?: fw_setting('twitter') }}" class="form-control">
-                                <span class="help-block"></span>
+                                <span class="help-block"><code>fw_setting('twitter')</code></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="google_plus" class="control-label col-sm-2">Google Plus</label>
                             <div class="col-sm-10">
                                 <input type="text" id="google_plus" name="setting[google_plus]" value="{{ old('setting.google_plus') ?: fw_setting('google_plus') }}" class="form-control">
-                                <span class="help-block"></span>
+                                <span class="help-block"><code>fw_setting('google_plus')</code></span>
                             </div>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
                                 <label for="{{ $setting->slug }}" class="control-label col-sm-2">{{ $setting->slug }}</label>
                                 <div class="col-sm-9">
                                     <textarea id="{{ $setting->slug }}" name="setting[{{ $setting->slug }}]" class="form-control">{{ old('setting.'.$setting->slug) ?: fw_setting($setting->slug) }}</textarea>
-                                    <span class="help-block"></span>
+                                    <span class="help-block"><code>fw_setting('{{ $setting->slug }}')</code></span>
                                 </div>
                                 <div class="col-sm-1">
                                     <button class="btn btn-danger btn-xs btn-delete" data-url="{{ route('admin.setting.destroy', $setting->id) }}">

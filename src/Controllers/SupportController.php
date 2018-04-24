@@ -15,7 +15,7 @@ class SupportController extends Controller
     public function __construct()
     {
         if ( ! ( env('SUPPORT_TOKEN') && env('SUPPORT_API_URL') )) {
-            return abort(404, 'SUPPORT TOKEN MISSING');
+            abort(403, 'SUPPORT TOKEN MISSING');
         }
 
         $this->client = new Client([
@@ -36,7 +36,7 @@ class SupportController extends Controller
             $response = $this->client->request("GET", $url);
             $tickets  = json_decode($response->getBody());
         } catch (Exception $e) {
-            return abort(404);
+            return abort(500);
         }
 
         return view('featherwebs::admin.support.index', compact('tickets'));
@@ -65,7 +65,7 @@ class SupportController extends Controller
             $priorities  = [ 'HIGH', 'NORMAL', 'LOW' ];
             $statuses    = [ 'PENDING', 'OPEN', 'REJECTED', 'RESOLVED', 'CLOSED' => 'CLOSED' ];
         } catch (Exception $e) {
-            return abort(404);
+            return abort(500);
         }
 
         return view('featherwebs::admin.support.create', compact('ticketTypes', 'priorities', 'statuses'));
@@ -84,7 +84,7 @@ class SupportController extends Controller
             $response = $this->client->request("GET", $url);
             $ticket   = json_decode($response->getBody());
         } catch (Exception $e) {
-            return abort(404);
+            return abort(500);
         }
 
         return view('featherwebs::admin.support.show', compact('ticket'));
