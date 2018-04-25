@@ -1,28 +1,24 @@
 @if (session('status'))
-    <div class="alert mdl-cell mdl-cell--12-col mdl-components__default">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    @component('featherwebs::admin.template.alert', ['type' => 'default'])
         {{ session('status') }}
-    </div>
+    @endcomponent
 @endif
 @if (session('success'))
-    <div class="alert mdl-cell mdl-cell--12-col mdl-components__success">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    @component('featherwebs::admin.template.alert', ['type' => 'success'])
         {{ session('success') }}
-    </div>
+    @endcomponent
 @endif
 @if (session('warning'))
-    <div class="alert mdl-cell mdl-cell--12-col mdl-components__warning">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    @component('featherwebs::admin.template.alert', ['type' => 'warning'])
         {{ session('warning') }}
-    </div>
+    @endcomponent
 @endif
 @if ($errors->all())
-    <div class="alert mdl-cell mdl-cell--12-col mdl-components__warning">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    @component('featherwebs::admin.template.alert', ['type' => 'warning'])
         <ul>
             @foreach($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
-    </div>
+    @endcomponent
 @endif

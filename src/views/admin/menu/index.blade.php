@@ -23,6 +23,11 @@
                     </ol>
                 </nav>
             @endslot
+
+            @component('featherwebs::admin.template.alert', ['type' => 'info'])
+                How To Use:
+                You can output this menu anywhere on your site by calling <code>fw_menu('slug')</code>
+            @endcomponent
             <div class="panel">
                 <table id="menu-datatable" class="mdl-data-table" width="100%">
                     <thead>

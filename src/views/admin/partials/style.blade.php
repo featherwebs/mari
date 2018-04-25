@@ -318,6 +318,10 @@
     .mdl-components__default {
         background-color: #d8d8d8;
     }
+    .mdl-components__info {
+        background-color: rgb(3, 169, 244);
+        color: white;
+    }
     .mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
         padding: 10px 40px;
     }
