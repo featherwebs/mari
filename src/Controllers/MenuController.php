@@ -47,7 +47,15 @@ class MenuController extends BaseController
         $menu = DB::transaction(function () use ($request) {
             $menu = Menu::create($request->data());
             foreach ($request->subMenuData() as $data) {
-                $menu->subMenus()->create($data);
+                foreach ($request->subMenuData() as $data) {
+                    $subMenu = $menu->subMenus()->create($data);
+                    foreach ($data['sub_menus'] as $dat) {
+                        $subSubMenu = $subMenu->subMenus()->create($dat);
+                        foreach ($dat['sub_menus'] as $da) {
+                            $subSubMenu->subMenus()->create($da);
+                        }
+                    }
+                }
             }
 
             return $menu;
@@ -60,7 +68,7 @@ class MenuController extends BaseController
 
     public function edit(Menu $menu)
     {
-        $menu->load('subMenus');
+        $menu->load('subMenus.subMenus.subMenus.subMenus');
         $pages     = Page::all()->map(function ($page) {
             if ($page->id == fw_setting('homepage')) {
                 return [ 'title' => 'Home', 'url' => url('/') ];
@@ -80,7 +88,13 @@ class MenuController extends BaseController
             $menu->update($request->data());
             $menu->subMenus()->delete();
             foreach ($request->subMenuData() as $data) {
-                $menu->subMenus()->create($data);
+                $subMenu = $menu->subMenus()->create($data);
+                foreach ($data['sub_menus'] as $dat) {
+                    $subSubMenu = $subMenu->subMenus()->create($dat);
+                    foreach ($dat['sub_menus'] as $da) {
+                        $subSubMenu->subMenus()->create($da);
+                    }
+                }
             }
         });
 

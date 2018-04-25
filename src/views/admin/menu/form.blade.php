@@ -17,7 +17,7 @@
         <hr>
         <div class="row">
             <div class="col-sm-12 text-right">
-                <a href="javascript:void(0);" @click="addSubMenu">
+                <a href="javascript:void(0);" @click="addSubMenu()">
                     + Add
                 </a>
             </div>
@@ -33,66 +33,209 @@
                     </div>
                 </div>
             </div>
-            <draggable v-model="menu.sub_menus" :options="{handle:'.handle'}">
-                <div class="panel panel-default" v-for="(sub_menu, i) in menu.sub_menus">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-12">
+            <div>
+                <div v-for="(sub_menu, i) in menu.sub_menus.sort((a,b) => a.order > b.order)">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-1 handle">
+                                            <button class="btn btn-xs" type="button" v-if="i>0" @click="swap(menu.sub_menus, i, i-1)">
+                                                <span class="glyphicon glyphicon-triangle-top"></span>
+                                            </button>
+                                            <button class="btn btn-xs" type="button" v-if="i<(menu.sub_menus.length-1)" @click="swap(menu.sub_menus, i, i+1)">
+                                                <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Title</label>
+                                                <input type="text" :name="'sub_menu['+i+'][title]'" v-model="sub_menu.title" class="form-control input-sm">
+                                                <p class="help-block">Recommended 30 Characters</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label>Type</label>
+                                                <select class="form-control input-sm" v-model="sub_menu.type">
+                                                    <option v-for="(t, i) in types" :value="i" v-html="t"></option>
+                                                </select>
+                                                <p class="help-block">Select a Type</p>
+                                            </div>
+                                        </div>
+                                        <div :class="sub_menu.type == 'custom' ? '': 'col-sm-2'">
+                                            <div class="form-group" v-if="sub_menu.type == 'page'">
+                                                <label>Page</label>
+                                                <select class="form-control input-sm" @change="sub_menu.url = $event.target.value;">
+                                                    <option>Select a Page</option>
+                                                    <option v-for="page in pages" :value="page.url" v-html="page.title" :selected="sub_menu.url == page.url"></option>
+                                                </select>
+                                                <p class="help-block">Select a page</p>
+                                            </div>
+                                            <div class="form-group" v-if="sub_menu.type == 'post'">
+                                                <label>Post</label>
+                                                <select class="form-control input-sm" @change="sub_menu.url = $event.target.value;">
+                                                    <option>Select a Post</option>
+                                                    <option v-for="post in posts" :value="post.url" v-html="post.title" :selected="sub_menu.url == post.url"></option>
+                                                </select>
+                                                <p class="help-block">Select a post</p>
+                                            </div>
+                                        </div>
+                                        <div :class="sub_menu.type == 'custom' ? 'col-sm-5': 'col-sm-3'">
+                                            <div class="form-group">
+                                                <label>Link URL</label>
+                                                <input type="text" :name="'sub_menu['+i+'][url]'" v-model="sub_menu.url" class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <a href="javascript:void(0);" class="text-danger btn btn-xs" @click="removeSubMenu(i)">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" class="btn btn-xs mt" @click="addSubMenu(sub_menu)">
+                                                + Add Submenu
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-for="(sm, j) in sub_menu.sub_menus.sort((a,b) => a.order > b.order)">
+                        <div class="panel sub-panel panel-default">
+                            <div class="panel-body">
                                 <div class="row">
-                                    <div class="col-sm-1 handle">
-                                        <i class="fa fa-sort"></i>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Title</label>
-                                            <input type="text" :name="'sub_menu['+i+'][title]'" v-model="sub_menu.title" class="form-control input-sm">
-                                            <p class="help-block">Recommended 30 Characters</p>
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-1 handle">
+                                                <button class="btn btn-xs" type="button" v-if="j>0" @click="swap(sub_menu.sub_menus, j, j-1)">
+                                                    <span class="glyphicon glyphicon-triangle-top"></span>
+                                                </button>
+                                                <button class="btn btn-xs" type="button" v-if="j<(sub_menu.sub_menus.length-1)" @click="swap(sub_menu.sub_menus, j, j+1)">
+                                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label>Title</label>
+                                                    <input type="text" :name="'sub_menu['+i+'][sub_menus]['+j+'][title]'" v-model="sm.title" class="form-control input-sm">
+                                                    <p class="help-block">Recommended 30 Characters</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    <label>Type</label>
+                                                    <select class="form-control input-sm" v-model="sm.type">
+                                                        <option v-for="(t, i) in types" :value="i" v-html="t"></option>
+                                                    </select>
+                                                    <p class="help-block">Select a Type</p>
+                                                </div>
+                                            </div>
+                                            <div :class="sm.type == 'custom' ? '': 'col-sm-2'">
+                                                <div class="form-group" v-if="sm.type == 'page'">
+                                                    <label>Page</label>
+                                                    <select class="form-control input-sm" @change="sm.url = $event.target.value;">
+                                                        <option>Select a Page</option>
+                                                        <option v-for="page in pages" :value="page.url" v-html="page.title" :selected="sm.url == page.url"></option>
+                                                    </select>
+                                                    <p class="help-block">Select a page</p>
+                                                </div>
+                                                <div class="form-group" v-if="sm.type == 'post'">
+                                                    <label>Post</label>
+                                                    <select class="form-control input-sm" @change="sm.url = $event.target.value;">
+                                                        <option>Select a Post</option>
+                                                        <option v-for="post in posts" :value="post.url" v-html="post.title" :selected="sm.url == post.url"></option>
+                                                    </select>
+                                                    <p class="help-block">Select a post</p>
+                                                </div>
+                                            </div>
+                                            <div :class="sm.type == 'custom' ? 'col-sm-5': 'col-sm-3'">
+                                                <div class="form-group">
+                                                    <label>Link URL</label>
+                                                    <input type="text" :name="'sub_menu['+i+'][sub_menus]['+j+'][url]'" v-model="sm.url" class="form-control input-sm">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <a href="javascript:void(0);" class="text-danger btn btn-xs" @click="removeSubMenu(j, sub_menu)">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="btn btn-xs mt" @click="addSubMenu(sm)">
+                                                    + Add Submenu
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2">
-                                        <div class="form-group">
-                                            <label>Type</label>
-                                            <select class="form-control input-sm" v-model="sub_menu.type">
-                                                <option v-for="(t, i) in types" :value="i" v-html="t"></option>
-                                            </select>
-                                            <p class="help-block">Select a Type</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-for="(ssm, k) in sm.sub_menus.sort((a,b) => a.order > b.order)">
+                            <div class="panel sub-sub-panel panel-default">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-1 handle">
+                                                    <button class="btn btn-xs" type="button" v-if="k>0" @click="swap(sm.sub_menus, k, k-1)">
+                                                        <span class="glyphicon glyphicon-triangle-top"></span>
+                                                    </button>
+                                                    <button class="btn btn-xs" type="button" v-if="k<(sm.sub_menus.length-1)" @click="swap(sm.sub_menus, k, k+1)">
+                                                        <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <label>Title</label>
+                                                        <input type="text" :name="'sub_menu['+i+'][sub_menus]['+j+'][sub_menus]['+k+'][title]'" v-model="ssm.title" class="form-control input-sm">
+                                                        <p class="help-block">Recommended 30 Characters</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="form-group">
+                                                        <label>Type</label>
+                                                        <select class="form-control input-sm" v-model="ssm.type">
+                                                            <option v-for="(t, i) in types" :value="i" v-html="t"></option>
+                                                        </select>
+                                                        <p class="help-block">Select a Type</p>
+                                                    </div>
+                                                </div>
+                                                <div :class="ssm.type == 'custom' ? '': 'col-sm-2'">
+                                                    <div class="form-group" v-if="ssm.type == 'page'">
+                                                        <label>Page</label>
+                                                        <select class="form-control input-sm" @change="ssm.url = $event.target.value;">
+                                                            <option>Select a Page</option>
+                                                            <option v-for="page in pages" :value="page.url" v-html="page.title" :selected="ssm.url == page.url"></option>
+                                                        </select>
+                                                        <p class="help-block">Select a page</p>
+                                                    </div>
+                                                    <div class="form-group" v-if="ssm.type == 'post'">
+                                                        <label>Post</label>
+                                                        <select class="form-control input-sm" @change="ssm.url = $event.target.value;">
+                                                            <option>Select a Post</option>
+                                                            <option v-for="post in posts" :value="post.url" v-html="post.title" :selected="ssm.url == post.url"></option>
+                                                        </select>
+                                                        <p class="help-block">Select a post</p>
+                                                    </div>
+                                                </div>
+                                                <div :class="ssm.type == 'custom' ? 'col-sm-5': 'col-sm-3'">
+                                                    <div class="form-group">
+                                                        <label>Link URL</label>
+                                                        <input type="text" :name="'sub_menu['+i+'][sub_menus]['+j+'][sub_menus]['+k+'][url]'" v-model="ssm.url" class="form-control input-sm">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <a href="javascript:void(0);" class="text-danger btn btn-xs" @click="removeSubMenu(k, sm)">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="form-group" v-if="sub_menu.type == 'page'">
-                                            <label>Page</label>
-                                            <select class="form-control input-sm" @change="sub_menu.url = $event.target.value;">
-                                                <option>Select a Page</option>
-                                                <option v-for="page in pages" :value="page.url" v-html="page.title" :selected="sub_menu.url == page.url"></option>
-                                            </select>
-                                            <p class="help-block">Select a page</p>
-                                        </div>
-                                        <div class="form-group" v-if="sub_menu.type == 'post'">
-                                            <label>Post</label>
-                                            <select class="form-control input-sm" @change="sub_menu.url = $event.target.value;">
-                                                <option>Select a Post</option>
-                                                <option v-for="post in posts" :value="post.url" v-html="post.title" :selected="sub_menu.url == post.url"></option>
-                                            </select>
-                                            <p class="help-block">Select a post</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Link URL</label>
-                                            <input type="text" :name="'sub_menu['+i+'][url]'" v-model="sub_menu.url" class="form-control input-sm">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-1 text-right">
-                                        <a href="javascript:void(0);" class="text-danger" @click="removeSubMenu(i)">
-                                            <i class="fa fa-times"></i>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </draggable>
+            </div>
         </div>
         <div v-if="!(menu.sub_menus.length)">
             <div class="alert alert-callout alert-warning alert-dismissible" role="alert">
@@ -104,6 +247,22 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+    <style>
+        .sub-panel {
+            margin-left: 40px;
+        }
+
+        .sub-sub-panel {
+            margin-left: 80px;
+        }
+
+        .mt {
+            margin-top: 4em;
+        }
+    </style>
+@endpush
 
 @push('scripts')
     <script>

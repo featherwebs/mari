@@ -19,7 +19,7 @@ class Menu extends Model
 
     public function subMenus()
     {
-        return $this->hasMany(SubMenu::class);
+        return $this->morphMany(SubMenu::class, 'submenuable');
     }
 
     public function setSlugAttribute($value)

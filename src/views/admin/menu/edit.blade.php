@@ -14,6 +14,11 @@
                 </ol>
             </nav>
         @endslot
+        @component('featherwebs::admin.template.alert', ['type' => 'info'])
+            How To Use:
+            You can output this menu anywhere on your site by calling <code>fw_menu('{{ $menu->slug }}')->subMenus</code>
+        @endcomponent
+        <br>
         <form action="{{ route('admin.menu.update', $menu->slug) }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             {{ method_field('PUT') }}

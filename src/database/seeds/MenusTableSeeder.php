@@ -19,16 +19,13 @@ class MenusTableSeeder extends Seeder
         ];
 
         $submenus = [
-            [
-                'menu_id' => 1,
                 'title'   => 'Posts',
                 'url'     => '/post',
                 'order'   => 1
-            ]
         ];
 
         $menu = Menu::create($menu);
 
-        $menu->subMenus()->insert($submenus);
+        $menu->subMenus()->create($submenus);
     }
 }

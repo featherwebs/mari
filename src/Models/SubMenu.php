@@ -12,8 +12,20 @@ class SubMenu extends Model
         'custom' => 'array'
     ];
 
+    protected $appends = ['type'];
+
     public function menu()
     {
         return $this->belongsTo(Menu::class);
+    }
+
+    public function subMenus()
+    {
+        return $this->morphMany(SubMenu::class, 'submenuable');
+    }
+
+    public function getTypeAttribute()
+    {
+        return 'custom';
     }
 }
