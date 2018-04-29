@@ -53,40 +53,4 @@ class StoreMenu extends FormRequest
 
         return $result;
     }
-
-    public function subSubMenuData($i)
-    {
-        $order  = 1;
-        $result = [];
-        foreach ($this->input('sub_menu.'.$i.'.sub_menus') as $item)
-        {
-            array_push($result, [
-                'order'   => $order,
-                'title'   => empty($item['title']) ? ' ' : $item['title'],
-                'url'     => empty($item['url']) ? ' ' : $item['url'],
-                'sub_menus' => array_key_exists('sub_menus', $item) ? $item['sub_menus'] : []
-            ]);
-            $order ++;
-        }
-
-        return $result;
-    }
-
-    public function subSubSubMenuData($i, $j)
-    {
-        $order  = 1;
-        $result = [];
-        foreach ($this->input('sub_menu.'.$i.'.sub_menus.'.$j.'.sub_menus') as $item)
-        {
-            array_push($result, [
-                'order'   => $order,
-                'title'   => empty($item['title']) ? ' ' : $item['title'],
-                'url'     => empty($item['url']) ? ' ' : $item['url'],
-                'sub_menus' => array_key_exists('sub_menus', $item) ? $item['sub_menus'] : []
-            ]);
-            $order ++;
-        }
-
-        return $result;
-    }
 }

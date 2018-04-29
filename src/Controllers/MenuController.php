@@ -46,14 +46,15 @@ class MenuController extends BaseController
     {
         $menu = DB::transaction(function () use ($request) {
             $menu = Menu::create($request->data());
-            foreach ($request->subMenuData() as $data) {
-                foreach ($request->subMenuData() as $data) {
-                    $subMenu = $menu->subMenus()->create($data);
-                    foreach ($data['sub_menus'] as $dat) {
-                        $subSubMenu = $subMenu->subMenus()->create($dat);
-                        foreach ($dat['sub_menus'] as $da) {
-                            $subSubMenu->subMenus()->create($da);
-                        }
+            foreach ($request->subMenuData() as $i => $data) {
+                $data['order'] = $i + 1;
+                $subMenu       = $menu->subMenus()->create($data);
+                foreach ($data['sub_menus'] as $j => $dat) {
+                    $dat['order'] = $j + 1;
+                    $subSubMenu   = $subMenu->subMenus()->create($dat);
+                    foreach ($dat['sub_menus'] as $k => $da) {
+                        $da['order'] = $k + 1;
+                        $subSubMenu->subMenus()->create($da);
                     }
                 }
             }
@@ -87,11 +88,14 @@ class MenuController extends BaseController
         DB::transaction(function () use ($request, $menu) {
             $menu->update($request->data());
             $menu->subMenus()->delete();
-            foreach ($request->subMenuData() as $data) {
-                $subMenu = $menu->subMenus()->create($data);
-                foreach ($data['sub_menus'] as $dat) {
-                    $subSubMenu = $subMenu->subMenus()->create($dat);
-                    foreach ($dat['sub_menus'] as $da) {
+            foreach ($request->subMenuData() as $i => $data) {
+                $data['order'] = $i + 1;
+                $subMenu       = $menu->subMenus()->create($data);
+                foreach ($data['sub_menus'] as $j => $dat) {
+                    $dat['order'] = $j + 1;
+                    $subSubMenu   = $subMenu->subMenus()->create($dat);
+                    foreach ($dat['sub_menus'] as $k => $da) {
+                        $da['order'] = $k + 1;
                         $subSubMenu->subMenus()->create($da);
                     }
                 }
