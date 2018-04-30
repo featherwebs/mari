@@ -46,7 +46,7 @@ return [
     'base_directory' => 'storage/app/public',
 
     'images_folder_name' => 'photos',
-    'files_folder_name'  => 'files',
+    'files_folder_name'  => 'photos',
 
     'shared_folder_name' => 'uploads',
     'thumb_folder_name'  => 'thumbs',
@@ -91,8 +91,7 @@ return [
         'image/jpeg',
         'image/pjpeg',
         'image/png',
-        'image/gif',
-        'image/svg+xml',
+        'image/gif'
     ],
 
     // If true, image thumbnails would be created during upload
