@@ -24,8 +24,9 @@ class PostController extends BaseController
         $posts = Post::with('postType', 'tags', 'files', 'custom');
 
         if ($type) {
-            $posts = $posts->where('post_type_id', $type->id);
+            $posts->where('post_type_id', $type->id);
         }
+        $posts->select('posts.*');
 
         return DataTables::of($posts)->make(true);
     }

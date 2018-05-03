@@ -58,7 +58,7 @@
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title', render:function (data,meta,row) {
                         @permission('update-post')
-                            return "<a href='/admin/post/"+row.slug+"'>"+data+"</a>";
+                            return "<a href='/admin/post/"+row.slug+"/edit'>"+data+"</a>";
                         @endpermission
                         return data;
                     }},
