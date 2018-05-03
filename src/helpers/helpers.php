@@ -6,6 +6,7 @@ use Featherwebs\Mari\Models\Post;
 use Featherwebs\Mari\Models\PostType;
 use Featherwebs\Mari\Models\Setting;
 use Featherwebs\Mari\Models\Page;
+use Featherwebs\Mari\Models\File;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use Illuminate\Http\UploadedFile;
@@ -369,6 +370,44 @@ if ( ! function_exists('fw_sync_images')) {
                 $image = Image::where('path', 'like', '%'.$filename)->first();
                 if($image)
                     $model->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+            }
+        }
+
+    }
+}
+if ( ! function_exists('fw_sync_files')) {
+    /*
+     *
+     */
+    function fw_sync_files($model, $files = [], $detach = true)
+    {
+        if ( ! is_array($files)) {
+            throw new Exception('Expected array');
+        }
+
+        if ($detach) {
+            $model->files()->detach();
+        }
+
+        foreach ($files as $k => $img) {
+            if ( ! array_key_exists('path', $img)) {
+                throw new Exception('Expected a key of `path`');
+            }
+
+            $path = $img['path'];
+            $slug = array_key_exists('slug', $img) ? $img['slug'] : null;
+
+            if ( ! empty($path)) {
+                $filename = basename($path);
+                $file     = File::where('path', 'like', '%' . $filename)->first();
+
+                if ( ! $file) {
+                    $file = Image::where('path', 'like', '%' . $filename)->first();
+                }
+
+                if ($file) {
+                    $model->files()->save($file, [ 'slug' => str_slug($slug, '_') ]);
+                }
             }
         }
 
