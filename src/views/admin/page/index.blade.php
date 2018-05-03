@@ -21,10 +21,10 @@
         <div>
             <table id="page-datatable" class="mdl-data-table" width="100%">
                 <thead>
-                    <th>SN</th>
-                    <th>Title</th>
-                    <th>Published</th>
-                    <th>Action</th>
+                <th>SN</th>
+                <th>Title</th>
+                <th>Published</th>
+                <th>Action</th>
                 </thead>
                 <tbody>
                 </tbody>
@@ -33,7 +33,7 @@
     @endcomponent
 @endsection
 @push('styles')
-<link href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet">
 @endpush
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js"></script>
@@ -52,6 +52,9 @@
                 columns:[
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title', render:function(data, meta, row){
+                    @permission('update-page')
+                        data = "<a href='/admin/page/"+row.slug+"/edit'>"+data+"</a>";
+                    @endpermission
                         if(row.id == home_page_id)
                             return '<b>' + data + ' --Homepage-- </b>';
                         else

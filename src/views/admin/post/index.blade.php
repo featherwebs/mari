@@ -56,7 +56,12 @@
                 },
                 columns:[
                     {data: 'id', name: 'id'},
-                    {data: 'title', name: 'title'},
+                    {data: 'title', name: 'title', render:function (data,meta,row) {
+                        @permission('update-post')
+                            return "<a href='/admin/post/"+row.slug+"'>"+data+"</a>";
+                        @endpermission
+                        return data;
+                    }},
                     {data: 'is_published', name: 'is_published', render:function(data){
                         if(data)
                             return "<i class='material-icons text-success'>check_circle</i>";

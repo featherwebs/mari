@@ -59,10 +59,12 @@ class UpdatePost extends FormRequest
         $data = [];
         foreach ($this->input('post.custom', []) as $custom) {
             if ( ! ( $custom['type'] == 'file' )) {
-                array_push($data, [
-                    'slug'  => $custom['slug'],
-                    'value' => $custom['value']
-                ]);
+                if (array_key_exists('slug', $custom)) {
+                    array_push($data, [
+                        'slug'  => $custom['slug'],
+                        'value' => array_key_exists('value', $custom) ? $custom['value'] : ''
+                    ]);
+                }
             }
         }
 
