@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use Featherwebs\Mari\Models\File;
 use Featherwebs\Mari\Models\Image;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\InteractsWithQueue;
@@ -29,10 +30,13 @@ class ImageRenamed
         $oldPath = str_replace(storage_path('app/public/'), "", $event->oldPath());
         $newPath = str_replace(storage_path('app/public/'), "", $event->newPath());
 
-        $image = Image::where('path', $oldPath)->first();
+        $file = Image::where('path', $oldPath)->first();
+        if ( ! $file) {
+            $file = File::where('path', $oldPath)->first();
+        }
 
-        if ($image) {
-            $image->update([ 'path' => $newPath ]);
+        if ($file) {
+            $file->update([ 'path' => $newPath ]);
         }
     }
 }

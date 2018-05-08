@@ -49,12 +49,16 @@ class MenuController extends BaseController
             foreach ($request->subMenuData() as $i => $data) {
                 $data['order'] = $i + 1;
                 $subMenu       = $menu->subMenus()->create($data);
-                foreach ($data['sub_menus'] as $j => $dat) {
-                    $dat['order'] = $j + 1;
-                    $subSubMenu   = $subMenu->subMenus()->create($dat);
-                    foreach ($dat['sub_menus'] as $k => $da) {
-                        $da['order'] = $k + 1;
-                        $subSubMenu->subMenus()->create($da);
+                if (array_key_exists('sub_menus', $data)) {
+                    foreach ($data['sub_menus'] as $j => $dat) {
+                        $dat['order'] = $j + 1;
+                        $subSubMenu   = $subMenu->subMenus()->create($dat);
+                        if (array_key_exists('sub_menus', $dat)) {
+                            foreach ($dat['sub_menus'] as $k => $da) {
+                                $da['order'] = $k + 1;
+                                $subSubMenu->subMenus()->create($da);
+                            }
+                        }
                     }
                 }
             }
@@ -91,12 +95,16 @@ class MenuController extends BaseController
             foreach ($request->subMenuData() as $i => $data) {
                 $data['order'] = $i + 1;
                 $subMenu       = $menu->subMenus()->create($data);
-                foreach ($data['sub_menus'] as $j => $dat) {
-                    $dat['order'] = $j + 1;
-                    $subSubMenu   = $subMenu->subMenus()->create($dat);
-                    foreach ($dat['sub_menus'] as $k => $da) {
-                        $da['order'] = $k + 1;
-                        $subSubMenu->subMenus()->create($da);
+                if (array_key_exists('sub_menus', $data)) {
+                    foreach ($data['sub_menus'] as $j => $dat) {
+                        $dat['order'] = $j + 1;
+                        $subSubMenu   = $subMenu->subMenus()->create($dat);
+                        if (array_key_exists('sub_menus', $dat)) {
+                            foreach ($dat['sub_menus'] as $k => $da) {
+                                $da['order'] = $k + 1;
+                                $subSubMenu->subMenus()->create($da);
+                            }
+                        }
                     }
                 }
             }
