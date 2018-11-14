@@ -6,8 +6,8 @@ use Featherwebs\Mari\Models\Image;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
-use Unisharp\Laravelfilemanager\Events\ImageIsDeleting;
-use Unisharp\Laravelfilemanager\Events\ImageWasDeleted;
+use UniSharp\LaravelFilemanager\Events\ImageIsDeleting;
+use UniSharp\LaravelFilemanager\Events\ImageWasDeleted;
 
 class ImageDeleted
 {

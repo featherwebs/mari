@@ -17,7 +17,7 @@ class CreateSettingsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('slug', 100);
-            $table->string('value')->nullable();
+            $table->text('value')->nullable();
             $table->boolean('is_custom')->default(true);
             $table->timestamps();
         });

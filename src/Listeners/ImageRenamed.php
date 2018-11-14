@@ -7,7 +7,7 @@ use Featherwebs\Mari\Models\Image;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Unisharp\Laravelfilemanager\Events\ImageIsRenaming;
+use UniSharp\LaravelFilemanager\Events\ImageIsRenaming;
 
 class ImageRenamed
 {

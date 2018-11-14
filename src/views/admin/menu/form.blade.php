@@ -17,7 +17,7 @@
         <hr>
         <div class="row">
             <div class="col-sm-12 text-right">
-                <a href="javascript:void(0);" @click="addSubMenu()">
+                <a href="javascript:void(0);" @click="addSubMenu(false)">
                     + Add
                 </a>
             </div>
