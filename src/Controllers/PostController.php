@@ -152,28 +152,24 @@ class PostController extends BaseController
     public function archive(Request $request)
     {
         $posts = Post::published()->latest();
-        $title = "Posts";
+        $view = $request->get('view', 'default');
+        $title = 'Posts';
 
         if ($request->has('q')) {
             $q     = $request->get('q');
             $posts = $posts->where(function ($query) use ($q) {
-                $query->where('title', 'like', '%' . $query . '%')->orWhere('sub_title', 'like', '%' . $query . '%');
+                $query->where('title', 'like', '%' . $q . '%')->orWhere('sub_title', 'like', '%' . $q . '%');
             });
         }
 
         if ($request->has('type')) {
-            $t    = $request->get('type');
-            $type = PostType::where('slug', $t)->first();
-            if ($type) {
-                $title = ucwords(str_plural($type->title));
-                $posts = $posts->type($type->id);
-            }
+            $posts = $posts->type($request->get('type'));
         }
 
         $posts = $posts->paginate($request->get('limit', 12))->appends($request->except('page'));
 
         return view()->first([
-            'postTypes.' . $type->slug,
+            'postTypes.' . $view,
             'postTypes.default'
         ], compact('posts', 'title'));
     }

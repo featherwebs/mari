@@ -161,13 +161,23 @@ class Post extends Model
 
     public function scopeType($query, $slugid)
     {
-        $id       = $slugid;
-        $postType = PostType::whereSlug($slugid)->first();
-        if ($postType) {
-            $id = $postType->id;
-        }
+        if(is_array($slugid))
+            $arr = $slugid;
+        else
+            $arr = [$slugid];
 
-        return $query->where('post_type_id', $id);
+        return $query->where(function($q) use ($arr) {
+            foreach($arr as $item) {
+                $id       = $item;
+                $postType = PostType::whereSlug($item)->first();
+                if ($postType) {
+                    $id = $postType->id;
+                }
+    
+                $q->orWhere('post_type_id', $id);
+            }
+        });
+        
     }
 
     public function setSlugAttribute($value)
