@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="academics-wrapper margin-bottom-fix">
+    <section>
         <div class="container-fluid">
             <div class="row">
                 <div id="myCarousel" class="carousel media carousel-fade" data-ride="carousel">
@@ -26,7 +26,7 @@
         </div>
     </section>
 
-    <section class="academics-descriptions margin-bottom-fix">
+    <section>
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">

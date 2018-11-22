@@ -32,22 +32,22 @@ class Image extends Model
         }
     }
 
-    public function getThumbnail($width = null, $height = null)
+    public function getThumbnail($width = null, $height = null, $quality=90)
     {
         if (($width == null && $height == null) || !$this->file()) {
             return null;
         }
         $prefix           = 'TH_';
         $originalFilename = $filename = basename($this->path);
-        $name             = $prefix . $width . '_' . $height . '_' . $originalFilename;
+        $name             = $prefix . $width . '_' . $height . '_' . $originalFilename.'_'.$quality;
         $fileLocation     = self::THUMB_PATH . $name;
         if ( ! file_exists($fileLocation)) {
             if ($width == null || $height == null) {
                 $this->file()->resize($width, $height, function ($constraint) {
                     $constraint->aspectRatio();
-                })->save($fileLocation);
+                })->save($fileLocation, $quality);
             } else {
-                $this->file()->fit($width, $height)->save($fileLocation);
+                $this->file()->fit($width, $height)->save($fileLocation, $quality);
             }
         }
 

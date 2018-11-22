@@ -15,7 +15,7 @@
                             </figure>
                         </div>
                         <div class="col-sm-12 col-xs-7">
-                            <a href="#" class="remove-hyper">
+                            <a href="{{ route('post', $post) }}" class="remove-hyper">
                                 <figcaption>
                                     {!! $post->title !!}
                                 </figcaption>
@@ -26,7 +26,7 @@
                                     {!! $post->sub_title !!}
                                 </p>
                             </a>
-                            <a class="btn event-btn hidden-xs" href="#">View details</a>
+                            <a class="btn event-btn hidden-xs" href="{{ route('post', $post) }}">View details</a>
                         </div>
                     </div>
                 </div>
