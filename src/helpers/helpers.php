@@ -440,7 +440,24 @@ if ( ! function_exists('fw_meta_title')) {
    */
   function fw_meta_title($article, $default = null)
   {
-    return $article->meta_title ?? $article->title ?? fw_setting('meta_title', $default);
+    try {
+      if ( ! empty($article->meta_title)) {
+        return $article->meta_title;
+      }
+    } catch (Exception $e) {
+    }
+    try {
+      if ( ! empty(fw_setting('meta_title'))) {
+        return fw_setting('meta_title');
+      }
+    } catch (Exception $e) {
+    }
+    try {
+      if ( ! empty($article->title)) {
+        return $article->title;
+      }
+    } catch (Exception $e) {
+    }
   }
 }
 if ( ! function_exists('fw_meta_desc')) {
@@ -449,7 +466,24 @@ if ( ! function_exists('fw_meta_desc')) {
    */
   function fw_meta_desc($article, $default = null)
   {
-    return str_limit($article->meta_description ?? $article->content ?? fw_setting('meta_description', $default), 200);
+    try {
+      if ( ! empty($article->meta_description)) {
+        return str_limit($article->meta_description, 200);
+      }
+    } catch (Exception $e) {
+    }
+    try {
+      if ( ! empty($article->content)) {
+        return str_limit(strip_tags($article->content), 200);
+      }
+    } catch (Exception $e) {
+    }
+    try {
+      if ( ! empty(fw_setting('meta_description'))) {
+        return str_limit(fw_setting('meta_description'), 200);
+      }
+    } catch (Exception $e) {
+    }
   }
 }
 if ( ! function_exists('fw_meta_keywords')) {
@@ -458,7 +492,18 @@ if ( ! function_exists('fw_meta_keywords')) {
    */
   function fw_meta_keywords($article, $default = null)
   {
-    return $article->meta_keywords ?? fw_setting('meta_keywords', $default);
+    try {
+      if ( ! empty($article->meta_keywords)) {
+        return $article->meta_keywords;
+      }
+    } catch (Exception $e) {
+    }
+    try {
+      if ( ! empty(fw_setting('meta_keywords'))) {
+        return fw_setting('meta_keywords');
+      }
+    } catch (Exception $e) {
+    }
   }
 }
 if ( ! function_exists('fw_meta_image')) {
@@ -467,8 +512,9 @@ if ( ! function_exists('fw_meta_image')) {
    */
   function fw_meta_image($article, $default = null)
   {
-    if( $article && $article->images()->count())
+    if ($article && $article->images()->count()) {
       return $article->images()->first()->url;
+    }
 
     return fw_setting('logo', $default);
   }
