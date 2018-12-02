@@ -9,9 +9,11 @@
                         @forelse(fw_posts_by_category('slider') as $media)
                             @if($image = $media->images()->first())
                                 <div class="item{{ $loop->first ? ' active': '' }}">
-                                    <img class="img-responsive" src="{{ $image->getThumbnail(1905, 708) }}" alt="{{ $image->getCustom('title') }}">
-                                    <h2>{{ $image->getCustom('title') }}</h2>
-                                    <h3>{{ $image->getCustom('caption') }}</h3>
+                                    <img class="img-responsive" src="{{ $image->getThumbnail(1905, 708) }}" alt="{{ $media->title }}">
+                                    <h2>{{ $media->title }}</h2>
+                                    @if($media->sub_title)
+                                        <h3>{{ $media->sub_title }}</h3>
+                                    @endif
                                 </div>
                             @endif
                         @empty

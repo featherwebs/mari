@@ -3,9 +3,13 @@
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
+        @forelse(fw_posts_by_category('slider') as $slide)
+            @if($image = $slide->images()->first())
+                <li data-target="#myCarousel" data-slide-to="0" class="{{ $loop->iteration == 1 ? 'active':'' }}"></li>
+            @endif
+        @empty
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        @endforelse
     </ol>
     <div class="carousel-inner" role="listbox">
         @forelse(fw_posts_by_category('slider') as $slide)

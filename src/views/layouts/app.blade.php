@@ -5,21 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
-    @if(isset($page))
-        <meta name="title" content="{{ fw_setting('meta_title', $page->meta_title) }}">
-        <meta name="description" content="{{ fw_setting('meta_title', $page->meta_title) }}">
-        <meta name="keywords" content="{{ fw_setting('meta_keywords', $page->meta_keywords) }}">
-    @elseif(isset($post))
-        <meta name="title" content="{{ fw_setting('meta_title', $post->meta_title) }}">
-        <meta name="description" content="{{ fw_setting('meta_title', $post->meta_title) }}">
-        <meta name="keywords" content="{{ fw_setting('meta_keywords', $post->meta_keywords) }}">
-    @else
-        <meta name="title" content="{{ fw_setting('meta_title') }}">
-        <meta name="description" content="{{ fw_setting('meta_description') }}">
-        <meta name="keywords" content="{{ fw_setting('meta_keywords') }}">
-    @endif
+    <meta name="title" content="{!! fw_meta_title($post ?? $page ?? false) !!}">
+    <meta name="description" content="{!! fw_meta_desc($post ?? $page ?? false) !!}">
+    <meta name="keywords" content="{!! fw_meta_keywords($post ?? $page ?? false) !!}">
 
-<!-- CSRF Token -->
+    <meta property="og:title" content="{!! fw_meta_title($post ?? $page ?? false) !!}">
+    <meta property="og:description" content="{!! fw_meta_desc($post ?? $page ?? false) !!}">
+    <meta property="og:image" content="{!! fw_meta_image($post ?? $page ?? false) !!}">
+    <meta property="og:url" content="{!! request()->url() !!}">
+    <meta property="og:site_name" content="{!! fw_setting('title') !!}">
+
+    <meta name="twitter:title" content="{!! fw_meta_title($post ?? $page ?? false) !!}">
+    <meta name="twitter:description" content="{!! fw_meta_desc($post ?? $page ?? false) !!}">
+    <meta name="twitter:image" content="{!! fw_meta_image($post ?? $page ?? false) !!}">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>

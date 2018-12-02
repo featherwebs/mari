@@ -81,8 +81,8 @@ class MenuController extends BaseController
                 return [ 'title' => $page->title, 'url' => $page->url ];
             }
         });
-        $postTypes = PostType::all();
-        $posts     = Post::all();
+        $postTypes = PostType::select(['id', 'title', 'slug'])->get()->toArray();
+        $posts     = Post::select(['id','title', 'slug'])->get()->toArray();
 
         return view('featherwebs::admin.menu.edit', compact('menu', 'pages', 'posts', 'postTypes'));
     }

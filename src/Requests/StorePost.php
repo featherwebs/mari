@@ -59,8 +59,8 @@ class StorePost extends FormRequest
         foreach ($this->input('post.custom', []) as $custom) {
             if ( ! ($custom['type'] == 'file')) {
                 array_push($data, [
-                    'slug'  => $custom['slug'],
-                    'value' => $custom['value']
+                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug']: '',
+                    'value' => array_key_exists('value', $custom) ? $custom['value']: ''
                 ]);
             }
         }
