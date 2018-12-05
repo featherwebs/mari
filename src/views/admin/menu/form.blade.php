@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div>
-                <div v-for="(sub_menu, i) in menu.sub_menus.sort((a,b) => a.order > b.order)">
+                <div v-for="(sub_menu, i) in _.sortBy(menu.sub_menus, 'order')">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="row">
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-for="(sm, j) in sub_menu.sub_menus.sort((a,b) => a.order > b.order)">
+                    <div v-for="(sm, j) in _.sortBy(sub_menu.sub_menus, 'order')">
                         <div class="panel sub-panel panel-default">
                             <div class="panel-body">
                                 <div class="row">
@@ -168,7 +168,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-for="(ssm, k) in sm.sub_menus.sort((a,b) => a.order > b.order)">
+                        <div v-for="(ssm, k) in _.sortBy(sm.sub_menus, 'order')">
                             <div class="panel sub-sub-panel panel-default">
                                 <div class="panel-body">
                                     <div class="row">
@@ -265,6 +265,8 @@
 @endpush
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
     <script>
                 @if(isset($menu))
         let menu = JSON.parse('{!! addslashes(json_encode($menu)) !!}');

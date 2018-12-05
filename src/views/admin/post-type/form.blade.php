@@ -94,6 +94,7 @@
 @endpush
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script>
                 @if(isset($postType))
         let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');

@@ -60,6 +60,11 @@ class SettingsTableSeeder extends Seeder
                 'is_custom' => 0
             ],
             [
+                'slug'      => 'google',
+                'value'     => 'https://www.google.com',
+                'is_custom' => 0
+            ],
+            [
                 'slug'      => 'youtube',
                 'value'     => 'https://www.youtube.com',
                 'is_custom' => 0

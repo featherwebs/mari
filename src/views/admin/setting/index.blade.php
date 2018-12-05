@@ -137,10 +137,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="google_plus" class="control-label col-sm-2">Google Plus</label>
+                            <label for="instagram" class="control-label col-sm-2">Instagram</label>
                             <div class="col-sm-10">
-                                <input type="text" id="google_plus" name="setting[google_plus]" value="{{ old('setting.google_plus') ?: fw_setting('google_plus') }}" class="form-control">
-                                <span class="help-block"><code>fw_setting('google_plus')</code></span>
+                                <input type="text" id="instagram" name="setting[instagram]" value="{{ old('setting.instagram') ?: fw_setting('instagram') }}" class="form-control">
+                                <span class="help-block"><code>fw_setting('instagram')</code></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="google" class="control-label col-sm-2">Google Plus</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="google" name="setting[google]" value="{{ old('setting.google') ?: fw_setting('google') }}" class="form-control">
+                                <span class="help-block"><code>fw_setting('google')</code></span>
                             </div>
                         </div>
                     </div>
@@ -227,6 +234,7 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script>
         $(document).ready(function () {
             $(document).on('click', '.btn-delete', function (e) {

@@ -25,10 +25,9 @@ class SettingController extends BaseController
     public function store(StoreSettings $request)
     {
         foreach ($request->get('setting', []) as $key => $value) {
-            $setting = Setting::fetch($key);
-            if ($setting) {
-                $setting->update([ 'value' => $value ]);
-            }
+            Setting::firstOrCreate([
+                'slug'  => str_slug($key)
+            ])->update([ 'value' => $value ]);
         }
 
         $logo = Setting::firstOrCreate(['slug' => 'logo']);

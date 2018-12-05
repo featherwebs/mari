@@ -52,8 +52,8 @@
             <div class="form-group" v-if="roles">
                 <label for="roles" class="control-label col-sm-2">Role</label>
                 <div class="col-sm-10">
-                    <select class="form-control" name="user[role][id]" id="roles">
-                        <option v-for="role in roles" :value="role.id" v-html="role.display_name" :selected="user.roles && user.roles.filter(r => r.id == role.id).length"></option>
+                    <select class="form-control" name="user[role][id]" id="roles" v-model="user.role">
+                        <option v-for="role in roles" :value="role.id" v-html="role.display_name"></option>
                     </select>
                     <span class="help-block">User Role</span>
                 </div>
@@ -80,6 +80,7 @@
     </div>
 </div>
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script>

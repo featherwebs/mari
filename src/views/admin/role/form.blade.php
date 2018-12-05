@@ -6,38 +6,21 @@
             <span class="help-block">Role Name</span>
         </div>
     </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Entities
-                </th>
-                <th>
-                    Create
-                </th>
-                <th>
-                    Read
-                </th>
-                <th>
-                    Update
-                </th>
-                <th>
-                    Delete
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="form-group" v-for="(group,name) in permissions">
-                <td>@{{ name }}</td>
-                <td v-for="permission in group">
-                    <label class="mdl-switch mdl-js-switch" :for="'permission-'+permission.id">
-                        <input type="checkbox" :id="'permission-'+permission.id" class="mdl-switch__input" :name="'permission['+permission.id+']'" :checked="role.perms.length && role.perms.filter(p=>p.id == permission.id).length">
-                        <span class="mdl-switch__label"></span>
-                    </label>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-sm-3" v-for="(group,name) in permissions">
+            <div class="panel panel-default">
+                <div class="panel-heading">@{{ name }}</div>
+                <div class="panel-body">
+                    <div v-for="permission in group">
+                        <label class="mdl-switch mdl-js-switch" :for="'permission-'+permission.id">
+                            <input type="checkbox" :id="'permission-'+permission.id" class="mdl-switch__input" :name="'permission['+permission.id+']'" :checked="role.perms.length && role.perms.filter(p=>p.id == permission.id).length">
+                            <span class="mdl-switch__label">@{{ permission.display_name }}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('styles')
@@ -45,6 +28,7 @@
 @endpush
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script>
                 @if(isset($role))
         let role = JSON.parse('{!! addslashes(json_encode($role)) !!}');
