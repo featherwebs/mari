@@ -154,6 +154,7 @@ class PostController extends BaseController
     $posts = Post::published()->latest();
     $view = $request->get('view', 'default');
     $title = 'Posts';
+    $q = '';
 
     if ($request->has('q')) {
       $q     = $request->get('q');
@@ -165,13 +166,12 @@ class PostController extends BaseController
     if ($request->has('type')) {
       $posts = $posts->type($request->get('type'));
     }
-
     $posts = $posts->paginate($request->get('limit', 12))->appends($request->except('page'));
 
     return view()->first([
       'postTypes.' . $view,
-      'postTypes.default'
-    ], compact('posts', 'title'));
+      'posts.index'
+    ], compact('posts', 'title', 'q'));
   }
 
   public function showTag(Tag $tag)

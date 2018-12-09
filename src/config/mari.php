@@ -2,7 +2,7 @@
 return [
     /*
      * Custom navbar elements
-     * reuqired [ "route" => "route.name", "label" => "Label", "icon" => "fa fa-icon" ]
+     * reuqired [ 'route' => 'route.name', 'label' => 'Label', 'icon' => 'fa fa-icon', 'permission' => null ]
      */
     'navbar' => []
 ];

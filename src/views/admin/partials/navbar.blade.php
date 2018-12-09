@@ -38,7 +38,6 @@
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">perm_media</i>
             Media
         </a>
-
         @endpermission
         @permission('read-page')
         <a class="mdl-navigation__link" href="{{ route('admin.page.index') }}">
@@ -58,9 +57,17 @@
         </a>
         @endpermission
         @foreach(config('mari.navbar', []) as $item)
-            <a class="mdl-navigation__link" href="{{ route($item['route']) }}">
-                <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">{{ $item['icon'] }}</i>{{ $item['label'] }}
-            </a>
+            @if(array_key_exists('permission', $item) && !empty($item['permission']))
+                @permission('read-menu')
+                <a class="mdl-navigation__link" href="{{ route($item['route']) }}">
+                    <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">{{ $item['icon'] }}</i>{{ $item['label'] }}
+                </a>
+                @endpermission
+            @else
+                <a class="mdl-navigation__link" href="{{ route($item['route']) }}">
+                    <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">{{ $item['icon'] }}</i>{{ $item['label'] }}
+                </a>
+            @endif
         @endforeach
         @permission('read-role')
         <a class="mdl-navigation__link" href="{{ route('admin.role.index') }}">

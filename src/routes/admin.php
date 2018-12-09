@@ -7,7 +7,6 @@ use \Featherwebs\Mari\Controllers\PageController;
 use \Featherwebs\Mari\Controllers\PostController;
 use \Featherwebs\Mari\Controllers\MenuController;
 use \Featherwebs\Mari\Controllers\RoleController;
-use \Featherwebs\Mari\Controllers\SubMenuController;
 use \Featherwebs\Mari\Controllers\SettingController;
 use \Featherwebs\Mari\Controllers\MediaController;
 use \Featherwebs\Mari\Controllers\SupportController;
@@ -60,8 +59,6 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::get('menu/{menu}/edit', MenuController::class.'@edit')->name('menu.edit')->middleware('permission:update-menu');
         Route::put('menu/{menu}', MenuController::class.'@update')->name('menu.update')->middleware('permission:update-menu');
         Route::delete('menu/{menu}', MenuController::class.'@destroy')->name('menu.destroy')->middleware('permission:delete-menu');
-
-        Route::post('menu/{menu}/submenu', SubMenuController::class.'@store')->name('menu.submenu.store')->middleware('permission:create-menu');
 
         Route::get('user', UserController::class.'@index')->name('user.index')->middleware('permission:read-user');
         Route::get('user/create', UserController::class.'@create')->name('user.create')->middleware('permission:create-user');

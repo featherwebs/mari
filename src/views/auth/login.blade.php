@@ -30,7 +30,7 @@
                         <h1>mari <span class="trademark"> &#8482; </span></h1>
                         <h4>Simple, Clean, and Consistent</h4>
                         <h4>Control Panel</h4>
-                        <small>Baked with mari 0.21 beta</small>
+                        <small>Baked with mari v1</small>
                     </header>
                 </div>
 
@@ -42,7 +42,7 @@
                         {{ csrf_field() }}
                         <h2 class="form-signin-heading">mari<span class="cms-text">CMS</span></h2>
                         <div class="form-group">
-                            <input type="email" name='email' class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email">
+                            <input type="email" name='email' class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email" autofocus>
 
                             @if ($errors->has('email'))
                                 <span class="help-block">
@@ -78,20 +78,16 @@
             <div class="col-sm-12">
                 <footer>
                     <ul class="footer-link">
-                        <li><a href="#">2017 Featherwebs</a></li>
+                        <li><a href="http://featherwebs.com" target="_blank">{{ date('Y') }} Featherwebs</a></li>
                         <li><a href="#">Home</a></li>
                         <li><a href="#">Terms of Service</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Send Feedback</a></li>
                     </ul>
                 </footer>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
