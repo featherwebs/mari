@@ -58,7 +58,7 @@
         @endpermission
         @foreach(config('mari.navbar', []) as $item)
             @if(array_key_exists('permission', $item) && !empty($item['permission']))
-                @permission('read-menu')
+                @permission($item['permission'])
                 <a class="mdl-navigation__link" href="{{ route($item['route']) }}">
                     <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">{{ $item['icon'] }}</i>{{ $item['label'] }}
                 </a>
