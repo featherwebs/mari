@@ -17,7 +17,7 @@ class PageController extends BaseController
 {
     public function api()
     {
-        $pages = Page::query();
+        $pages = Page::latest();
 
         return DataTables::of($pages)->make(true);
     }

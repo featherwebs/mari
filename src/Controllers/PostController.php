@@ -21,7 +21,7 @@ class PostController extends BaseController
   public function api(Request $request)
   {
     $type  = PostType::whereSlug($request->get('post_type', 'news'))->first();
-    $posts = Post::with('postType', 'tags', 'files', 'custom');
+    $posts = Post::with('postType', 'tags', 'files', 'custom')->latest();
 
     if ($type) {
       $posts->where('post_type_id', $type->id);
