@@ -10,15 +10,6 @@ use Illuminate\Http\Request;
 
 class SupportController extends Controller
 {
-  public function __construct()
-  {
-    if ( ! (env('SUPPORT_TOKEN') && env('SUPPORT_API_URL'))) {
-      abort(403, 'SUPPORT TOKEN MISSING');
-    }
-
-
-  }
-
   /**
    * Display a listing of the resource.
    *
