@@ -1,5 +1,7 @@
 @extends('featherwebs::admin.layout')
 
+@section('title', 'Edit Menu')
+
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')

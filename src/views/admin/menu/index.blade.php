@@ -1,5 +1,7 @@
 @extends('featherwebs::admin.layout')
 
+@section('title', 'Menus')
+
 @section('content')
     <div id="menu-app">
         @component('featherwebs::admin.template.default')

@@ -1,5 +1,7 @@
 @extends('featherwebs::admin.layout')
 
+@section('title', 'Post Types')
+
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')

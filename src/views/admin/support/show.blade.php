@@ -1,4 +1,7 @@
 @extends('featherwebs::admin.layout')
+
+@section('title', 'Ticket')
+
 @push('styles')
     <style>
         .note-wrapper {
@@ -17,6 +20,7 @@
         }
     </style>
 @endpush
+
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')

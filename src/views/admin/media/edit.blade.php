@@ -9,6 +9,8 @@
     </style>
 @endpush
 
+@section('title', 'Media')
+
 @section('content')
     <form method="POST" action="{{ route('admin.media.destroy','all') }}" class="form form-validate" role="form" novalidate="novalidate" id="deleteForm">
         {{ method_field('DELETE') }}

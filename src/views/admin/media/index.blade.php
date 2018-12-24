@@ -1,5 +1,7 @@
 @extends('featherwebs::admin.layout')
 
+@section('title', 'Media')
+
 @push('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.css" rel="stylesheet">
     <style>
@@ -116,7 +118,7 @@
                 </ol>
             </nav>
         @endslot
-        <iframe style="height:80vh" src="/mari-filemanager?type=image"></iframe>
+        <iframe style="height:80vh" src="/mari-filemanager"></iframe>
     @endcomponent
 @endsection
 

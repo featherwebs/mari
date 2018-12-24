@@ -1,5 +1,7 @@
 @extends('featherwebs::admin.layout')
 
+@section('title', 'Settings')
+
 @section('content')
     <form method="POST" action="{{ route('admin.setting.store') }}" class="form form-validate" role="form" novalidate="novalidate" enctype="multipart/form-data">
         {{ csrf_field() }}
