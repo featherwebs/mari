@@ -59,8 +59,9 @@ blockquote{
 /*------------------------------LOGIN PAGE STARTS ---------- */
 
 #login_board{
-    background-size: cover;
-    background-image: url(../images/mariGalaxy.jpg);
+    background: #673AB7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #512DA8, #673AB7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #512DA8, #673AB7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     min-height: 100vh;
 }
 #login-texts-wrapper{
@@ -105,7 +106,20 @@ blockquote{
     width: 100%;
     margin: 20px auto;
     padding: 15px 10px;
-    background: #116364;
+    background: #673AB7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #512DA8, #673AB7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #512DA8, #673AB7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    transition: all 0.5s ease-in-out;
+}
+.login-button:hover{
+    background: #512DA8;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #673AB7, #512DA8);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #673AB7, #512DA8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.back_to_site{
+    font-size: 12px;
+    color: grey;
 }
 #login-texts h1{
     font-size: 6em;
@@ -150,7 +164,7 @@ blockquote{
 }
 .footer-link a{
     color: #fff;
-    font-size: 1.1em;
+    font-size: 12px;
 }
 .footer-link li:not(:nth-child(5)){
     border-right: 1px solid #fff;
