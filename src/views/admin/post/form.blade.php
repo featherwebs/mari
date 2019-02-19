@@ -60,10 +60,16 @@
                     <input :name="'post[custom]['+i+'][type]'" type="hidden" v-model="field.type">
                     <input :name="'post[custom]['+i+'][title]'" type="hidden" v-model="field.title">
                     <input :name="'post[custom]['+i+'][options]'" type="hidden" v-model="field.options">
+                    <input :name="'post[custom]['+i+'][map]'" type="hidden" v-model="field.map">
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="text" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="time" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
                     <input class="form-control" :name="'post[custom]['+i+'][file]'" type="file" :id="'custom-'+i+'-value'" v-if="field.type=='file'">
+                    <template v-if="field.type == 'map'">
+                        <map-location-selector :longitude="Number(field.value.split(',')[1])" :latitude="Number(field.value.split(',')[0])" @locationupdated="locationupdated($event, field)"></map-location-selector>
+                        <input type="hidden" :name="'post[custom]['+i+'][value]'" v-model="field.value">
+                    </template>
                     {{--<image-selector :name="'post[custom]['+i+'][file]'" v-if="field.type=='file'" type="file"></image-selector>--}}
                     <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
                         <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
@@ -120,15 +126,15 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="panel-body">
-                        <div class="row" v-for="chunk in _.chunk(post.images.filter(i => i.slug == pt.slug || i.pivot.slug == pt.slug), 4)">
+                        <div class="row" v-for="(chunk,j) in _.chunk(post.images.filter(i => i.slug == pt.slug || i.pivot.slug == pt.slug), 4)">
                             <div class="col-sm-3" v-for="(field,i) in chunk">
                                 <div class="form-group text-center">
                                     <a href="javascript:void(0);" class="text-danger" @click="removeImageField(field)" v-if="pt.type == 'multiple-images'"><i class="material-icons">close</i></a>
-                                    <image-selector :name="'post[images]['+pt.slug+i+'][path]'" :value="field.url"></image-selector>
+                                    <image-selector :name="'post[images]['+pt.slug+j+i+'][path]'" :value="field.url"></image-selector>
                                 </div>
                                 <div class="form-group hidden">
-                                    <label :for="'images['+pt.slug+i+'][slug]'">Image Slug: </label>
-                                    <input class="form-control" :name="'post[images]['+pt.slug+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
+                                    <label :for="'images['+pt.slug+j+i+'][slug]'">Image Slug: </label>
+                                    <input class="form-control" :name="'post[images]['+pt.slug+j+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
                                 </div>
                             </div>
                         </div>
@@ -183,6 +189,7 @@
     <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google_map_api') }}"></script>
     <script>
         @if($p = old('post', isset($post) ? $post : null))
             let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');

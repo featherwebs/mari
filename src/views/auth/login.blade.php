@@ -67,7 +67,7 @@
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary login-button">Login</button>
-                        <a href="{{ url('/') }}" class="back_to_site">Back to {{ fw_setting('title') }}</a>
+                        <a href="{{ url('/') }}">Back to {{ fw_setting('title') }}</a>
                     </form>
 
                 </aside>
