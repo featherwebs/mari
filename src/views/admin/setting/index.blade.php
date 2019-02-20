@@ -68,6 +68,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="google-map-api" class="control-label col-sm-2">Google Map API</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="google-map-api" name="setting[google-map-api]" value="{{ old('setting.google-map-api') ?: fw_setting('google-map-api') }}" class="form-control">
+                                <span class="help-block">Google Map Api once set could be used all over the website<code>fw_setting('google-map-api')</code></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="homepage" class="control-label col-sm-2">Homepage</label>
                             <div class="col-sm-10">
                                 <select id="homepage" name="setting[homepage]" class="form-control">
