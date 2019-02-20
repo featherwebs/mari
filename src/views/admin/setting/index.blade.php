@@ -97,7 +97,7 @@
                         <div class="form-group">
                             <label for="phone" class="control-label col-sm-2">Phone</label>
                             <div class="col-sm-10">
-                                <textarea id="phone" name="setting[phone]" class="form-control"></textarea>
+                                <textarea id="phone" name="setting[phone]" class="form-control">{!! old('setting.phone') ?: fw_setting('phone') !!}</textarea>
                                 <span class="help-block"><code>fw_setting('phone')</code></span>
                             </div>
                         </div>
