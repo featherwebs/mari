@@ -16,7 +16,12 @@
                 </ol>
             </nav>
         @endslot
-        <form action="{{ route('admin.page.store') }}" method="POST" enctype="multipart/form-data">
+        @slot('tools')
+            <a class="mdl-button fw-button mdl-js-button mdl-button--raised mdl-button--colored pull-right" onclick="document.getElementById('page-form').submit();">
+                <i class="material-icons">save</i> Save
+            </a>
+        @endslot
+        <form action="{{ route('admin.page.store') }}" method="POST" enctype="multipart/form-data" id="page-form">
             {{ csrf_field() }}
             @include('featherwebs::admin.page.form')
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored pull-right update-button">

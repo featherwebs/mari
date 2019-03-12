@@ -27,7 +27,7 @@ class Post extends Model
         'is_featured'
     ];
 
-    protected $appends = [ 'url' ];
+    protected $appends = [ 'url', 'data' ];
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
@@ -99,9 +99,10 @@ class Post extends Model
 
             if ( ! empty($path)) {
                 $filename = basename($path);
-                $image = Image::where('path', 'like', '%'.$filename)->first();
-                if($image)
+                $image    = Image::where('path', 'like', '%' . $filename)->first();
+                if ($image) {
                     $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+                }
             }
         }
     }
@@ -161,23 +162,24 @@ class Post extends Model
 
     public function scopeType($query, $slugid)
     {
-        if(is_array($slugid))
+        if (is_array($slugid)) {
             $arr = $slugid;
-        else
-            $arr = [$slugid];
+        } else {
+            $arr = [ $slugid ];
+        }
 
-        return $query->where(function($q) use ($arr) {
-            foreach($arr as $item) {
+        return $query->where(function ($q) use ($arr) {
+            foreach ($arr as $item) {
                 $id       = $item;
                 $postType = PostType::whereSlug($item)->first();
                 if ($postType) {
                     $id = $postType->id;
                 }
-    
+
                 $q->orWhere('post_type_id', $id);
             }
         });
-        
+
     }
 
     public function setSlugAttribute($value)
@@ -212,5 +214,15 @@ class Post extends Model
     public function getUrlAttribute()
     {
         return route('post', $this->slug);
+    }
+
+    public function getDataAttribute()
+    {
+        $data = [];
+        foreach ($this->custom as $custom) {
+            $data[$custom->slug] = $custom->value;
+        }
+
+        return (object) $data;
     }
 }
