@@ -2,6 +2,14 @@
 
 @section('title', 'Edit '.$postType->title)
 
+@push('styles')
+    <style>
+        .fw-button {
+            margin-left: 5px;
+        }
+    </style>
+@endpush
+
 @section('content')
     @component('featherwebs::admin.template.default')
         @slot('heading')
@@ -9,10 +17,13 @@
         @endslot
         @slot('tools')
             @permission('create-post')
-            <a href="{{ route('admin.post.create', $postType->slug) }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            <a href="{{ route('admin.post.create', $postType->slug) }}" class="mdl-button fw-button mdl-js-button mdl-button--raised mdl-button--colored">
                 <i class="material-icons">add</i> Add New
             </a>
             @endpermission
+            <a class="mdl-button fw-button mdl-js-button mdl-button--raised mdl-button--colored pull-right" onclick="document.getElementById('post-form').submit();">
+                <i class="material-icons">save</i> Update
+            </a>
         @endslot
         @slot('breadcrumb')
             <nav aria-label="breadcrumb" role="navigation">
@@ -23,7 +34,7 @@
                 </ol>
             </nav>
         @endslot
-        <form action="{{ route('admin.post.update', $post->slug) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.post.update', $post->slug) }}" method="POST" enctype="multipart/form-data" id="post-form">
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             @include('featherwebs::admin.post.form')
