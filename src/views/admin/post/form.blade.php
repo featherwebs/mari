@@ -189,7 +189,7 @@
     <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google_map_api') }}"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>
     <script>
         @if($p = old('post', isset($post) ? $post : null))
             let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');

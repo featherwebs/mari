@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace Featherwebs\Mari\Listeners;
 
 use Featherwebs\Mari\Models\File;
 use Featherwebs\Mari\Models\Image;
@@ -35,16 +35,20 @@ class ImageUploaded
         if(in_array(FileSystem::mimeType($event->path()), config('lfm.valid_image_mimetypes'))) {
             $image = Image::create($data);
 
-            if ($image->file()->width() > 2048) {
-                $image->file()->resize(2048, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($event->path());
-            }
+            try {
+                if ($image->file()->width() > 2048) {
+                    $image->file()->resize(2048, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($event->path());
+                }
 
-            if ($image->file()->height() > 2048) {
-                $image->file()->resize(null, 2048, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($event->path());
+                if ($image->file()->height() > 2048) {
+                    $image->file()->resize(null, 2048, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($event->path());
+                }
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
             }
         } else {
             File::create($data);

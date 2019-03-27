@@ -34,20 +34,24 @@ class Image extends Model
 
     public function getThumbnail($width = null, $height = null)
     {
-        if (($width == null && $height == null) || !$this->file()) {
+        if (($width == null && $height == null) || ! $this->file()) {
             return null;
         }
+        $file             = $this->file();
         $prefix           = 'TH_';
         $originalFilename = $filename = basename($this->path);
         $name             = $prefix . $width . '_' . $height . '_' . $originalFilename;
         $fileLocation     = self::THUMB_PATH . $name;
+
         if ( ! file_exists($fileLocation)) {
-            if ($width == null || $height == null) {
-                $this->file()->resize($width, $height, function ($constraint) {
+            if ($file->mime() == 'image/svg+xml') {
+                $file->save($fileLocation);
+            } elseif ($width == null || $height == null) {
+                $file->resize($width, $height, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($fileLocation);
             } else {
-                $this->file()->fit($width, $height)->save($fileLocation);
+                $file->fit($width, $height)->save($fileLocation);
             }
         }
 

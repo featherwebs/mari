@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace Featherwebs\Mari\Listeners;
 
 use Featherwebs\Mari\Models\File;
 use Featherwebs\Mari\Models\Image;

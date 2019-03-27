@@ -76,15 +76,16 @@ to `disks` array in `config/filesystems.php`.
 9)  You also need to add the following:
 
 ```php
+
     ImageWasUploaded::class => [
-                ImageUploaded::class,
-            ],
-            ImageIsRenaming::class => [
-                ImageRenamed::class
-            ],
-            ImageWasDeleted::class => [
-                ImageDeleted::class
-            ],
+        \Featherwebs\Mari\Listeners\ImageUploaded::class,
+    ],
+    ImageIsRenaming::class => [
+        \Featherwebs\Mari\Listeners\ImageRenamed::class
+    ],
+    ImageWasDeleted::class => [
+        \Featherwebs\Mari\Listeners\ImageDeleted::class
+    ],
 ```
 
 to `listen` array in `App/Listeners/EventServiceProvider`.
