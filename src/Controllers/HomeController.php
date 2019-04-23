@@ -2,13 +2,16 @@
 
 namespace Featherwebs\Mari\Controllers;
 
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\SEOTools;
 use Featherwebs\Mari\Models\Page;
 use Illuminate\Routing\Controller as BaseController;
 
 class HomeController extends BaseController
 {
+    public function __construct()
+    {
+       fw_init_seo();
+    }
+
     /**
      * Show the application dashboard.
      *
@@ -38,37 +41,7 @@ class HomeController extends BaseController
             }
         }
 
-        $title       = current(array_filter([ $page->meta_title, $page->title, fw_setting('title') ]));
-        $description = current(array_filter([
-            $page->meta_description,
-            str_limit(strip_tags($page->content), 200),
-            fw_setting('description')
-        ]));
-        $images      = $page->images->push(fw_setting('logo'))->toArray();
-        $keywords    = array_filter(array_merge(explode(',', $page->meta_keywords), explode(',', fw_setting('keywords'))));
-
-        SEOMeta::setTitleDefault(fw_setting('title'))
-               ->setTitle($title)
-               ->setDescription($description)
-               ->addMeta('article:published_time', $page->updated_at->toW3CString(), 'property')
-               ->addMeta('title', $title, 'property')
-               ->addKeyword($keywords);
-
-        SEOTools::setTitle($title)
-                ->setDescription($description)
-                ->addImages($images)
-                ->setCanonical(request()->url());
-        SEOTools::opengraph()
-                ->setUrl(request()->url())
-                ->setTitle($title)
-                ->setDescription($description)
-                ->addProperty('type', 'website')
-                ->addProperty('locale', 'en_US')
-                ->addProperty('site_name', fw_setting('title'));
-        SEOTools::twitter()
-                ->setTitle($title)
-                ->setDescription($description)
-                ->addValue('card', 'summary_large_image');
+        fw_init_seo($page);
 
         return view('pages.' . $view, compact('page'));
     }

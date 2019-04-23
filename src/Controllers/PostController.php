@@ -2,8 +2,6 @@
 
 namespace Featherwebs\Mari\Controllers;
 
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\SEOTools;
 use Featherwebs\Mari\Models\Post;
 use Featherwebs\Mari\Models\PostType;
 use Featherwebs\Mari\Models\Tag;
@@ -17,6 +15,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PostController extends BaseController
 {
+    public function __construct()
+    {
+        fw_init_seo();
+    }
+
     public function api(Request $request)
     {
         $type  = PostType::whereSlug($request->get('post_type', 'news'))->first();
@@ -146,30 +149,7 @@ class PostController extends BaseController
             $view = $post->view;
         }
 
-        $title       = current(array_filter([ $post->meta_title, $post->title, fw_setting('title') ]));
-        $description = current(array_filter([
-            $post->meta_description,
-            str_limit(strip_tags($post->content), 200),
-            fw_setting('description')
-        ]));
-        $images      = $post->images->push(fw_setting('logo'))->toArray();
-        $keywords    = array_filter(array_merge(explode(',', $post->meta_keywords), explode(',', fw_setting('keywords'))));
-
-        SEOMeta::setTitleDefault(fw_setting('title'))
-               ->setTitle($title)
-               ->setDescription($description)
-               ->addMeta('article:published_time', $post->updated_at->toW3CString(), 'property')
-               ->addMeta('title', $title, 'property')
-               ->addKeyword($keywords);
-        SEOTools::setTitle($title)->setDescription($description)->addImages($images)->setCanonical(request()->url());
-        SEOTools::opengraph()
-                ->setUrl(request()->url())
-                ->setTitle($title)
-                ->setDescription($description)
-                ->addProperty('type', 'website')
-                ->addProperty('locale', 'en_US')
-                ->addProperty('site_name', fw_setting('title'));
-        SEOTools::twitter()->setTitle($title)->setDescription($description)->addValue('card', 'summary_large_image');
+        fw_init_seo($post);
 
         return view('posts.' . $view, compact('post'));
     }
@@ -192,24 +172,6 @@ class PostController extends BaseController
             $posts = $posts->type($request->get('type'));
         }
         $posts = $posts->paginate($request->get('limit', 12))->appends($request->except('page'));
-
-        $title = fw_setting('title');
-        $description = fw_setting('description');
-        $images = [fw_setting('logo')];
-        SEOMeta::setTitleDefault($title)
-               ->setTitle('Posts')
-               ->setDescription($description)
-               ->addMeta('title',$title, 'property')
-               ->addKeyword(fw_setting('keywords'));
-        SEOTools::setTitle('Posts')->setDescription($description)->addImages($images)->setCanonical(request()->url());
-        SEOTools::opengraph()
-                ->setUrl(request()->url())
-                ->setTitle('Posts')
-                ->setDescription($description)
-                ->addProperty('type', 'website')
-                ->addProperty('locale', 'en_US')
-                ->addProperty('site_name',$title);
-        SEOTools::twitter()->setTitle($title)->setDescription($description)->addValue('card', 'summary_large_image');
 
         return view()->first([
             'postTypes.' . $view,
