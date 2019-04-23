@@ -23,6 +23,8 @@ class StoreSettings extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'setting.*' => 'max:255'
+        ];
     }
 }

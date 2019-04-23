@@ -5,25 +5,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
-  <meta name="title" content="{!! fw_meta_title($post ?? $page ?? false) !!}">
-  <meta name="description" content="{!! fw_meta_desc($post ?? $page ?? false) !!}">
-  <meta name="keywords" content="{!! fw_meta_keywords($post ?? $page ?? false) !!}">
-
-  <meta property="og:title" content="{!! fw_meta_title($post ?? $page ?? false) !!}">
-  <meta property="og:description" content="{!! fw_meta_desc($post ?? $page ?? false) !!}">
-  <meta property="og:image" content="{!! fw_meta_image($post ?? $page ?? false) !!}">
-  <meta property="og:url" content="{!! request()->url() !!}">
-  <meta property="og:site_name" content="{!! fw_setting('title') !!}">
-
-  <meta name="twitter:title" content="{!! fw_meta_title($post ?? $page ?? false) !!}">
-  <meta name="twitter:description" content="{!! fw_meta_desc($post ?? $page ?? false) !!}">
-  <meta name="twitter:image" content="{!! fw_meta_image($post ?? $page ?? false) !!}">
-  <meta name="twitter:card" content="summary_large_image">
+  {!! SEO::generate() !!}
+  <link rel=“apple-touch-icon” sizes=“180x180" href=“/apple-touch-icon.png”>
+  <link rel=“icon” type=“image/png” sizes=“32x32" href=“/favicon-32x32.png”>
+  <link rel=“icon” type=“image/png” sizes=“16x16" href=“/favicon-16x16.png”>
+  <link rel=“manifest” href=“/site.webmanifest”>
+  <meta name=“msapplication-TileColor” content=“#da532c”>
+  <meta name=“theme-color” content=“#ffffff”>
 
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
-  <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
 
   <!-- Bootstrap -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">

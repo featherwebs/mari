@@ -7,6 +7,7 @@ use Intervention\Image\ImageServiceProvider;
 use Unisharp\Ckeditor\ServiceProvider as UnisharpServiceProvider;
 use Yajra\DataTables\DataTablesServiceProvider;
 use Zizaco\Entrust\EntrustServiceProvider;
+use Artesaos\SEOTools\Providers\SEOToolsServiceProvider;
 
 class FeatherwebsServiceProvider extends ServiceProvider
 {
@@ -46,6 +47,13 @@ class FeatherwebsServiceProvider extends ServiceProvider
     $this->app->register(EntrustServiceProvider::class);
     $this->app->register(DataTablesServiceProvider::class);
     $this->app->register(UnisharpServiceProvider::class);
+    $this->app->register(SEOToolsServiceProvider::class);
     //        $this->app->make('Featherwebs\Mari\Controllers');
+
+    $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+    $loader->alias('SEO', \Artesaos\SEOTools\Facades\SEOTools::class);
+    $loader->alias('SEOMeta', \Artesaos\SEOTools\Facades\SEOMeta::class);
+    $loader->alias('OpenGraph', \Artesaos\SEOTools\Facades\OpenGraph::class);
+    $loader->alias('Twitter', \Artesaos\SEOTools\Facades\TwitterCard::class);
   }
 }

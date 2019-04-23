@@ -54,6 +54,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="keywords" class="control-label col-sm-2">Keywords</label>
+                            <div class="col-sm-10">
+                                <textarea id="keywords" name="setting[keywords]" class="form-control">{{ old('setting.keywords') ?: fw_setting('keywords') }}</textarea>
+                                <span class="help-block">Site Keywords<code>fw_setting('keywords')</code></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="address" class="control-label col-sm-2">Address</label>
                             <div class="col-sm-10">
                                 <textarea id="address" name="setting[address]" class="form-control">{{ old('setting.address') ?: fw_setting('address') }}</textarea>
@@ -88,7 +95,7 @@
                         <div class="form-group">
                             <label for="logo" class="control-label col-sm-2">Logo</label>
                             <div class="col-sm-10">
-                                <image-selector name="setting[logo]" value="{{ fw_setting('logo') }}"></image-selector>
+                                <image-selector name="images[logo]" value="{{ fw_setting('logo') }}"></image-selector>
                                 <div class="help-block"><code>fw_setting('logo')</code></div>
                             </div>
                         </div>
