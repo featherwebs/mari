@@ -41,6 +41,7 @@ class PageController extends BaseController
     {
         $page = DB::transaction(function () use ($request) {
             $page = Page::create($request->data());
+            $page->setContent($request->data()['content'], true);
             $page->syncImages($request);
 
             return $page;
@@ -66,6 +67,7 @@ class PageController extends BaseController
     {
         DB::transaction(function () use ($request, $page) {
             $page->update($request->data());
+            $page->setContent($request->data()['content'], true);
             $page->syncImages($request);
 
             return $page;

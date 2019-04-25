@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Venturecraft\Revisionable\RevisionableTrait;
+use VanOns\Laraberg\Models\Gutenbergable;
 
 class Page extends Model
 {
-    use RevisionableTrait;
+    use RevisionableTrait, Gutenbergable;
     protected $revisionCreationsEnabled = true;
 
     protected $fillable = [
@@ -19,7 +20,6 @@ class Page extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
-        'content',
         'custom',
         'view',
         'is_published',
@@ -32,7 +32,8 @@ class Page extends Model
     ];
 
     protected $appends = [
-        'url'
+        'url',
+        'content_raw'
     ];
 
     protected $dontKeepRevisionOf = [
@@ -140,5 +141,13 @@ class Page extends Model
     public function files()
     {
         return $this->morphToMany(File::class, 'fileable')->withPivot('slug');
+    }
+
+    public function getContentRawAttribute()
+    {
+        if(empty($this->content))
+            return '<!-- wp:paragraph -->'.$this->content_old.'<!-- /wp:paragraph -->';
+
+        return $this->getRawContent();
     }
 }

@@ -6,11 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use VanOns\Laraberg\Models\Gutenbergable;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Post extends Model
 {
-    use RevisionableTrait;
+    use RevisionableTrait, Gutenbergable;
     protected $revisionCreationsEnabled = true;
 
     protected $fillable = [
@@ -21,13 +22,12 @@ class Post extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
-        'content',
         'view',
         'is_published',
         'is_featured'
     ];
 
-    protected $appends = [ 'url', 'data' ];
+    protected $appends = [ 'url', 'data', 'content_raw' ];
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
@@ -224,5 +224,13 @@ class Post extends Model
         }
 
         return (object) $data;
+    }
+
+    public function getContentRawAttribute()
+    {
+        if(empty($this->content))
+            return '<!-- wp:paragraph -->'.$this->content_old.'<!-- /wp:paragraph -->';
+
+        return $this->getRawContent();
     }
 }

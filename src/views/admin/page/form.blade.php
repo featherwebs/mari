@@ -45,9 +45,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="content" class="control-label col-sm-2">Content</label>
-                <div class="col-sm-10">
-                    <ckeditor name="page[content]" id="content" v-model="page.content" class="editor" :config="editor.full"></ckeditor>
+                <label for="content" class="control-label col-sm-12">Content</label>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input name="page[content]" id="content" v-model="page.content_raw" type="textarea" hidden>
                     <span class="help-block">Main Content of the Page</span>
                 </div>
             </div>
@@ -178,16 +180,26 @@
     </div>
 </div>
 
+@push('styles')
+    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
+@endpush
+
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
+    <script src="https://unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/moment@2.22.1/min/moment.min.js"></script>
+    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
     <script>
         @if($page = old('page', isset($page) ? $page : null))
             let page = JSON.parse('{!! addslashes(json_encode($page)) !!}');
         @endif
         let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
         let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
+
+        Laraberg.initGutenberg('content', { laravelFilemanager: { prefix: '/mari-filemanager' }, minHeight: '800px' });
     </script>
 
     <script type="text/javascript">

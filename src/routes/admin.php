@@ -91,6 +91,11 @@ Route::group([ 'middleware' => 'web' ], function () {
         }
     });
 
+    Route::group(['prefix' => 'laraberg', 'middleware' => ['auth:web']], function() {
+        Route::apiResource('blocks', 'VanOns\Laraberg\Http\Controllers\BlockController');
+        Route::get('oembed', 'VanOns\Laraberg\Http\Controllers\OEmbedController');
+    });
+
     Route::group([ 'prefix' => 'api', 'as' => 'api.' ], function () {
         Route::post('page', PageController::class.'@api')->name('page.datatable');
         Route::post('menu', MenuController::class.'@api')->name('menu.datatable');

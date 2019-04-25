@@ -46,9 +46,11 @@
                 </div>
             </div>
             <div class="form-group{{ fw_post_alias_visible($postType, 'content') ? '': ' hidden' }}">
-                <label for="content" class="control-label col-sm-2">{{ fw_post_alias($postType, 'content', 'Post Content')  }}</label>
-                <div class="col-sm-10">
-                    <ckeditor name="post[content]" id="content" v-model="post.content" class="editor" :config="editor.full"></ckeditor>
+                <label for="content" class="control-label col-sm-12">{{ fw_post_alias($postType, 'content', 'Post Content')  }}</label>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input name="post[content]" id="content" v-model="post.content_raw" class="editor">
                     <span class="help-block">Main Content of the Post</span>
                 </div>
             </div>
@@ -170,6 +172,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
     <style>
         .thumbnail {
             position:relative;
@@ -190,6 +193,11 @@
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>
+    <script src="https://unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/moment@2.22.1/min/moment.min.js"></script>
+    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
+
     <script>
         @if($p = old('post', isset($post) ? $post : null))
             let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');
@@ -211,6 +219,7 @@
                 placeholder: "Add your tags"
             });
         });
+        Laraberg.initGutenberg('content', { laravelFilemanager: { prefix: '/mari-filemanager' }, minHeight: '800px' });
     </script>
 
     <script type="text/javascript">
