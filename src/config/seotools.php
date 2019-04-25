@@ -6,8 +6,8 @@ return [
          * The default configurations to be used by the meta generator.
          */
         'defaults'       => [
-            'title'        => 'TicketCart', // set false to total remove
-            'description'  => 'Australia\'s largest Online Ticket Platform', // set false to total remove
+            'title'        => 'Featherwebs', // set false to total remove
+            'description'  => 'Nepal based creative agency specializing in web design and development, UX/UI, graphics design and mobile applications.', // set false to total remove
             'separator'    => ' - ',
             'keywords'     => [],
             'canonical'    => false, // Set null for using Url::current(), set false to total remove
