@@ -18,8 +18,6 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/', '\Featherwebs\Mari\Controllers\HomeController@index')->name('home');
 
-Route::get('/thumbnails/{thumb}')->name('image.thumbs');
-
 Route::get('/home', function () {
     return redirect()->route('admin.home');
 });

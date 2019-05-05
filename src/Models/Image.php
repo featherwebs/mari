@@ -55,7 +55,7 @@ class Image extends Model
             }
         }
 
-        return route('image.thumbs', $name);
+        return url($fileLocation);
     }
 
     public function getThumbnailAttribute()

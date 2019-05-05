@@ -233,4 +233,12 @@ class Post extends Model
 
         return $this->getRawContent();
     }
+
+    public function renderContent()
+    {
+        if(empty($this->content))
+            return '<!-- wp:paragraph -->'.$this->content_old.'<!-- /wp:paragraph -->';
+
+        return $this->content->render();
+    }
 }
