@@ -9,7 +9,7 @@
   "require": {
     "php": ">=7.1.0",
     "laravel/framework": "5.5.*",
-    "doctrine/dbal": "^2.7",
+    "doctrine/dbal": "^2.5",
     "illuminate/support": "~5.5.0",
     "zizaco/entrust": "~1.9.1",
     "yajra/laravel-datatables-oracle": "8.0",
