@@ -135,7 +135,7 @@
                             <div class="row">
                                 <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">Value</label>
                                 <div class="col-sm-10">
-                                    <ckeditor :name="'page[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted" :config="editor.mini"></ckeditor>
+                                    <ckeditor :name="'page[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.formatted" :config="editor"></ckeditor>
                                     <textarea class="form-control" :name="'page[custom]['+i+'][value]'" :id="'custom['+i+'][value]'" v-model="field.value" v-else></textarea>
                                     <span class="help-block"></span>
                                 </div>
@@ -186,7 +186,7 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
-    <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>

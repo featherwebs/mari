@@ -79,7 +79,7 @@
                     <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'">
                         <option v-for="post in posts.filter(p => p.post_type_id == field.id)" :value="post.id" v-html="post.title"></option>
                     </select>
-                    <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor.mini"></ckeditor>
+                    <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>
                     <span class="help-block"></span>
                 </div>
             </div>
@@ -189,7 +189,7 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
-    <script src="{{ asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>

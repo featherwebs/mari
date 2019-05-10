@@ -37,7 +37,7 @@
     </div>
 </div>
 @push('scripts')
-    <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>
     <script>
         CKEDITOR.replace( 'ticket[message]' );
     </script>
