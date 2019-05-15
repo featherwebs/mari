@@ -9,7 +9,7 @@ class Image extends Model
 {
     const THUMB_PATH = 'thumbnails/';
 
-    protected $fillable = [ 'id', 'path', 'custom' ];
+    protected $guarded = [];
 
     protected $appends = [ 'thumbnail', 'url' ];
 

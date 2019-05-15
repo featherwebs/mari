@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
-    protected $fillable = [ 'path' ];
+    protected $guarded = [];
 
     protected $appends = [ 'url' ];
 

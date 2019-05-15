@@ -10,7 +10,7 @@ class Setting extends Model
     use RevisionableTrait;
     protected $revisionCreationsEnabled = true;
 
-    protected $fillable = [ 'slug', 'value', 'is_custom' ];
+    protected $guarded = [];
 
     /**
      * Scope a query to return specific value.

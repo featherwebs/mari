@@ -14,18 +14,7 @@ class Post extends Model
     use RevisionableTrait, Gutenbergable;
     protected $revisionCreationsEnabled = true;
 
-    protected $fillable = [
-        'post_type_id',
-        'slug',
-        'title',
-        'sub_title',
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-        'view',
-        'is_published',
-        'is_featured'
-    ];
+    protected $guarded = [];
 
     protected $appends = [ 'url', 'data', 'content_raw' ];
     protected $casts = [

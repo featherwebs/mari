@@ -480,8 +480,8 @@ if ( ! function_exists('fw_meta_desc')) {
         } catch (Exception $e) {
         }
         try {
-            if ( ! empty($article->content)) {
-                return str_limit(strip_tags($article->content), 200);
+            if ( ! empty($article->renderContent())) {
+                return str_limit(strip_tags($article->renderContent()), 200);
             }
         } catch (Exception $e) {
         }
@@ -536,7 +536,7 @@ if ( ! function_exists('fw_init_seo')) {
             $title       = current(array_filter([ $model->meta_title, $model->title, fw_setting('title') ]));
             $description = current(array_filter([
                 $model->meta_description,
-                str_limit(strip_tags($model->content), 200),
+                str_limit(strip_tags($model->renderContent()), 200),
                 fw_setting('description')
             ]));
             $images      = $model->images->push(fw_setting('logo'))->toArray();
@@ -546,7 +546,7 @@ if ( ! function_exists('fw_init_seo')) {
                 $title       = current(array_filter([ $model->meta_title, $model->title, fw_setting('title') ]));
                 $description = current(array_filter([
                     $model->meta_description,
-                    str_limit(strip_tags($model->content), 200),
+                    str_limit(strip_tags($model->renderContent()), 200),
                     fw_setting('description')
                 ]));
                 $images      = $model->images->push(fw_setting('logo'))->toArray();

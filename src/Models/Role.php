@@ -6,7 +6,7 @@ use Zizaco\Entrust\EntrustRole;
 
 class Role extends EntrustRole
 {
-    protected $fillable = [ 'name', 'display_name' ];
+    protected $guarded = [];
 
     public function getRouteKeyName()
     {

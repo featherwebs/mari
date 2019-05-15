@@ -10,12 +10,7 @@ class CustomField extends Model
     use RevisionableTrait;
     protected $revisionCreationsEnabled = true;
 
-    protected $fillable = [
-        'slug',
-        'value',
-        'customable_id',
-        'customable_type'
-    ];
+    protected $guarded = [];
 
     public function customable()
     {
