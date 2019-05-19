@@ -13,7 +13,18 @@ class Page extends Model
     use RevisionableTrait, Gutenbergable;
     protected $revisionCreationsEnabled = true;
 
-    protected $guraded = [];
+    protected $fillable = [
+        'slug',
+        'title',
+        'sub_title',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'custom',
+        'view',
+        'is_published',
+        'page_id',
+    ];
 
     protected $casts = [
         'custom'       => 'json',
