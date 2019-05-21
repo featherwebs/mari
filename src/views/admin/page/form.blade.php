@@ -76,6 +76,20 @@
                     </label>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="is_published" class="control-label col-sm-2">Home Page</label>
+                <div class="col-sm-10">
+                    <label>
+                        <input type="radio" name="homepage" value="1" {{ isset($page) && fw_setting('homepage') == $page->id ? 'checked': '' }}>
+                        Yes
+                    </label>
+                    <label>
+                        <input type="radio" name="homepage" value="0" {{ !(isset($page) && fw_setting('homepage') == $page->id) ? 'checked': '' }}>
+                        No
+                    </label>
+                    <span class="help-block">Make this the homepage.</span>
+                </div>
+            </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="image">
             <div v-for="(field,i) in page.images" class="panel">

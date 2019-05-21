@@ -100,7 +100,7 @@ class SettingsTableSeeder extends Seeder
                 'is_custom' => 0
             ],
             [
-                'slug'      => 'support_token',
+                'slug'      => 'support-token',
                 'value'     => '',
                 'is_custom' => 0
             ],

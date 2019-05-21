@@ -3,6 +3,7 @@
 namespace Featherwebs\Mari\Controllers;
 
 use Featherwebs\Mari\Models\Image;
+use Featherwebs\Mari\Models\Setting;
 use Featherwebs\Mari\Requests\StorePage;
 use Featherwebs\Mari\Requests\UpdatePage;
 use Featherwebs\Mari\Models\Page;
@@ -44,6 +45,10 @@ class PageController extends BaseController
             $page->setContent($request->data()['content'], true);
             $page->syncImages($request);
 
+            if ($request->get('homepage', 0) == 1) {
+                Setting::fetch('homepage')->update([ 'value' => $page->id ]);
+            }
+
             return $page;
         });
 
@@ -69,6 +74,9 @@ class PageController extends BaseController
             $page->update($request->data());
             $page->setContent($request->data()['content'], true);
             $page->syncImages($request);
+            if ($request->get('homepage', 0) == 1) {
+                Setting::fetch('homepage')->update([ 'value' => $page->id ]);
+            }
 
             return $page;
         });

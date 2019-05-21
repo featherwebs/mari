@@ -26,17 +26,16 @@ class SettingController extends BaseController
     {
         foreach ($request->get('setting', []) as $key => $value) {
             Setting::firstOrCreate([
-                'slug'  => str_slug($key),
-                'is_custom' => 0
+                'slug'      => $key
             ])->update([ 'value' => $value ]);
         }
 
-        foreach($request->get('images') as $key => $path) {
+        foreach ($request->get('images', []) as $key => $path) {
             $setting = Setting::firstOrCreate([ 'slug' => $key ]);
             if ( ! empty($path)) {
                 $filename = basename($path);
-                $image = Image::where('path', 'like', '%'.$filename)->first();
-                if($image) {
+                $image    = Image::where('path', 'like', '%' . $filename)->first();
+                if ($image) {
                     $setting->images()->detach();
                     $setting->images()->save($image, []);
                 }
@@ -46,8 +45,9 @@ class SettingController extends BaseController
         $item = $request->input('newsetting', []);
         if ($item) {
             Setting::create([
-                'slug'  => str_slug($item['slug'], '_'),
-                'value' => $item['value']
+                'slug'  => str_slug($item['title']),
+                'type'  => $item['type'],
+                'title' => ucwords($item['title'])
             ]);
         }
 
