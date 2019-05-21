@@ -236,16 +236,7 @@ if ( ! function_exists('fw_thumbnail')) {
         if ( ! $useDefault) {
             return false;
         }
-
-        if ( ! $width && ! $height) {
-            $width = 150;
-        }
-        if ($width && ! $height) {
-            $height = $width;
-        }
-        $default = "http://via.placeholder.com/{$width}x{$height}?text=[" . $text . "]";
-
-        return $default;
+        return fw_setting('placeholder');
     }
 }
 
