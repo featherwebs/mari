@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    protected $guarded = [];
+    protected $guarded = [ 'slug', 'title', 'custom' ];
 
     protected $casts = [
         'custom' => 'array'

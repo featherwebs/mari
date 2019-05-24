@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubMenu extends Model
 {
-    protected $guarded = [];
+    protected $guarded = [ 'menu_id', 'title', 'url', 'order', 'custom' ];
 
     protected $casts = [
         'custom' => 'array'
     ];
 
-    protected $appends = ['type'];
+    protected $appends = [ 'type' ];
 
     public function menu()
     {
