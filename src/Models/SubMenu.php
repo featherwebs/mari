@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubMenu extends Model
 {
-    protected $guarded = [ 'menu_id', 'title', 'url', 'order', 'custom' ];
+    protected $fillable = [ 'menu_id', 'title', 'url', 'order', 'custom' ];
 
     protected $casts = [
         'custom' => 'array'
