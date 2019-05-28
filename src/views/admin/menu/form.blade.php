@@ -17,8 +17,8 @@
         <hr>
         <div class="row">
             <div class="col-sm-12 text-right">
-                <a href="javascript:void(0);" @click="addSubMenu(false)">
-                    + Add
+                <a href="javascript:void(0);" class="btn" @click="addSubMenu(false)">
+                    + Add Menu Item
                 </a>
             </div>
         </div>
@@ -33,19 +33,16 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <div v-for="(sub_menu, i) in _.sortBy(menu.sub_menus, 'order')">
+            <draggable v-model="menu.sub_menus">
+                <div v-for="(sub_menu, i) in menu.sub_menus" :key="sub_menu.id" handle=".handle">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="row">
-                                        <div class="col-sm-1 handle">
-                                            <button class="btn btn-xs" type="button" v-if="i>0" @click="swap(menu.sub_menus, i, i-1)">
-                                                <span class="glyphicon glyphicon-triangle-top"></span>
-                                            </button>
-                                            <button class="btn btn-xs" type="button" v-if="i<(menu.sub_menus.length-1)" @click="swap(menu.sub_menus, i, i+1)">
-                                                <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-xs handle" type="button">
+                                                <span class="glyphicon glyphicon-move"></span>
                                             </button>
                                         </div>
                                         <div class="col-sm-3">
@@ -101,18 +98,15 @@
                             </div>
                         </div>
                     </div>
-                    <div v-for="(sm, j) in _.sortBy(sub_menu.sub_menus, 'order')">
-                        <div class="panel sub-panel panel-default">
+                    <draggable v-model="sub_menu.sub_menus" handle=".subhandle">
+                        <div class="panel sub-panel panel-default" v-for="(sm, j) in sub_menu.sub_menus">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="row">
-                                            <div class="col-sm-1 handle">
-                                                <button class="btn btn-xs" type="button" v-if="j>0" @click="swap(sub_menu.sub_menus, j, j-1)">
-                                                    <span class="glyphicon glyphicon-triangle-top"></span>
-                                                </button>
-                                                <button class="btn btn-xs" type="button" v-if="j<(sub_menu.sub_menus.length-1)" @click="swap(sub_menu.sub_menus, j, j+1)">
-                                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                            <div class="col-sm-1">
+                                                <button class="btn btn-xs subhandle" type="button">
+                                                    <span class="glyphicon glyphicon-move"></span>
                                                 </button>
                                             </div>
                                             <div class="col-sm-3">
@@ -159,83 +153,15 @@
                                                 <a href="javascript:void(0);" class="text-danger btn btn-xs" @click="removeSubMenu(j, sub_menu)">
                                                     <i class="fa fa-times"></i>
                                                 </a>
-                                                <a href="javascript:void(0);" class="btn btn-xs mt" @click="addSubMenu(sm)">
-                                                    + Add Submenu
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div v-for="(ssm, k) in _.sortBy(sm.sub_menus, 'order')">
-                            <div class="panel sub-sub-panel panel-default">
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="row">
-                                                <div class="col-sm-1 handle">
-                                                    <button class="btn btn-xs" type="button" v-if="k>0" @click="swap(sm.sub_menus, k, k-1)">
-                                                        <span class="glyphicon glyphicon-triangle-top"></span>
-                                                    </button>
-                                                    <button class="btn btn-xs" type="button" v-if="k<(sm.sub_menus.length-1)" @click="swap(sm.sub_menus, k, k+1)">
-                                                        <span class="glyphicon glyphicon-triangle-bottom"></span>
-                                                    </button>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label>Title</label>
-                                                        <input type="text" :name="'sub_menu['+i+'][sub_menus]['+j+'][sub_menus]['+k+'][title]'" v-model="ssm.title" class="form-control input-sm">
-                                                        <p class="help-block">Recommended 30 Characters</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <div class="form-group">
-                                                        <label>Type</label>
-                                                        <select class="form-control input-sm" v-model="ssm.type">
-                                                            <option v-for="(t, i) in types" :value="i" v-html="t"></option>
-                                                        </select>
-                                                        <p class="help-block">Select a Type</p>
-                                                    </div>
-                                                </div>
-                                                <div :class="ssm.type == 'custom' ? '': 'col-sm-2'">
-                                                    <div class="form-group" v-if="ssm.type == 'page'">
-                                                        <label>Page</label>
-                                                        <select class="form-control input-sm" @change="ssm.url = $event.target.value;">
-                                                            <option>Select a Page</option>
-                                                            <option v-for="page in pages" :value="page.url" v-html="page.title" :selected="ssm.url == page.url"></option>
-                                                        </select>
-                                                        <p class="help-block">Select a page</p>
-                                                    </div>
-                                                    <div class="form-group" v-if="ssm.type == 'post'">
-                                                        <label>Post</label>
-                                                        <select class="form-control input-sm" @change="ssm.url = $event.target.value;">
-                                                            <option>Select a Post</option>
-                                                            <option v-for="post in posts" :value="post.url" v-html="post.title" :selected="ssm.url == post.url"></option>
-                                                        </select>
-                                                        <p class="help-block">Select a post</p>
-                                                    </div>
-                                                </div>
-                                                <div :class="ssm.type == 'custom' ? 'col-sm-5': 'col-sm-3'">
-                                                    <div class="form-group">
-                                                        <label>Link URL</label>
-                                                        <input type="text" :name="'sub_menu['+i+'][sub_menus]['+j+'][sub_menus]['+k+'][url]'" v-model="ssm.url" class="form-control input-sm">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-1">
-                                                    <a href="javascript:void(0);" class="text-danger btn btn-xs" @click="removeSubMenu(k, sm)">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </draggable>
                 </div>
-            </div>
+            </draggable>
         </div>
         <div v-if="!(menu.sub_menus.length)">
             <div class="alert alert-callout alert-warning alert-dismissible" role="alert">
@@ -268,12 +194,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
     <script>
-                @if(isset($menu))
-        let menu = JSON.parse('{!! addslashes(json_encode($menu)) !!}');
-                @endif
-        let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
-        let postTypes = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
-        let posts = JSON.parse('{!! addslashes(json_encode($posts)) !!}');
+            @if(isset($menu))
+      let menu = JSON.parse('{!! addslashes(json_encode($menu)) !!}');
+            @endif
+      let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
+      let postTypes = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
+      let posts = JSON.parse('{!! addslashes(json_encode($posts)) !!}');
     </script>
 
     <script type="text/javascript">
