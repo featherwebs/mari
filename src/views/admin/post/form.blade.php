@@ -192,9 +192,6 @@
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>
-    <script src="https://unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/moment@2.22.1/min/moment.min.js"></script>
     <script>
         @if($p = old('post', isset($post) ? $post : null))
             let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');
