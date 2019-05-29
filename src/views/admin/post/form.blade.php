@@ -172,7 +172,6 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
-    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
     <style>
         .thumbnail {
             position:relative;
@@ -196,8 +195,6 @@
     <script src="https://unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/moment@2.22.1/min/moment.min.js"></script>
-    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
-
     <script>
         @if($p = old('post', isset($post) ? $post : null))
             let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');

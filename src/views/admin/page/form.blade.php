@@ -194,10 +194,6 @@
     </div>
 </div>
 
-@push('styles')
-    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
-@endpush
-
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>
@@ -205,7 +201,6 @@
     <script src="https://unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/moment@2.22.1/min/moment.min.js"></script>
-    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
     <script>
         @if($page = old('page', isset($page) ? $page : null))
             let page = JSON.parse('{!! addslashes(json_encode($page)) !!}');
