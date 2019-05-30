@@ -198,44 +198,39 @@ if ( ! function_exists('fw_fetch_data')) {
 if ( ! function_exists('fw_thumbnail')) {
     function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "", $useDefault = true)
     {
-        $text = empty($slug) ? env('APP_NAME') : $slug;
-        if ($entity && $entity instanceof Image) {
-            if ( ! $width && ! $height) {
-                return $entity->url;
-            }
-
-            return $entity->getThumbnail($width, $height);
-        } elseif ($entity && $entity->images && $entity->images->count()) {
-            if (empty($slug)) {
-                $image = $entity->images->first();
+        if($entity) {
+            if ($entity instanceof Image) {
                 if ( ! $width && ! $height) {
-                    return $image->url;
+                    return $entity->url;
                 }
 
-                return $image->getThumbnail($width, $height);
-            } else {
-                $image = $entity->images()->wherePivot('slug', $slug)->first();
-
-                if ($image) {
+                return $entity->getThumbnail($width, $height);
+            } elseif ($entity->images()->count()) {
+                if (empty($slug)) {
+                    $image = $entity->images()->first();
                     if ( ! $width && ! $height) {
                         return $image->url;
                     }
 
                     return $image->getThumbnail($width, $height);
+                } else {
+                    $image = $entity->images()->wherePivot('slug', $slug)->first();
+
+                    if ($image) {
+                        if ( ! $width && ! $height) {
+                            return $image->url;
+                        }
+
+                        return $image->getThumbnail($width, $height);
+                    }
                 }
             }
-        } elseif ($entity && $entity->image && $entity instanceof Image) {
-            $image = $entity->image;
-            if ( ! $width && ! $height) {
-                return $image->url;
-            }
-
-            return $image->getThumbnail($width, $height);
         }
 
         if ( ! $useDefault) {
             return false;
         }
+
         return fw_setting('placeholder');
     }
 }
@@ -545,7 +540,7 @@ if ( ! function_exists('fw_init_seo')) {
             } else {
                 $title       = fw_setting('title');
                 $description = fw_setting('description');
-                $images      = [fw_setting('logo')];
+                $images      = [ fw_setting('logo') ];
                 $keywords    = array_filter(explode(',', fw_setting('keywords')));
             }
         }

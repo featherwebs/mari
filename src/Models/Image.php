@@ -37,13 +37,13 @@ class Image extends Model
         if (($width == null && $height == null) || ! $this->file()) {
             return null;
         }
-        $file             = $this->file();
+
         $prefix           = 'TH_';
         $originalFilename = $filename = basename($this->path);
         $name             = $prefix . $width . '_' . $height . '_' . $originalFilename;
         $fileLocation     = self::THUMB_PATH . $name;
-
         if ( ! file_exists($fileLocation)) {
+            $file = $this->file();
             if ($file->mime() == 'image/svg+xml') {
                 $file->save($fileLocation);
             } elseif ($width == null || $height == null) {

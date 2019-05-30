@@ -128,15 +128,15 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="panel-body">
-                        <div class="row" v-for="(chunk,j) in _.chunk(post.images.filter(i => i.slug == pt.slug || i.pivot.slug == pt.slug), 4)">
-                            <div class="col-sm-3" v-for="(field,i) in chunk">
+                        <div class="row">
+                            <div class="col-sm-3 image-wrapper" v-for="(field,j) in post.images.filter(i => i.slug == pt.slug || i.pivot.slug == pt.slug)">
                                 <div class="form-group text-center">
                                     <a href="javascript:void(0);" class="text-danger" @click="removeImageField(field)" v-if="pt.type == 'multiple-images'"><i class="material-icons">close</i></a>
-                                    <image-selector :name="'post[images]['+pt.slug+j+i+'][path]'" :value="field.url"></image-selector>
+                                    <image-selector :name="'post[images]['+pt.slug+j+'][path]'" v-model="field.url"></image-selector>
                                 </div>
                                 <div class="form-group hidden">
-                                    <label :for="'images['+pt.slug+j+i+'][slug]'">Image Slug: </label>
-                                    <input class="form-control" :name="'post[images]['+pt.slug+j+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
+                                    <label :for="'images['+pt.slug+j+'][slug]'">Image Slug: </label>
+                                    <input class="form-control" :name="'post[images]['+pt.slug+j+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
                                 </div>
                             </div>
                         </div>
@@ -174,13 +174,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
     <style>
         .thumbnail {
-            position:relative;
+            position: relative;
         }
+
         .thumbnail a {
             position: absolute;
             top: 0;
             right: 0;
             padding: 5px 7px;
+        }
+
+        .image-wrapper {
+
+        }
+
+        .image-wrapper img {
+            height: 200px;
+            max-width: 100%;
         }
     </style>
 @endpush
@@ -193,27 +203,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>
     <script>
-        @if($p = old('post', isset($post) ? $post : null))
-            let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');
-        @endif
-        @if(!empty($postType))
-            let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
-        @endif
-        @if(!empty($posts))
-            let posts = JSON.parse('{!! addslashes(json_encode($posts)) !!}');
-        @endif
-        @if(isset($tags))
-            let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
-        @endif
-        let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
-        let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
-        $(document).ready(function () {
-            $('.select2').select2({
-                tags: true,
-                placeholder: "Add your tags"
-            });
+            @if($p = old('post', isset($post) ? $post : null))
+      let post = JSON.parse('{!! addslashes(json_encode($p)) !!}');
+            @endif
+            @if(!empty($postType))
+      let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
+            @endif
+            @if(!empty($posts))
+      let posts = JSON.parse('{!! addslashes(json_encode($posts)) !!}');
+            @endif
+            @if(isset($tags))
+      let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
+            @endif
+      let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
+      let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
+      $(document).ready(function () {
+        $('.select2').select2({
+          tags: true,
+          placeholder: "Add your tags"
         });
-        Laraberg.initGutenberg('content', { laravelFilemanager: { prefix: '/mari-filemanager' }, minHeight: '800px' });
+      });
+      Laraberg.initGutenberg('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
     </script>
 
     <script type="text/javascript">
