@@ -13,21 +13,24 @@ use Featherwebs\Mari\Models\Setting;
 use Featherwebs\Mari\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 
 if ( ! function_exists('fw_setting')) {
     function fw_setting($query, $default = null)
     {
-        $setting = Setting::fetch($query)->first();
+        return Cache::remember('settings_' . $query, config('mari.cache', 0), function () use ($query, $default) {
+            $setting = Setting::fetch($query)->first();
 
-        if ($setting && $setting->images()->first()) {
-            return asset($setting->images()->first()->url);
-        }
+            if ($setting && $setting->images()->first()) {
+                return asset($setting->images()->first()->url);
+            }
 
-        if ( ! empty($setting->value)) {
-            return $setting->value;
-        }
+            if ( ! empty($setting->value)) {
+                return $setting->value;
+            }
 
-        return $default;
+            return $default;
+        });
     }
 }
 if ( ! function_exists('fw_image')) {
@@ -45,7 +48,9 @@ if ( ! function_exists('fw_image')) {
 if ( ! function_exists('fw_menu')) {
     function fw_menu($slug)
     {
-        return Menu::with('subMenus')->whereSlug($slug)->first();
+        return Cache::remember('helper_fw_menu_' . $slug, config('mari.cache', 0), function () use ($slug) {
+            return Menu::with('subMenus')->whereSlug($slug)->first();
+        });
     }
 }
 if ( ! function_exists('fw_posts_by_tag')) {
@@ -76,32 +81,40 @@ if ( ! function_exists('fw_posts_by_tag')) {
 if ( ! function_exists('fw_posts_by_category')) {
     function fw_posts_by_category($category, $limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images', 'custom', 'files')
-                     ->published()
-                     ->latest()
-                     ->whereHas('postType', function ($q) use ($category) {
-                         if (is_array($category)) {
-                             $q->whereIn('slug', $category);
-                         } else {
-                             $q->where('slug', $category);
-                         }
-                     });
+        return Cache::remember('helpers_fw_posts_by_category' . $category . $limit . $builder, config('mari.cache', 0), function () use ($category, $limit, $builder) {
+            $posts = Post::with('tags', 'images', 'custom', 'files')
+                         ->published()
+                         ->latest()
+                         ->whereHas('postType', function ($q) use ($category) {
+                             if (is_array($category)) {
+                                 $q->whereIn('slug', $category);
+                             } else {
+                                 $q->where('slug', $category);
+                             }
+                         });
 
-        if ($limit) {
-            $posts = $posts->take($limit);
-        }
+            if ($limit) {
+                $posts = $posts->take($limit);
+            }
 
-        if ($builder) {
-            return $posts;
-        }
+            if ($builder) {
+                return $posts;
+            }
 
-        return $posts->get();
+            return $posts->get();
+        });
     }
 }
 if ( ! function_exists('fw_post_by_slug')) {
     function fw_post_by_slug($slug)
     {
-        return Post::with('tags', 'images', 'custom', 'files')->published()->latest()->where('slug', $slug)->first();
+        return Cache::remember('helpers_fw_post_by_slug' . $slug, config('mari.cache', 0), function () use ($slug) {
+            return Post::with('tags', 'images', 'custom', 'files')
+                       ->published()
+                       ->latest()
+                       ->where('slug', $slug)
+                       ->first();
+        });
     }
 }
 if ( ! function_exists('fw_post_by_id')) {
@@ -113,22 +126,26 @@ if ( ! function_exists('fw_post_by_id')) {
 if ( ! function_exists('fw_posts')) {
     function fw_posts($limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images', 'custom', 'files')->latest()->published();
-        if ($limit) {
-            $posts = $posts->limit($limit);
-        }
+        return Cache::remember('helper_fw_posts' . $limit . $builder, config('mari.cache', 0), function () use ($limit, $builder) {
+            $posts = Post::with('tags', 'images', 'custom', 'files')->latest()->published();
+            if ($limit) {
+                $posts = $posts->limit($limit);
+            }
 
-        if ($builder) {
-            return $posts;
-        }
+            if ($builder) {
+                return $posts;
+            }
 
-        return $posts->get();
+            return $posts->get();
+        });
     }
 }
 if ( ! function_exists('fw_page_by_slug')) {
     function fw_page_by_slug($slug)
     {
-        return Page::with('images')->where([ 'slug' => $slug ])->first();
+        return Cache::remember('helper_fw_page_by_slug' . $slug, config('mari.cache', 0), function () use ($slug) {
+            return Page::with('images')->where([ 'slug' => $slug ])->first();
+        });
     }
 }
 if ( ! function_exists('fw_pages')) {
@@ -198,14 +215,35 @@ if ( ! function_exists('fw_fetch_data')) {
 if ( ! function_exists('fw_thumbnail')) {
     function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "", $useDefault = true)
     {
-        if($entity) {
-            if ($entity instanceof Image) {
+        $id = $entity->id ?? $entity;
+
+        return Cache::remember('helpers_fw_thumbnails' . $id . $width . $height . $slug . $useDefault, config('mari.cache', 0), function () use ($entity, $width, $height, $slug, $useDefault) {
+            if ($entity && $entity instanceof Image) {
                 if ( ! $width && ! $height) {
                     return $entity->url;
                 }
 
                 return $entity->getThumbnail($width, $height);
-            } elseif ($entity->images()->count()) {
+            } elseif ($entity && $entity->images && $entity->images->count()) {
+                if (empty($slug)) {
+                    $image = $entity->images->first();
+                    if ( ! $width && ! $height) {
+                        return $image->url;
+                    }
+
+                    return $image->getThumbnail($width, $height);
+                } else {
+                    $image = $entity->images->where('pivot.slug', $slug)->first();
+
+                    if ($image) {
+                        if ( ! $width && ! $height) {
+                            return $image->url;
+                        }
+
+                        return $image->getThumbnail($width, $height);
+                    }
+                }
+            } elseif ($entity && $entity->images()->count()) {
                 if (empty($slug)) {
                     $image = $entity->images()->first();
                     if ( ! $width && ! $height) {
@@ -225,13 +263,13 @@ if ( ! function_exists('fw_thumbnail')) {
                     }
                 }
             }
-        }
 
-        if ( ! $useDefault) {
-            return false;
-        }
+            if ( ! $useDefault) {
+                return false;
+            }
 
-        return fw_setting('placeholder');
+            return fw_setting('placeholder');
+        });
     }
 }
 
@@ -466,8 +504,8 @@ if ( ! function_exists('fw_meta_desc')) {
         } catch (Exception $e) {
         }
         try {
-            if ( ! empty($article->renderContent())) {
-                return str_limit(strip_tags($article->renderContent()), 200);
+            if ( ! empty($article->content)) {
+                return str_limit(strip_tags($article->content), 200);
             }
         } catch (Exception $e) {
         }
@@ -522,7 +560,7 @@ if ( ! function_exists('fw_init_seo')) {
             $title       = current(array_filter([ $model->meta_title, $model->title, fw_setting('title') ]));
             $description = current(array_filter([
                 $model->meta_description,
-                str_limit(strip_tags($model->renderContent()), 200),
+                str_limit(strip_tags($model->content), 200),
                 fw_setting('description')
             ]));
             $images      = $model->images->push(fw_setting('logo'))->toArray();
@@ -532,7 +570,7 @@ if ( ! function_exists('fw_init_seo')) {
                 $title       = current(array_filter([ $model->meta_title, $model->title, fw_setting('title') ]));
                 $description = current(array_filter([
                     $model->meta_description,
-                    str_limit(strip_tags($model->renderContent()), 200),
+                    str_limit(strip_tags($model->content), 200),
                     fw_setting('description')
                 ]));
                 $images      = $model->images->push(fw_setting('logo'))->toArray();
