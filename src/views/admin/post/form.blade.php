@@ -67,12 +67,12 @@
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
                     <input class="form-control" :name="'post[custom]['+i+'][value]'" type="time" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
-                    <input class="form-control" :name="'post[custom]['+i+'][file]'" type="file" :id="'custom-'+i+'-value'" v-if="field.type=='file'">
+                    {{--                    <input class="form-control" :name="'post[custom]['+i+'][file]'" type="file" :id="'custom-'+i+'-value'" v-if="field.type=='file'">--}}
                     <template v-if="field.type == 'map'">
                         <map-location-selector :longitude="Number(field.value.split(',')[1])" :latitude="Number(field.value.split(',')[0])" @locationupdated="locationupdated($event, field)"></map-location-selector>
                         <input type="hidden" :name="'post[custom]['+i+'][value]'" v-model="field.value">
                     </template>
-                    {{--<image-selector :name="'post[custom]['+i+'][file]'" v-if="field.type=='file'" type="file"></image-selector>--}}
+                    <image-selector :name="'post[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" :value="field.value"></image-selector>
                     <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
                         <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
                     </select>

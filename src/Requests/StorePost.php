@@ -8,6 +8,7 @@ class StorePost extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
      * @return bool
      */
     public function authorize()
@@ -17,6 +18,7 @@ class StorePost extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     *
      * @return array
      */
     public function rules()
@@ -28,7 +30,7 @@ class StorePost extends FormRequest
             'post.content'       => '',
             'post.post_type_id'  => 'required|exists:post_types,id',
             'post.images.*.file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp,image/gif|max:5120|dimensions:max_width=3840,max_height=2160',
-            'post.custom.*.file'  => 'nullable|max:10240'
+            'post.custom.*.file' => 'nullable|max:10240'
         ];
     }
 
@@ -57,12 +59,10 @@ class StorePost extends FormRequest
 
         $data = [];
         foreach ($this->input('post.custom', []) as $custom) {
-            if ( ! ($custom['type'] == 'file')) {
-                array_push($data, [
-                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug']: '',
-                    'value' => array_key_exists('value', $custom) ? $custom['value']: ''
-                ]);
-            }
+            array_push($data, [
+                'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
+                'value' => array_key_exists('value', $custom) ? $custom['value'] : ''
+            ]);
         }
 
         return $data;

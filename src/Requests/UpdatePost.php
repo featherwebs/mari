@@ -8,6 +8,7 @@ class UpdatePost extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
      * @return bool
      */
     public function authorize()
@@ -17,6 +18,7 @@ class UpdatePost extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     *
      * @return array
      */
     public function rules()
@@ -58,13 +60,11 @@ class UpdatePost extends FormRequest
 
         $data = [];
         foreach ($this->input('post.custom', []) as $custom) {
-            if ( ! ( $custom['type'] == 'file' )) {
-                if (array_key_exists('slug', $custom)) {
-                    array_push($data, [
-                        'slug'  => $custom['slug'],
-                        'value' => array_key_exists('value', $custom) ? $custom['value'] : ''
-                    ]);
-                }
+            if (array_key_exists('slug', $custom)) {
+                array_push($data, [
+                    'slug'  => $custom['slug'],
+                    'value' => array_key_exists('value', $custom) ? $custom['value'] : ''
+                ]);
             }
         }
 

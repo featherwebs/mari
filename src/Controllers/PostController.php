@@ -65,14 +65,6 @@ class PostController extends BaseController
                     $post->custom()->create($customData);
                 }
             }
-
-            if ($request->hasFile('post.custom.*.file')) {
-                foreach ($request->input('post.custom') as $key => $custom) {
-                    if ($file = $request->file('post.custom.' . $key . '.file')) {
-                        fw_upload($file, $post, false, $custom['slug']);
-                    }
-                }
-            }
             $post->syncTags($request->input('post.tags'));
             $post->syncImages($request);
 
@@ -107,17 +99,6 @@ class PostController extends BaseController
                 $post->custom()->delete();
                 foreach ($request->customData() as $customData) {
                     $post->custom()->create($customData);
-                }
-            }
-
-            if ($request->hasFile('post.custom.*.file')) {
-                foreach ($request->input('post.custom') as $key => $custom) {
-                    if ($file = $request->file('post.custom.' . $key . '.file')) {
-                        if ($existingFile = $post->files()->whereSlug($custom['slug'])->first()) {
-                            $existingFile->delete();
-                        }
-                        fw_upload($file, $post, false, $custom['slug']);
-                    }
                 }
             }
 
