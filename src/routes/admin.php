@@ -14,9 +14,7 @@ use \Featherwebs\Mari\Controllers\UserController;
 
 Route::group([ 'middleware' => 'web' ], function () {
     Route::group([ 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:web' ], function () {
-        Route::get('/', function () {
-            return redirect()->route('admin.home');
-        });
+        Route::get('/', AdminController::class . '@redirectToIndex');
         Route::get('/home', AdminController::class . '@index')->name('home');
 
         Route::get('role', RoleController::class.'@index')->name('role.index')->middleware('permission:read-role');
