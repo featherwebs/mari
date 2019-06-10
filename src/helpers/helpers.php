@@ -81,26 +81,24 @@ if ( ! function_exists('fw_posts_by_tag')) {
 if ( ! function_exists('fw_posts_by_category')) {
     function fw_posts_by_category($category, $limit = false, $builder = false)
     {
-        return Cache::remember('helpers_fw_posts_by_category' . $category . $limit . $builder, config('mari.cache', 0), function () use ($category, $limit, $builder) {
-            $posts = Post::with('tags', 'images', 'custom', 'files')
-                         ->published()
-                         ->latest()
-                         ->whereHas('postType', function ($q) use ($category) {
-                             if (is_array($category)) {
-                                 $q->whereIn('slug', $category);
-                             } else {
-                                 $q->where('slug', $category);
-                             }
-                         });
+        $posts = Post::with('tags', 'images', 'custom', 'files')
+                     ->published()
+                     ->latest()
+                     ->whereHas('postType', function ($q) use ($category) {
+                         if (is_array($category)) {
+                             $q->whereIn('slug', $category);
+                         } else {
+                             $q->where('slug', $category);
+                         }
+                     });
+        if ($limit) {
+            $posts = $posts->take($limit);
+        }
+        if ($builder) {
+            return $posts;
+        }
 
-            if ($limit) {
-                $posts = $posts->take($limit);
-            }
-
-            if ($builder) {
-                return $posts;
-            }
-
+        return Cache::remember('helpers_fw_posts_by_category' . $category . $limit . $builder, config('mari.cache', 0), function () use ($posts) {
             return $posts->get();
         });
     }
@@ -126,16 +124,16 @@ if ( ! function_exists('fw_post_by_id')) {
 if ( ! function_exists('fw_posts')) {
     function fw_posts($limit = false, $builder = false)
     {
-        return Cache::remember('helper_fw_posts' . $limit . $builder, config('mari.cache', 0), function () use ($limit, $builder) {
-            $posts = Post::with('tags', 'images', 'custom', 'files')->latest()->published();
-            if ($limit) {
-                $posts = $posts->limit($limit);
-            }
+        $posts = Post::with('tags', 'images', 'custom', 'files')->latest()->published();
+        if ($limit) {
+            $posts = $posts->limit($limit);
+        }
 
-            if ($builder) {
-                return $posts;
-            }
+        if ($builder) {
+            return $posts;
+        }
 
+        return Cache::remember('helper_fw_posts' . $limit . $builder, config('mari.cache', 0), function () use ($limit, $builder, $posts) {
             return $posts->get();
         });
     }
