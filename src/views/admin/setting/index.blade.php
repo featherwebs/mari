@@ -50,6 +50,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <label for="logo-2" class="control-label col-sm-2">Logo 2</label>
+                                    <div class="col-sm-4">
+                                        <image-selector name="images[logo-2]" value="{{ fw_setting('logo-2') }}"></image-selector>
+                                        <div class="help-block"><code>fw_setting('logo-2')</code></div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <label for="title" class="control-label col-sm-2">Title</label>
                                     <div class="col-sm-10">
                                         <input type="text" id="title" name="setting[title]" value="{{ old('setting.title') ?: fw_setting('title') }}" class="form-control">
