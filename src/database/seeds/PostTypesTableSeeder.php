@@ -37,6 +37,14 @@ class PostTypesTableSeeder extends Seeder
             ]
         ];
 
-        PostType::insert($postTypes);
+        foreach($postTypes as $type)
+        {
+            PostType::firstOrcreate([
+                'slug' => $type['slug'],
+                'title' => $type['title']
+            ])->update([
+                $type
+            ]);
+        }
     }
 }

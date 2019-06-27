@@ -21,7 +21,8 @@
     "unisharp/laravel-ckeditor": "^4.7",
     "unisharp/laravel-filemanager": "^1.9",
     "artesaos/seotools": "^0.14.0",
-    "van-ons/laraberg": "^0.0.6@beta"
+    "van-ons/laraberg": "^0.0.6@beta",
+    "jordanmiguel/laravel-popular": "^1.0"
   },
   "authors": [
     {

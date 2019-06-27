@@ -6,12 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use JordanMiguel\LaravelPopular\Traits\Visitable;
 use VanOns\Laraberg\Models\Gutenbergable;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Post extends Model
 {
-    use RevisionableTrait, Gutenbergable;
+    use RevisionableTrait, Gutenbergable, Visitable;
     protected $revisionCreationsEnabled = true;
 
     protected $fillable = [

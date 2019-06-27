@@ -37,7 +37,7 @@ class PostController extends BaseController
     {
         return view()->first([
             'admin.posts.' . $postType->slug . '.index',
-            'featherwebs::admin.post.index'
+            'featherwebs::admin.post.index',
         ], compact('postType'));
     }
 
@@ -133,6 +133,7 @@ class PostController extends BaseController
         }
 
         fw_init_seo($post);
+        $post->visit();
 
         return view('posts.' . $view, compact('post'));
     }
@@ -158,7 +159,7 @@ class PostController extends BaseController
 
         return view()->first([
             'postTypes.' . $view,
-            'posts.index'
+            'posts.index',
         ], compact('posts', 'title', 'q'));
     }
 
@@ -166,7 +167,7 @@ class PostController extends BaseController
     {
         return view()->first([
             'posts.tag',
-            'posts.index'
+            'posts.index',
         ], compact('tag'));
     }
 }

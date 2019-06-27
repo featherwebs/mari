@@ -8,14 +8,17 @@ Mari is a Laravel CMS package that aims to streamline Web Development process.
 2) [Laravel Datatables](https://github.com/yajra/laravel-datatables)
 3) [Intervention](https://github.com/Intervention/image)
 4) [Revisionable](https://github.com/VentureCraft/revisionable)
-
+5) [Datatables](https://github.com/yajra/laravel-datatables)
+6) [Revisionable](https://github.com/VentureCraft/revisionable)
+7) [Laraberg](https://github.com/VanOns/laraberg)
+8) [Laravel File Manager](https://github.com/UniSharp/laravel-filemanager)
 
 ## Installation
 
 1) In order to install Mari, just add the following to your composer.json. Then run `composer update`:
 
 ```json
-"featherwebs/mari": "@dev"
+"featherwebs/mari": "dev-master"
 ```
 
 2) Open your `config/app.php` and add the following to the `providers` array:

@@ -5,12 +5,13 @@ namespace Featherwebs\Mari\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use JordanMiguel\LaravelPopular\Traits\Visitable;
 use Venturecraft\Revisionable\RevisionableTrait;
 use VanOns\Laraberg\Models\Gutenbergable;
 
 class Page extends Model
 {
-    use RevisionableTrait, Gutenbergable;
+    use RevisionableTrait, Gutenbergable, Visitable;
     protected $revisionCreationsEnabled = true;
 
     protected $fillable = [
@@ -28,24 +29,24 @@ class Page extends Model
 
     protected $casts = [
         'custom'       => 'json',
-        'is_published' => 'boolean'
+        'is_published' => 'boolean',
     ];
 
     protected $appends = [
         'url',
-        'content_raw'
+        'content_raw',
     ];
 
     protected $dontKeepRevisionOf = [
-        'custom'
+        'custom',
     ];
 
     protected $revisionFormattedFields = [
-        'is_published' => 'boolean:No|Yes'
+        'is_published' => 'boolean:No|Yes',
     ];
 
     protected $revisionFormattedFieldNames = [
-        'is_published' => 'Published Status'
+        'is_published' => 'Published Status',
     ];
 
     public function getRouteKeyName()
@@ -104,17 +105,17 @@ class Page extends Model
         $count  = '';
         $slug   = $value;
         $exists = true;
-        while ( $exists) {
+        while ($exists) {
 
-            if($this->exists)
+            if ($this->exists) {
                 $exists = self::where('slug', $slug)->where('id', '!=', $this->id)->count() > 0;
-            else {
+            } else {
                 $exists = self::where('slug', $slug)->count() > 0;
             }
 
             if ($exists) {
                 $count = intval($count) + 1;
-                $slug = $value . '-' . intval($count);
+                $slug  = $value . '-' . intval($count);
             }
         }
 
@@ -131,9 +132,10 @@ class Page extends Model
 
             if ( ! empty($path)) {
                 $filename = basename($path);
-                $image = Image::where('path', 'like', '%'.$filename)->first();
-                if($image)
+                $image    = Image::where('path', 'like', '%' . $filename)->first();
+                if ($image) {
                     $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+                }
             }
         }
     }
@@ -145,16 +147,18 @@ class Page extends Model
 
     public function getContentRawAttribute()
     {
-        if(empty($this->content))
-            return '<!-- wp:paragraph -->'.$this->content_old.'<!-- /wp:paragraph -->';
+        if (empty($this->content)) {
+            return '<!-- wp:paragraph -->' . $this->content_old . '<!-- /wp:paragraph -->';
+        }
 
         return $this->getRawContent();
     }
 
     public function renderContent()
     {
-        if(empty($this->content))
-            return '<!-- wp:paragraph -->'.$this->content_old.'<!-- /wp:paragraph -->';
+        if (empty($this->content)) {
+            return '<!-- wp:paragraph -->' . $this->content_old . '<!-- /wp:paragraph -->';
+        }
 
         return $this->content->render();
     }

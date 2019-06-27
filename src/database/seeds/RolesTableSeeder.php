@@ -10,194 +10,203 @@ class RolesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
      * @return void
      */
     public function run()
     {
-        $superAdmin               = new Role();
-        $superAdmin->name         = 'super-admin';
-        $superAdmin->description  = 'super-admin';
-        $superAdmin->display_name = 'Super Administrator';
-        $superAdmin->save();
+        $superAdmin = Role::firstOrCreate([
+            'name' => 'super-admin'
+        ]);
+        $superAdmin->update([
+            'description'  => 'super-admin',
+            'display_name' => 'Super Administrator'
+        ]);
 
-        $admin               = new Role();
-        $admin->name         = 'admin';
-        $admin->description  = 'admin';
-        $admin->display_name = 'Administrator';
-        $admin->save();
 
-        $editor               = new Role();
-        $editor->name         = 'editor';
-        $editor->display_name = 'Editor';
-        $editor->save();
+        $admin = Role::firstOrCreate([
+            'name' => 'admin'
+        ]);
+        $admin->update([
+            'description'  => 'admin',
+            'display_name' => 'Administrator'
+        ]);
 
-        $createRole               = new Permission();
-        $createRole->name         = 'create-role';
-        $createRole->display_name = 'Create Roles';
-        $createRole->description  = 'Roles';
-        $createRole->save();
-        $readRole               = new Permission();
-        $readRole->name         = 'read-role';
-        $readRole->display_name = 'Read Roles';
-        $readRole->description  = 'Roles';
-        $readRole->save();
-        $updateRole               = new Permission();
-        $updateRole->name         = 'update-role';
-        $updateRole->display_name = 'Update Roles';
-        $updateRole->description  = 'Roles';
-        $updateRole->save();
-        $deleteRole               = new Permission();
-        $deleteRole->name         = 'delete-role';
-        $deleteRole->display_name = 'Delete Roles';
-        $deleteRole->description  = 'Roles';
-        $deleteRole->save();
 
-        $createPost               = new Permission();
-        $createPost->name         = 'create-post';
-        $createPost->display_name = 'Create Posts';
-        $createPost->description  = 'Posts';
-        $createPost->save();
-        $readPost               = new Permission();
-        $readPost->name         = 'read-post';
-        $readPost->display_name = 'Read Posts';
-        $readPost->description  = 'Posts';
-        $readPost->save();
-        $updatePost               = new Permission();
-        $updatePost->name         = 'update-post';
-        $updatePost->display_name = 'Update Posts';
-        $updatePost->description  = 'Posts';
-        $updatePost->save();
-        $deletePost               = new Permission();
-        $deletePost->name         = 'delete-post';
-        $deletePost->display_name = 'Delete Posts';
-        $deletePost->description  = 'Posts';
-        $deletePost->save();
+        $editor = Role::firstOrCreate([
+            'name' => 'editor'
+        ]);
+        $editor->update([
+            'display_name' => 'Editor'
+        ]);
 
-        $createMedia               = new Permission();
-        $createMedia->name         = 'create-media';
-        $createMedia->display_name = 'Create Medias';
-        $createMedia->description  = 'Medias';
-        $createMedia->save();
-        $readMedia               = new Permission();
-        $readMedia->name         = 'read-media';
-        $readMedia->display_name = 'Read Medias';
-        $readMedia->description  = 'Medias';
-        $readMedia->save();
-        $updateMedia               = new Permission();
-        $updateMedia->name         = 'update-media';
-        $updateMedia->display_name = 'Update Medias';
-        $updateMedia->description  = 'Medias';
-        $updateMedia->save();
-        $deleteMedia               = new Permission();
-        $deleteMedia->name         = 'delete-media';
-        $deleteMedia->display_name = 'Delete Medias';
-        $deleteMedia->description  = 'Medias';
-        $deleteMedia->save();
+        $createRole = Permission::firstOrCreate([
+            'name'         => 'create-role',
+            'display_name' => 'Create Roles',
+            'description'  => 'Roles'
+        ]);
+        $readRole   = Permission::firstOrCreate([
+            'name'         => 'read-role',
+            'display_name' => 'Read Roles',
+            'description'  => 'Roles'
+        ]);
+        $updateRole = Permission::firstOrCreate([
+            'name'         => 'update-role',
+            'display_name' => 'Update Roles',
+            'description'  => 'Roles'
+        ]);
+        $deleteRole = Permission::firstOrCreate([
+            'name'         => 'delete-role',
+            'display_name' => 'Delete Roles',
+            'description'  => 'Roles'
+        ]);
 
-        $createPage               = new Permission();
-        $createPage->name         = 'create-page';
-        $createPage->display_name = 'Create Pages';
-        $createPage->description  = 'Pages';
-        $createPage->save();
-        $readPage               = new Permission();
-        $readPage->name         = 'read-page';
-        $readPage->display_name = 'Read Pages';
-        $readPage->description  = 'Pages';
-        $readPage->save();
-        $updatePage               = new Permission();
-        $updatePage->name         = 'update-page';
-        $updatePage->display_name = 'Update Pages';
-        $updatePage->description  = 'Pages';
-        $updatePage->save();
-        $deletePage               = new Permission();
-        $deletePage->name         = 'delete-page';
-        $deletePage->display_name = 'Delete Pages';
-        $deletePage->description  = 'Pages';
-        $deletePage->save();
+        $createPost = Permission::firstOrCreate([
+            'name'         => 'create-post',
+            'display_name' => 'Create Posts',
+            'description'  => 'Posts'
+        ]);
+        $readPost   = Permission::firstOrCreate([
+            'name'         => 'read-post',
+            'display_name' => 'Read Posts',
+            'description'  => 'Posts'
+        ]);
+        $updatePost = Permission::firstOrCreate([
+            'name'         => 'update-post',
+            'display_name' => 'Update Posts',
+            'description'  => 'Posts'
+        ]);
+        $deletePost = Permission::firstOrCreate([
+            'name'         => 'delete-post',
+            'display_name' => 'Delete Posts',
+            'description'  => 'Posts'
+        ]);
 
-        $createMenu               = new Permission();
-        $createMenu->name         = 'create-menu';
-        $createMenu->display_name = 'Create Menus';
-        $createMenu->description  = 'Menus';
-        $createMenu->save();
-        $readMenu               = new Permission();
-        $readMenu->name         = 'read-menu';
-        $readMenu->display_name = 'Read Menus';
-        $readMenu->description  = 'Menus';
-        $readMenu->save();
-        $updateMenu               = new Permission();
-        $updateMenu->name         = 'update-menu';
-        $updateMenu->display_name = 'Update Menus';
-        $updateMenu->description  = 'Menus';
-        $updateMenu->save();
-        $deleteMenu               = new Permission();
-        $deleteMenu->name         = 'delete-menu';
-        $deleteMenu->display_name = 'Delete Menus';
-        $deleteMenu->description  = 'Menus';
-        $deleteMenu->save();
+        $createMedia = Permission::firstOrCreate([
+            'name'         => 'create-media',
+            'display_name' => 'Create Medias',
+            'description'  => 'Medias'
+        ]);
+        $readMedia   = Permission::firstOrCreate([
+            'name'         => 'read-media',
+            'display_name' => 'Read Medias',
+            'description'  => 'Medias'
+        ]);
+        $updateMedia = Permission::firstOrCreate([
+            'name'         => 'update-media',
+            'display_name' => 'Update Medias',
+            'description'  => 'Medias'
+        ]);
+        $deleteMedia = Permission::firstOrCreate([
+            'name'         => 'delete-media',
+            'display_name' => 'Delete Medias',
+            'description'  => 'Medias'
+        ]);
 
-        $createUser               = new Permission();
-        $createUser->name         = 'create-user';
-        $createUser->display_name = 'Create Users';
-        $createUser->description  = 'Users';
-        $createUser->save();
-        $readUser               = new Permission();
-        $readUser->name         = 'read-user';
-        $readUser->display_name = 'Read Users';
-        $readUser->description  = 'Users';
-        $readUser->save();
-        $updateUser               = new Permission();
-        $updateUser->name         = 'update-user';
-        $updateUser->display_name = 'Update Users';
-        $updateUser->description  = 'Users';
-        $updateUser->save();
-        $deleteUser               = new Permission();
-        $deleteUser->name         = 'delete-user';
-        $deleteUser->display_name = 'Delete Users';
-        $deleteUser->description  = 'Users';
-        $deleteUser->save();
+        $createPage = Permission::firstOrCreate([
+            'name'         => 'create-page',
+            'display_name' => 'Create Pages',
+            'description'  => 'Pages'
+        ]);
+        $readPage   = Permission::firstOrCreate([
+            'name'         => 'read-page',
+            'display_name' => 'Read Pages',
+            'description'  => 'Pages'
+        ]);
+        $updatePage = Permission::firstOrCreate([
+            'name'         => 'update-page',
+            'display_name' => 'Update Pages',
+            'description'  => 'Pages'
+        ]);
+        $deletePage = Permission::firstOrCreate([
+            'name'         => 'delete-page',
+            'display_name' => 'Delete Pages',
+            'description'  => 'Pages'
+        ]);
 
-        $createSetting               = new Permission();
-        $createSetting->name         = 'create-setting';
-        $createSetting->display_name = 'Create Settings';
-        $createSetting->description  = 'Settings';
-        $createSetting->save();
-        $readSetting               = new Permission();
-        $readSetting->name         = 'read-setting';
-        $readSetting->display_name = 'Read Settings';
-        $readSetting->description  = 'Settings';
-        $readSetting->save();
-        $updateSetting               = new Permission();
-        $updateSetting->name         = 'update-setting';
-        $updateSetting->display_name = 'Update Settings';
-        $updateSetting->description  = 'Settings';
-        $updateSetting->save();
-        $deleteSetting               = new Permission();
-        $deleteSetting->name         = 'delete-setting';
-        $deleteSetting->display_name = 'Delete Settings';
-        $deleteSetting->description  = 'Settings';
-        $deleteSetting->save();
+        $createMenu = Permission::firstOrCreate([
+            'name'         => 'create-menu',
+            'display_name' => 'Create Menus',
+            'description'  => 'Menus'
+        ]);
+        $readMenu   = Permission::firstOrCreate([
+            'name'         => 'read-menu',
+            'display_name' => 'Read Menus',
+            'description'  => 'Menus'
+        ]);
+        $updateMenu = Permission::firstOrCreate([
+            'name'         => 'update-menu',
+            'display_name' => 'Update Menus',
+            'description'  => 'Menus'
+        ]);
+        $deleteMenu = Permission::firstOrCreate([
+            'name'         => 'delete-menu',
+            'display_name' => 'Delete Menus',
+            'description'  => 'Menus'
+        ]);
 
-        $createPostType               = new Permission();
-        $createPostType->name         = 'create-post-type';
-        $createPostType->display_name = 'Create Post Type';
-        $createPostType->description  = 'Post Types';
-        $createPostType->save();
-        $readPostType               = new Permission();
-        $readPostType->name         = 'read-post-type';
-        $readPostType->display_name = 'Read Post Types';
-        $readPostType->description  = 'Post Types';
-        $readPostType->save();
-        $updatePostType               = new Permission();
-        $updatePostType->name         = 'update-post-type';
-        $updatePostType->display_name = 'Update Post Types';
-        $updatePostType->description  = 'Post Types';
-        $updatePostType->save();
-        $deletePostType               = new Permission();
-        $deletePostType->name         = 'delete-post-type';
-        $deletePostType->display_name = 'Delete Post Types';
-        $deletePostType->description  = 'Post Types';
-        $deletePostType->save();
+        $createUser = Permission::firstOrCreate([
+            'name'         => 'create-user',
+            'display_name' => 'Create Users',
+            'description'  => 'Users'
+        ]);
+        $readUser   = Permission::firstOrCreate([
+            'name'         => 'read-user',
+            'display_name' => 'Read Users',
+            'description'  => 'Users'
+        ]);
+        $updateUser = Permission::firstOrCreate([
+            'name'         => 'update-user',
+            'display_name' => 'Update Users',
+            'description'  => 'Users'
+        ]);
+        $deleteUser = Permission::firstOrCreate([
+            'name'         => 'delete-user',
+            'display_name' => 'Delete Users',
+            'description'  => 'Users'
+        ]);
+
+        $createSetting = Permission::firstOrCreate([
+            'name'         => 'create-setting',
+            'display_name' => 'Create Settings',
+            'description'  => 'Settings'
+        ]);
+        $readSetting   = Permission::firstOrCreate([
+            'name'         => 'read-setting',
+            'display_name' => 'Read Settings',
+            'description'  => 'Settings'
+        ]);
+        $updateSetting = Permission::firstOrCreate([
+            'name'         => 'update-setting',
+            'display_name' => 'Update Settings',
+            'description'  => 'Settings'
+        ]);
+        $deleteSetting = Permission::firstOrCreate([
+            'name'         => 'delete-setting',
+            'display_name' => 'Delete Settings',
+            'description'  => 'Settings'
+        ]);
+
+        $createPostType = Permission::firstOrCreate([
+            'name'         => 'create-post-type',
+            'display_name' => 'Create Post Type',
+            'description'  => 'Post Types'
+        ]);
+        $readPostType   = Permission::firstOrCreate([
+            'name'         => 'read-post-type',
+            'display_name' => 'Read Post Types',
+            'description'  => 'Post Types'
+        ]);
+        $updatePostType = Permission::firstOrCreate([
+            'name'         => 'update-post-type',
+            'display_name' => 'Update Post Types',
+            'description'  => 'Post Types'
+        ]);
+        $deletePostType = Permission::firstOrCreate([
+            'name'         => 'delete-post-type',
+            'display_name' => 'Delete Post Types',
+            'description'  => 'Post Types'
+        ]);
 
         $superAdmin->attachPermissions([
             $createRole,

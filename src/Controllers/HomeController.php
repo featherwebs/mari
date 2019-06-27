@@ -9,7 +9,7 @@ class HomeController extends BaseController
 {
     public function __construct()
     {
-       fw_init_seo();
+        fw_init_seo();
     }
 
     /**
@@ -19,9 +19,12 @@ class HomeController extends BaseController
      */
     public function index()
     {
-        $page = Page::find(fw_setting('homepage'))->load('images');
+        $page = Page::find(fw_setting('homepage'));
 
         if ($page) {
+            $page->load('images');
+            $page->visit();
+
             return $this->page($page->slug);
         }
 
@@ -31,7 +34,7 @@ class HomeController extends BaseController
     public function page($slug)
     {
         $page = Page::whereSlug($slug)->published()->first();
-
+        $page->visit();
         $view = 'default';
         if ( ! $page) {
             abort(404);

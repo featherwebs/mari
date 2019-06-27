@@ -20,7 +20,6 @@ class PagesTableSeeder extends Seeder
             'meta_title'       => '',
             'meta_description' => '',
             'meta_keywords'    => '',
-            'content'          => '',
             'custom'           => [],
             'view'             => 'home',
             'is_published'     => 1,
