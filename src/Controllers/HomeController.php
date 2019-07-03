@@ -34,7 +34,7 @@ class HomeController extends BaseController
     public function page($slug)
     {
         $page = Page::whereSlug($slug)->published()->first();
-        $page->visit();
+        
         $view = 'default';
         if ( ! $page) {
             abort(404);
@@ -44,6 +44,7 @@ class HomeController extends BaseController
             }
         }
 
+        $page->visit();
         fw_init_seo($page);
 
         return view('pages.' . $view, compact('page'));
