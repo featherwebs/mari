@@ -172,6 +172,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
     <style>
         .thumbnail {
             position: relative;
@@ -225,6 +226,7 @@
       });
       Laraberg.initGutenberg('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
     </script>
+    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
 
     <script type="text/javascript">
         @php

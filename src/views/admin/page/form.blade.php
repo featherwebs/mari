@@ -194,9 +194,14 @@
     </div>
 </div>
 
+@push('styles')
+    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
+@endpush
+
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>
+    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script>
         @if($page = old('page', isset($page) ? $page : null))

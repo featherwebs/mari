@@ -175,6 +175,7 @@
 </div>
 
 @push('styles')
+    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
     <style>
         .sub-panel {
             margin-left: 40px;
@@ -193,6 +194,7 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
     <script>
             @if(isset($menu))
       let menu = JSON.parse('{!! addslashes(json_encode($menu)) !!}');

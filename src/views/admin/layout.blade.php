@@ -18,7 +18,6 @@
     <!-- Styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-indigo.min.css" />
-    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,7 +45,6 @@
 <script src="https://unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/moment@2.22.1/min/moment.min.js"></script>
-<script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
 <script>Scrollbar.initAll();</script>
 <script>
   window.Laravel = {csrfToken: '{{ csrf_token() }}'};
