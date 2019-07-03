@@ -15,6 +15,7 @@ use UniSharp\LaravelFilemanager\Events\ImageWasUploaded;
 use Yajra\DataTables\DataTablesServiceProvider;
 use Zizaco\Entrust\EntrustServiceProvider;
 use Artesaos\SEOTools\Providers\SEOToolsServiceProvider;
+use Barryvdh\Debugbar\ServiceProvider as DebugbarServiceProvider;
 
 class FeatherwebsServiceProvider extends ServiceProvider
 {
@@ -68,6 +69,7 @@ class FeatherwebsServiceProvider extends ServiceProvider
         $this->app->register(UnisharpServiceProvider::class);
         $this->app->register(SEOToolsServiceProvider::class);
         $this->app->register(LaravelPopularServiceProvider::class);
+        $this->app->register(DebugbarServiceProvider::class);
         //        $this->app->make('Featherwebs\Mari\Controllers');
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
@@ -75,5 +77,6 @@ class FeatherwebsServiceProvider extends ServiceProvider
         $loader->alias('SEOMeta', \Artesaos\SEOTools\Facades\SEOMeta::class);
         $loader->alias('OpenGraph', \Artesaos\SEOTools\Facades\OpenGraph::class);
         $loader->alias('Twitter', \Artesaos\SEOTools\Facades\TwitterCard::class);
+        $loader->alias('Debugbar', Barryvdh\Debugbar\Facade::class);
     }
 }
