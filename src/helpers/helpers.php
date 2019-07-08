@@ -400,7 +400,7 @@ if ( ! function_exists('fw_sync_images')) {
 
             if ( ! empty($path)) {
                 $filename = basename($path);
-                $image    = Image::where('path', 'like', '%' . $filename)->first();
+                $image    = Image::where('path', 'like', '%/' . $filename)->first();
                 if ($image) {
                     $model->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
                 }
