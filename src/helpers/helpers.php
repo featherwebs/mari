@@ -164,7 +164,7 @@ if ( ! function_exists('fw_upload_image')) {
         $filename  = $file->getClientOriginalName();
         $image     = [
             'custom' => [ 'title' => $filename ],
-            'path'   => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public')
+            'path'   => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public'),
         ];
 
         $imageInstance = Image::create($image);
@@ -185,7 +185,7 @@ if ( ! function_exists('fw_upload')) {
             'name' => $filename,
             'size' => $file->getClientSize(),
             'path' => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'uploads'),
-            'slug' => $slug
+            'slug' => $slug,
         ];
 
         if ($single) {
@@ -213,7 +213,7 @@ if ( ! function_exists('fw_fetch_data')) {
 if ( ! function_exists('fw_thumbnail')) {
     function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "", $useDefault = true)
     {
-        $id = $entity->id ?? $entity;
+        $id = strtolower($entity->slug ?? $entity->title ?? $entity->id ?? $entity);
 
         return Cache::remember('helpers_fw_thumbnails' . $id . $width . $height . $slug . $useDefault, config('mari.cache', 0), function () use ($entity, $width, $height, $slug, $useDefault) {
             if ($entity && $entity instanceof Image) {
@@ -388,7 +388,6 @@ if ( ! function_exists('fw_sync_images')) {
         if ($detach) {
             $model->images()->detach();
         }
-
         foreach ($images as $k => $img) {
 
             if ( ! array_key_exists('path', $img)) {
@@ -402,7 +401,7 @@ if ( ! function_exists('fw_sync_images')) {
                 $filename = basename($path);
                 $image    = Image::where('path', 'like', '%/' . $filename)->first();
                 if ($image) {
-                    $model->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+                    $model->images()->attach([ $image->id => [ 'slug' => str_slug($slug, '_') ] ]);
                 }
             }
         }
@@ -559,7 +558,7 @@ if ( ! function_exists('fw_init_seo')) {
             $description = current(array_filter([
                 $model->meta_description,
                 str_limit(strip_tags($model->renderContent()), 200),
-                fw_setting('description')
+                fw_setting('description'),
             ]));
             $images      = $model->images->push(fw_setting('logo'))->toArray();
             $keywords    = array_filter(array_merge(explode(',', $model->meta_keywords), explode(',', fw_setting('keywords'))));
@@ -569,7 +568,7 @@ if ( ! function_exists('fw_init_seo')) {
                 $description = current(array_filter([
                     $model->meta_description,
                     str_limit(strip_tags($model->renderContent()), 200),
-                    fw_setting('description')
+                    fw_setting('description'),
                 ]));
                 $images      = $model->images->push(fw_setting('logo'))->toArray();
                 $keywords    = array_filter(array_merge(explode(',', $model->meta_keywords), explode(',', fw_setting('keywords'))));
