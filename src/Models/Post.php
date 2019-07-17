@@ -19,28 +19,29 @@ class Post extends Model
         'post_type_id',
         'slug',
         'title',
+        'content_old',
         'sub_title',
         'meta_title',
         'meta_description',
         'meta_keywords',
         'view',
         'is_published',
-        'is_featured'
+        'is_featured',
     ];
 
     protected $appends = [ 'url', 'data', 'content_raw' ];
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
-        'created_at'   => 'date'
+        'created_at'   => 'date',
     ];
 
     protected $revisionFormattedFields = [
-        'is_published' => 'boolean:No|Yes'
+        'is_published' => 'boolean:No|Yes',
     ];
 
     protected $revisionFormattedFieldNames = [
-        'is_published' => 'Published Status'
+        'is_published' => 'Published Status',
     ];
 
     public function custom()
@@ -229,16 +230,18 @@ class Post extends Model
 
     public function getContentRawAttribute()
     {
-        if(empty($this->content))
-            return '<!-- wp:paragraph -->'.$this->content_old.'<!-- /wp:paragraph -->';
+        if (empty($this->content)) {
+            return '<!-- wp:paragraph -->' . $this->content_old . '<!-- /wp:paragraph -->';
+        }
 
         return $this->getRawContent();
     }
 
     public function renderContent()
     {
-        if(empty($this->content))
-            return '<!-- wp:paragraph -->'.$this->content_old.'<!-- /wp:paragraph -->';
+        if (empty($this->content)) {
+            return '<!-- wp:paragraph -->' . $this->content_old . '<!-- /wp:paragraph -->';
+        }
 
         return $this->content->render();
     }
