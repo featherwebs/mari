@@ -42,9 +42,7 @@ class PostTypesTableSeeder extends Seeder
             PostType::firstOrcreate([
                 'slug' => $type['slug'],
                 'title' => $type['title']
-            ])->update([
-                $type
-            ]);
+            ])->update($type);
         }
     }
 }
