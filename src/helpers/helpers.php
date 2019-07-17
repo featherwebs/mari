@@ -184,7 +184,7 @@ if ( ! function_exists('fw_upload')) {
         $data      = [
             'name' => $filename,
             'size' => $file->getClientSize(),
-            'path' => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'uploads'),
+            'path' => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public'),
             'slug' => $slug,
         ];
 
