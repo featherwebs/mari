@@ -17,7 +17,6 @@ class PostController extends BaseController
 {
     public function __construct()
     {
-        fw_init_seo();
     }
 
     public function api(Request $request)
@@ -131,7 +130,6 @@ class PostController extends BaseController
         if ( ! empty($post->view) && view()->exists('posts.' . $post->view)) {
             $view = $post->view;
         }
-
         fw_init_seo($post);
         $post->visit();
 

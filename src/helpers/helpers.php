@@ -1,19 +1,19 @@
 <?php
 
 use App\User;
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\SEOTools;
+use Featherwebs\Mari\Models\Tag;
 use Featherwebs\Mari\Models\File;
-use Featherwebs\Mari\Models\Image;
 use Featherwebs\Mari\Models\Menu;
 use Featherwebs\Mari\Models\Page;
 use Featherwebs\Mari\Models\Post;
-use Featherwebs\Mari\Models\PostType;
-use Featherwebs\Mari\Models\Setting;
-use Featherwebs\Mari\Models\Tag;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Featherwebs\Mari\Models\Image;
+use Featherwebs\Mari\Models\Setting;
+use Featherwebs\Mari\Models\PostType;
 use Illuminate\Support\Facades\Cache;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Database\Eloquent\Model;
 
 if ( ! function_exists('fw_setting')) {
     function fw_setting($query, $default = null)
@@ -184,7 +184,7 @@ if ( ! function_exists('fw_upload')) {
         $data      = [
             'name' => $filename,
             'size' => $file->getClientSize(),
-            'path' => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'public'),
+            'path' => $file->storeAs(strtolower(str_plural(class_basename($model))), str_random() . '.' . $extension, 'uploads'),
             'slug' => $slug,
         ];
 
@@ -213,7 +213,7 @@ if ( ! function_exists('fw_fetch_data')) {
 if ( ! function_exists('fw_thumbnail')) {
     function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "", $useDefault = true)
     {
-        $id = strtolower($entity->slug ?? $entity->title ?? $entity->id ?? $entity);
+        $id = str_slug($entity->slug ?? $entity->title ?? $entity->id ?? $entity);
 
         return Cache::remember('helpers_fw_thumbnails' . $id . $width . $height . $slug . $useDefault, config('mari.cache', 0), function () use ($entity, $width, $height, $slug, $useDefault) {
             if ($entity && $entity instanceof Image) {
@@ -560,7 +560,7 @@ if ( ! function_exists('fw_init_seo')) {
                 str_limit(strip_tags($model->renderContent()), 200),
                 fw_setting('description'),
             ]));
-            $images      = $model->images->push(fw_setting('logo'))->toArray();
+            $images      = $model->images->pluck('url')->push(fw_setting('logo'))->toArray();
             $keywords    = array_filter(array_merge(explode(',', $model->meta_keywords), explode(',', fw_setting('keywords'))));
         } else {
             if ($model instanceof Post) {
@@ -570,7 +570,7 @@ if ( ! function_exists('fw_init_seo')) {
                     str_limit(strip_tags($model->renderContent()), 200),
                     fw_setting('description'),
                 ]));
-                $images      = $model->images->push(fw_setting('logo'))->toArray();
+                $images      = $model->images->pluck('url')->push(fw_setting('logo'))->toArray();
                 $keywords    = array_filter(array_merge(explode(',', $model->meta_keywords), explode(',', fw_setting('keywords'))));
             } else {
                 $title       = fw_setting('title');
@@ -590,9 +590,11 @@ if ( ! function_exists('fw_init_seo')) {
                 ->setDescription($description)
                 ->addImages($images)
                 ->setCanonical(request()->url());
+
         SEOTools::opengraph()
                 ->setUrl(request()->url())
                 ->setTitle($title, fw_setting('title') != $title)
+                ->addImages($images)
                 ->setDescription($description)
                 ->addProperty('type', 'website')
                 ->addProperty('locale', 'en_US')
