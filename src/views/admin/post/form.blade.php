@@ -50,7 +50,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12">
-                    <input name="post[content]" id="content" v-model="post.content_raw" class="editor">
+                    <input name="post[content]" id="content" v-model="post.lb_raw_content" class="editor">
                     <span class="help-block">Main Content of the Post</span>
                 </div>
             </div>

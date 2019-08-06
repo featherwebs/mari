@@ -49,7 +49,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12">
-                    <input name="page[content]" id="content" v-model="page.content_raw" type="textarea" hidden>
+                    <input name="page[content]" id="content" v-model="page.lb_raw_content" type="textarea" hidden>
                     <span class="help-block">Main Content of the Page</span>
                 </div>
             </div>

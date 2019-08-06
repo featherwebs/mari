@@ -27,7 +27,7 @@ class Post extends Model
         'is_featured',
     ];
 
-    protected $appends = [ 'url', 'data', 'excerpt' ];
+    protected $appends = [ 'url', 'data', 'excerpt', 'lb_raw_content' ];
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',

@@ -38,7 +38,7 @@ class PageController extends BaseController
     public function store(StorePage $request)
     {
         $page = DB::transaction(function () use ($request) {
-            $page = Page::create($request->data());
+            $page             = Page::create($request->data());
             $page->lb_content = $request->data()['content'];
             $page->syncImages($request);
 

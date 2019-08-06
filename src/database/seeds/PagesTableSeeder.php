@@ -2,13 +2,14 @@
 
 namespace Featherwebs\Mari\Seeder;
 
-use Featherwebs\Mari\Models\Page;
 use Illuminate\Database\Seeder;
+use Featherwebs\Mari\Models\Page;
 
 class PagesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
      * @return void
      */
     public function run()
@@ -23,9 +24,10 @@ class PagesTableSeeder extends Seeder
             'custom'           => [],
             'view'             => 'home',
             'is_published'     => 1,
-            'page_id'          => null
+            'page_id'          => null,
         ];
 
         Page::create($page);
+        $page->lb_content = "";
     }
 }

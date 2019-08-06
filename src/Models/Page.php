@@ -33,6 +33,7 @@ class Page extends Model
 
     protected $appends = [
         'url',
+        'lb_raw_content'
     ];
 
     protected $dontKeepRevisionOf = [
