@@ -203,6 +203,9 @@
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>
+    <script src="https://unpkg.com/react@16.8.6/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/moment@2.24.0/min/moment.min.js"></script>
     <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
     <script>
             @if($p = old('post', isset($post) ? $post : null))
@@ -225,7 +228,7 @@
           placeholder: "Add your tags"
         });
       });
-      Laraberg.initGutenberg('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
+      Laraberg.init('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
     </script>
 
     <script type="text/javascript">
