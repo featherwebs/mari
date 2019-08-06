@@ -92,20 +92,24 @@
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="image">
-            <div v-for="(field,i) in page.images" class="panel">
-                <div class="panel-body">
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <a class="pull-right btn btn-xs btn-danger" href="javascript:void(0);" class="close" @click="removeImage(i)">&times;</a>
+            <div class="row">
+                <div v-for="(field,i) in page.images" class="col-sm-4">
+                    <div class="panel">
+                        <div class="panel-body">
                             <div class="form-group">
-                                <label :for="'images['+i+'][file]'">Image Source:</label>
-                                <div class="input-group">
-                                    <image-selector :name="'page[images]['+i+'][path]'" :value="field.url"></image-selector>
+                                <div class="col-sm-12">
+                                    <a class="pull-right btn btn-xs btn-danger" href="javascript:void(0);" class="close" @click="removeImage(i)">&times;</a>
+                                    <div class="form-group">
+                                        <label :for="'images['+i+'][file]'">Image Source:</label>
+                                        <div class="input-group">
+                                            <image-selector :name="'page[images]['+i+'][path]'" :value="field.url"></image-selector>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label :for="'images['+i+'][slug]'">Image Slug: </label>
+                                        <input class="form-control" :name="'page[images]['+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label :for="'images['+i+'][slug]'">Image Slug: </label>
-                                <input class="form-control" :name="'page[images]['+i+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
                             </div>
                         </div>
                     </div>
@@ -196,6 +200,11 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
+    <style>
+        .thumbnail > img {
+            height: 300px;
+        }
+    </style>
 @endpush
 
 @push('scripts')
@@ -204,13 +213,13 @@
     <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script>
-        @if($page = old('page', isset($page) ? $page : null))
-            let page = JSON.parse('{!! addslashes(json_encode($page)) !!}');
-        @endif
-        let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
-        let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
+            @if($page = old('page', isset($page) ? $page : null))
+      let page = JSON.parse('{!! addslashes(json_encode($page)) !!}');
+            @endif
+      let pages = JSON.parse('{!! addslashes(json_encode($pages)) !!}');
+      let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
 
-        Laraberg.initGutenberg('content', { laravelFilemanager: { prefix: '/mari-filemanager' }, minHeight: '800px' });
+      Laraberg.initGutenberg('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
     </script>
 
     <script type="text/javascript">
