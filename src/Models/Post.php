@@ -2,13 +2,11 @@
 
 namespace Featherwebs\Mari\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use JordanMiguel\LaravelPopular\Traits\Visitable;
+use Illuminate\Database\Eloquent\Model;
 use VanOns\Laraberg\Models\Gutenbergable;
 use Venturecraft\Revisionable\RevisionableTrait;
+use JordanMiguel\LaravelPopular\Traits\Visitable;
 
 class Post extends Model
 {
@@ -29,7 +27,7 @@ class Post extends Model
         'is_featured',
     ];
 
-    protected $appends = [ 'url', 'data', 'content_raw' ];
+    protected $appends = [ 'url', 'data', 'content_raw', 'excerpt' ];
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
@@ -44,29 +42,9 @@ class Post extends Model
         'is_published' => 'Published Status',
     ];
 
-    public function custom()
-    {
-        return $this->morphMany(CustomField::class, 'customable');
-    }
-
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    public function images()
-    {
-        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
-    }
-
-    public function files()
-    {
-        return $this->morphToMany(File::class, 'fileable')->withPivot('slug');
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
     }
 
     public function postType()
@@ -91,6 +69,11 @@ class Post extends Model
         $this->tags()->sync(array_values($ids));
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function syncImages(Request $request)
     {
         $this->images()->detach();
@@ -107,6 +90,11 @@ class Post extends Model
                 }
             }
         }
+    }
+
+    public function images()
+    {
+        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
     }
 
     public function scopePublished($query, $isPublished = true)
@@ -162,6 +150,11 @@ class Post extends Model
         return false;
     }
 
+    public function files()
+    {
+        return $this->morphToMany(File::class, 'fileable')->withPivot('slug');
+    }
+
     public function scopeType($query, $slugid)
     {
         if (is_array($slugid)) {
@@ -213,6 +206,11 @@ class Post extends Model
         parent::delete();
     }
 
+    public function custom()
+    {
+        return $this->morphMany(CustomField::class, 'customable');
+    }
+
     public function getUrlAttribute()
     {
         return route('post', $this->slug);
@@ -235,6 +233,11 @@ class Post extends Model
         }
 
         return $this->getRawContent();
+    }
+
+    public function getExcerptAttribute()
+    {
+        return str_limit(strip_tags($this->renderContent()), 100);
     }
 
     public function renderContent()
