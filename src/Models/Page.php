@@ -90,14 +90,19 @@ class Page extends Model
         return $this->hasMany(Page::class, 'page_id');
     }
 
-
-    public function getImage($slug = false)
+    public function getImage($slug = false, $multiple = false)
     {
         if ( ! $slug) {
             return $this->images;
         }
 
-        return $this->images()->wherePivot('slug', $slug)->first();
+        $builder = $this->images()->wherePivot('slug', $slug);
+
+        if ($multiple) {
+            return $builder->get();
+        }
+
+        return $builder->first();
     }
 
     public function setSlugAttribute($value)
