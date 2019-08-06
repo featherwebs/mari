@@ -2,17 +2,14 @@
 
 namespace Featherwebs\Mari\Controllers;
 
-use Featherwebs\Mari\Models\Image;
-use Featherwebs\Mari\Models\Setting;
-use Featherwebs\Mari\Requests\StorePage;
-use Featherwebs\Mari\Requests\UpdatePage;
 use Featherwebs\Mari\Models\Page;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Featherwebs\Mari\Models\Setting;
 use Illuminate\Support\Facades\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Featherwebs\Mari\Requests\StorePage;
 use Yajra\DataTables\Facades\DataTables;
+use Featherwebs\Mari\Requests\UpdatePage;
+use Illuminate\Routing\Controller as BaseController;
 
 class PageController extends BaseController
 {
@@ -42,7 +39,7 @@ class PageController extends BaseController
     {
         $page = DB::transaction(function () use ($request) {
             $page = Page::create($request->data());
-            $page->setContent($request->data()['content'], true);
+            $page->lb_content = $request->data()['content'];
             $page->syncImages($request);
 
             if ($request->get('homepage', 0) == 1) {
@@ -72,7 +69,7 @@ class PageController extends BaseController
     {
         DB::transaction(function () use ($request, $page) {
             $page->update($request->data());
-            $page->setContent($request->data()['content'], true);
+            $page->lb_content = $request->data()['content'];
             $page->syncImages($request);
             if ($request->get('homepage', 0) == 1) {
                 Setting::fetch('homepage')->update([ 'value' => $page->id ]);

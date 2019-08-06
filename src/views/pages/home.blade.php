@@ -3,6 +3,6 @@
 @section('content')
     @include('partials.slider')
     <div class="container">
-        {!! $page->renderContent() !!}
+        {!! $page->lb_content !!}
     </div>
 @endsection

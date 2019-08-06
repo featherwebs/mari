@@ -2,16 +2,16 @@
 
 namespace Featherwebs\Mari\Controllers;
 
-use Featherwebs\Mari\Models\Post;
-use Featherwebs\Mari\Models\PostType;
-use Featherwebs\Mari\Models\Tag;
-use Featherwebs\Mari\Requests\StorePost;
-use Featherwebs\Mari\Requests\UpdatePost;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
+use Featherwebs\Mari\Models\Tag;
+use Featherwebs\Mari\Models\Post;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Featherwebs\Mari\Models\PostType;
+use Featherwebs\Mari\Requests\StorePost;
 use Yajra\DataTables\Facades\DataTables;
+use Featherwebs\Mari\Requests\UpdatePost;
+use Illuminate\Routing\Controller as BaseController;
 
 class PostController extends BaseController
 {
@@ -58,7 +58,7 @@ class PostController extends BaseController
     {
         $post = DB::transaction(function () use ($request) {
             $post = Post::create($request->data());
-            $post->setContent($request->data()['content'], true);
+            $post->lb_content = $request->data()['content'];
             if ($request->customdata()) {
                 foreach ($request->customData() as $customData) {
                     $post->custom()->create($customData);
@@ -93,7 +93,7 @@ class PostController extends BaseController
     {
         DB::transaction(function () use ($request, $post) {
             $post->update($request->data());
-            $post->setContent($request->data()['content'], true);
+            $post->lb_content = $request->data()['content'];
             if ($request->customdata()) {
                 $post->custom()->delete();
                 foreach ($request->customData() as $customData) {

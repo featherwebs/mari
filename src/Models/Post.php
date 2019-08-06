@@ -27,7 +27,7 @@ class Post extends Model
         'is_featured',
     ];
 
-    protected $appends = [ 'url', 'data', 'content_raw', 'excerpt' ];
+    protected $appends = [ 'url', 'data', 'excerpt' ];
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
@@ -226,26 +226,8 @@ class Post extends Model
         return (object) $data;
     }
 
-    public function getContentRawAttribute()
-    {
-        if (empty($this->content)) {
-            return '<!-- wp:paragraph -->' . $this->content_old . '<!-- /wp:paragraph -->';
-        }
-
-        return $this->getRawContent();
-    }
-
     public function getExcerptAttribute()
     {
         return str_limit(strip_tags($this->renderContent()), 100);
-    }
-
-    public function renderContent()
-    {
-        if (empty($this->content)) {
-            return '<!-- wp:paragraph -->' . $this->content_old . '<!-- /wp:paragraph -->';
-        }
-
-        return $this->content->render();
     }
 }

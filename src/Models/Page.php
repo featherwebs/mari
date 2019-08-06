@@ -2,12 +2,11 @@
 
 namespace Featherwebs\Mari\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use JordanMiguel\LaravelPopular\Traits\Visitable;
-use Venturecraft\Revisionable\RevisionableTrait;
+use Illuminate\Database\Eloquent\Model;
 use VanOns\Laraberg\Models\Gutenbergable;
+use Venturecraft\Revisionable\RevisionableTrait;
+use JordanMiguel\LaravelPopular\Traits\Visitable;
 
 class Page extends Model
 {
@@ -34,7 +33,6 @@ class Page extends Model
 
     protected $appends = [
         'url',
-        'content_raw',
     ];
 
     protected $dontKeepRevisionOf = [
@@ -52,11 +50,6 @@ class Page extends Model
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    public function images()
-    {
-        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
     }
 
     public function getUrlAttribute()
@@ -84,7 +77,6 @@ class Page extends Model
         return $query->where('is_published', $isPublished);
     }
 
-
     public function subPages()
     {
         return $this->hasMany(Page::class, 'page_id');
@@ -103,6 +95,11 @@ class Page extends Model
         }
 
         return $builder->first();
+    }
+
+    public function images()
+    {
+        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
     }
 
     public function setSlugAttribute($value)
@@ -148,23 +145,5 @@ class Page extends Model
     public function files()
     {
         return $this->morphToMany(File::class, 'fileable')->withPivot('slug');
-    }
-
-    public function getContentRawAttribute()
-    {
-        if (empty($this->content)) {
-            return '<!-- wp:paragraph -->' . $this->content_old . '<!-- /wp:paragraph -->';
-        }
-
-        return $this->getRawContent();
-    }
-
-    public function renderContent()
-    {
-        if (empty($this->content)) {
-            return '<!-- wp:paragraph -->' . $this->content_old . '<!-- /wp:paragraph -->';
-        }
-
-        return $this->content->render();
     }
 }

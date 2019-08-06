@@ -12,7 +12,7 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          {!! $page->renderContent() !!}
+          {!! $page->lb_content !!}
         </div>
       </div>
     </div>
