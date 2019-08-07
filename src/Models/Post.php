@@ -228,6 +228,6 @@ class Post extends Model
 
     public function getExcerptAttribute()
     {
-        return str_limit(strip_tags($this->renderContent()), 100);
+        return str_limit(strip_tags($this->lb_content), 100);
     }
 }
