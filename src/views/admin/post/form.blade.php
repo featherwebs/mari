@@ -48,7 +48,7 @@
             <div class="form-group{{ fw_post_alias_visible($postType, 'content') ? '': ' hidden' }}">
                 <label for="content" class="control-label col-sm-12">{{ fw_post_alias($postType, 'content', 'Post Content')  }}</label>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ fw_post_alias_visible($postType, 'content') ? '': ' hidden' }}">
                 <div class="col-sm-12">
                     <input name="post[content]" id="content" v-model="post.lb_raw_content" class="editor">
                     <span class="help-block">Main Content of the Post</span>
