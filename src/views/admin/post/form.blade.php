@@ -230,6 +230,7 @@
       });
       Laraberg.init('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
     </script>
+    <script src="{{ asset('js/blocks.js') }}"></script>
 
     <script type="text/javascript">
         @php

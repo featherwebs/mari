@@ -31,6 +31,16 @@
                 overscroll-behavior-y: auto !important;
             }
         }
+        .wp-block {
+            max-width: 100% !important;
+        }
+
+        .mt-1 {
+            margin-top: 1em !important;
+        }
+        .mt-2 {
+            margin-top: 2em !important;
+        }
     </style>
     @include('featherwebs::admin.partials.style')
     @stack('styles')
