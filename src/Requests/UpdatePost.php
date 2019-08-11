@@ -60,10 +60,29 @@ class UpdatePost extends FormRequest
 
         $data = [];
         foreach ($this->input('post.custom', []) as $custom) {
-            if (array_key_exists('slug', $custom)) {
+            if ($custom['type'] != 'post-type' && $custom['type'] != 'post-type-multiple' && array_key_exists('slug', $custom)) {
                 array_push($data, [
-                    'slug'  => $custom['slug'],
-                    'value' => array_key_exists('value', $custom) ? $custom['value'] : ''
+                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
+                    'value' => array_key_exists('value', $custom) ? $custom['value'] : '',
+                ]);
+            }
+        }
+
+        return $data;
+    }
+
+    public function postsData()
+    {
+        if ( ! $this->input('post.custom', false)) {
+            return false;
+        }
+
+        $data = [];
+        foreach ($this->input('post.custom', []) as $custom) {
+            if (($custom['type'] == 'post-type' || $custom['type'] == 'post-type-multiple') && array_key_exists('slug', $custom)) {
+                array_push($data, [
+                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
+                    'value' => array_key_exists('value', $custom) ? $custom['value'] : [],
                 ]);
             }
         }

@@ -76,19 +76,13 @@
                     <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
                         <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
                     </select>
-                    <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'">
-                        <option v-for="post in posts.filter(p => p.post_type_id == field.id)" :value="post.id" v-html="post.title"></option>
+                    <select class="form-control select2" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug">
+                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="post.posts.find(p => p.pivot.slug == field.slug && p.id == pos.id)"></option>
+                    </select>
+                    <select class="form-control select2" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple>
+                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="post.posts.find(p => p.pivot.slug == field.slug && p.id == pos.id)"></option>
                     </select>
                     <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>
-                    <span class="help-block"></span>
-                </div>
-            </div>
-            <div class="form-group{{ fw_post_alias_visible($postType, 'tags') ? '': ' hidden' }}">
-                <label for="post_type_id" class="control-label col-sm-2">Tags</label>
-                <div class="col-sm-10">
-                    <select class="form-control select2" name="post[tags][]" multiple>
-                        <option v-for="tag in tags" :value="tag" :selected="post.tags.filter(t => t.title == tag).length">@{{ tag }}</option>
-                    </select>
                     <span class="help-block"></span>
                 </div>
             </div>
@@ -217,17 +211,8 @@
             @if(!empty($posts))
       let posts = JSON.parse('{!! addslashes(json_encode($posts)) !!}');
             @endif
-            @if(isset($tags))
-      let tags = JSON.parse('{!! addslashes(json_encode($tags)) !!}');
-            @endif
       let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
       let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
-      $(document).ready(function () {
-        $('.select2').select2({
-          tags: true,
-          placeholder: "Add your tags"
-        });
-      });
       Laraberg.init('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
     </script>
     <script src="{{ asset('js/blocks.js') }}"></script>
@@ -236,5 +221,18 @@
         @php
             include base_path().'/vendor/featherwebs/mari/src/public/js/dist/post.js';
         @endphp
+    </script>
+    <script>
+      $(document).ready(function () {
+        $('.select2').each(function () {
+          var that = this;
+          var multiple = $(that).attr('multiple') !== undefined;
+          $(that).select2().on('select2:select', function (e) {
+            window.postapp.addPostsRelation($(that).data('slug'), e.params.data.id, multiple);
+          }).on('select2:unselect', function (e) {
+            window.postapp.removePostsRelation($(that).data('slug'), e.params.data.id);
+          });
+        });
+      });
     </script>
 @endpush

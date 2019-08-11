@@ -113,6 +113,10 @@ class Post extends Model
             return $custom->value;
         }
 
+        if($custom = $this->posts()->wherePivot('slug', $slug)->count()) {
+            return $this->posts()->wherePivot('slug', $slug)->get();
+        }
+
         return $default;
     }
 
@@ -203,7 +207,7 @@ class Post extends Model
     {
         $this->custom()->delete();
 
-        parent::delete();
+        parent::performDeleteOnModel();
     }
 
     public function custom()
@@ -229,5 +233,10 @@ class Post extends Model
     public function getExcerptAttribute()
     {
         return str_limit(strip_tags($this->lb_content), 100);
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany(self::class, 'post_post', 'parent_post_id', 'child_post_id')->withPivot('slug');
     }
 }

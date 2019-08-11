@@ -63,7 +63,7 @@
                         <textarea class="form-control" :name="'custom['+i+'][options]'" v-model="field.options" rows="3"></textarea>
                         <span class="help-block">Options</span>
                     </div>
-                    <div class="col-xs-12" v-if="field.type=='post-type'">
+                    <div class="col-xs-12" v-if="field.type=='post-type' || field.type=='post-type-multiple'">
                         <select class="form-control" :name="'custom['+i+'][id]'" v-model="field.id">
                             <option v-for="post in post_types" :value="post.id" v-html="post.title"></option>
                         </select>
@@ -96,12 +96,12 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script>
-                @if(isset($postType))
-        let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
-                @endif
+            @if(isset($postType))
+      let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
+            @endif
 
-                @if(isset($postTypes))
-        let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
+            @if(isset($postTypes))
+      let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
         @endif
 
         {{--@if($p = old('post_type', isset($postType)?$postType:null))--}}
