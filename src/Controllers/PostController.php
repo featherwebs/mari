@@ -22,7 +22,7 @@ class PostController extends BaseController
     public function api(Request $request)
     {
         $type  = PostType::whereSlug($request->get('post_type', 'news'))->first();
-        $posts = Post::with('postType', 'tags', 'files', 'custom')->latest();
+        $posts = Post::with('postType', 'posts', 'files', 'custom')->latest();
 
         if ($type) {
             $posts->where('post_type_id', $type->id);
@@ -42,7 +42,6 @@ class PostController extends BaseController
 
     public function create(PostType $postType)
     {
-        $tags      = Tag::pluck('title', 'id')->unique();
         $postTypes = PostType::all();
         $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
@@ -51,20 +50,28 @@ class PostController extends BaseController
             return $item != 'index';
         });
 
-        return view('featherwebs::admin.post.create', compact('tags', 'postTypes', 'templates', 'postType', 'posts'));
+        return view('featherwebs::admin.post.create', compact('posts', 'postTypes', 'templates', 'postType', 'posts'));
     }
 
     public function store(StorePost $request)
     {
         $post = DB::transaction(function () use ($request) {
-            $post = Post::create($request->data());
+            $post             = Post::create($request->data());
             $post->lb_content = $request->data()['content'];
             if ($request->customdata()) {
                 foreach ($request->customData() as $customData) {
                     $post->custom()->create($customData);
                 }
             }
-            $post->syncTags($request->input('post.tags'));
+
+            if ($request->postsData()) {
+                foreach ($request->postsData() as $customData) {
+                    foreach ($customData['value'] as $value) {
+                        $post->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
+                    }
+                }
+            }
+
             $post->syncImages($request);
 
             return $post;
@@ -77,8 +84,7 @@ class PostController extends BaseController
 
     public function edit(Post $post)
     {
-        $post->load('images', 'tags', 'postType', 'custom', 'files');
-        $tags      = Tag::pluck('title', 'id')->unique();
+        $post->load('images', 'posts', 'postType', 'custom', 'files');
         $postTypes = PostType::all();
         $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
         $postType  = $post->postType;
@@ -86,7 +92,7 @@ class PostController extends BaseController
             return explode('.', $item->getFilename())[0];
         });
 
-        return view('featherwebs::admin.post.edit', compact('post', 'tags', 'postTypes', 'templates', 'postType', 'posts'));
+        return view('featherwebs::admin.post.edit', compact('post', 'posts', 'postTypes', 'templates', 'postType', 'posts'));
     }
 
     public function update(UpdatePost $request, Post $post)
@@ -101,7 +107,15 @@ class PostController extends BaseController
                 }
             }
 
-            $post->syncTags($request->input('post.tags'));
+            if ($request->postsData()) {
+                $post->posts()->detach();
+                foreach ($request->postsData() as $customData) {
+                    foreach ($customData['value'] as $value) {
+                        $post->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
+                    }
+                }
+            }
+
             $post->syncImages($request);
 
             return $post;
@@ -126,7 +140,7 @@ class PostController extends BaseController
     public function show(Post $post)
     {
         $view = 'default';
-        $post->load('images', 'tags', 'postType', 'files');
+        $post->load('images', 'posts', 'postType', 'files');
         if ( ! empty($post->view) && view()->exists('posts.' . $post->view)) {
             $view = $post->view;
         }
