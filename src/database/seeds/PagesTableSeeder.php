@@ -14,7 +14,7 @@ class PagesTableSeeder extends Seeder
      */
     public function run()
     {
-        $page = [
+        $data = [
             'slug'             => 'home',
             'title'            => 'Home',
             'sub_title'        => '',
@@ -27,7 +27,7 @@ class PagesTableSeeder extends Seeder
             'page_id'          => null,
         ];
 
-        Page::create($page);
+        $page = Page::create($data);
         $page->lb_content = "";
     }
 }
