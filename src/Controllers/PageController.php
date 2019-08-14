@@ -49,6 +49,8 @@ class PageController extends BaseController
             return $page;
         });
 
+        cache()->flush();
+
         return redirect()
             ->route('admin.page.index')
             ->withSuccess(trans('messages.create_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
@@ -78,6 +80,8 @@ class PageController extends BaseController
             return $page;
         });
 
+        cache()->flush();
+
         return redirect()
             ->route('admin.page.edit', $page->slug)
             ->withSuccess(trans('messages.update_success', [ 'entity' => "Page '" . str_limit($page->title, 20) . "'" ]));
@@ -87,6 +91,8 @@ class PageController extends BaseController
     {
         $title = str_limit($page->title, 20);
         $page->delete();
+
+        cache()->flush();
 
         return redirect()
             ->route('admin.page.index')
