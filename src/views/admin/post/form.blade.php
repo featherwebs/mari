@@ -15,28 +15,28 @@
     <div class="tab-content">
         <input type="hidden" :value="post_type.id" name="post[post_type_id]">
         <div role="tabpanel" class="tab-pane active" id="main">
-            <div class="form-group">
+            <div class="row">
                 <label for="title" class="control-label col-sm-2">{{ fw_post_alias($postType, 'title', 'Post Title')  }}</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="post[title]" type="text" v-model="post.title" id="title">
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group{{ fw_post_alias_visible($postType, 'sub_title') ? '': ' hidden' }}">
+            <div class="row{{ fw_post_alias_visible($postType, 'sub_title') ? '': ' hidden' }}">
                 <label for="sub_title" class="control-label col-sm-2">{{ fw_post_alias($postType, 'sub_title', 'Post Sub Title')  }}</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="post[sub_title]" type="text" v-model="post.sub_title" id="sub_title">
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group{{ fw_post_alias_visible($postType, 'slug') ? '': ' hidden' }}">
+            <div class="row{{ fw_post_alias_visible($postType, 'slug') ? '': ' hidden' }}">
                 <label for="slug" class="control-label col-sm-2">Slug</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="post[slug]" type="text" v-model="post.slug" id="slug" debounce="500">
                     <span class="help-block">Appears on url</span>
                 </div>
             </div>
-            <div class="form-group{{ fw_post_alias_visible($postType, 'view') ? '': ' hidden' }}">
+            <div class="row{{ fw_post_alias_visible($postType, 'view') ? '': ' hidden' }}">
                 <label for="view" class="control-label col-sm-2">{{ fw_post_alias($postType, 'view', 'Template')  }}</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="post[view]" v-model="post.view">
@@ -45,17 +45,17 @@
                     <span class="help-block">Filename of Blade Template File</span>
                 </div>
             </div>
-            <div class="form-group{{ fw_post_alias_visible($postType, 'content') ? '': ' hidden' }}">
+            <div class="row{{ fw_post_alias_visible($postType, 'content') ? '': ' hidden' }}">
                 <label for="content" class="control-label col-sm-12">{{ fw_post_alias($postType, 'content', 'Post Content')  }}</label>
             </div>
-            <div class="form-group{{ fw_post_alias_visible($postType, 'content') ? '': ' hidden' }}">
+            <div class="row{{ fw_post_alias_visible($postType, 'content') ? '': ' hidden' }}">
                 <div class="col-sm-12">
                     <input name="post[content]" id="content" v-model="post.lb_raw_content" class="editor">
                     <span class="help-block">Main Content of the Post</span>
                 </div>
             </div>
 
-            <div class="form-group" v-for="(field,i) in post.custom">
+            <div class="row" v-for="(field,i) in post.custom">
                 <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">@{{ field.title }}</label>
                 <div class="col-sm-10">
                     <input :name="'post[custom]['+i+'][slug]'" type="hidden" v-model="field.slug">
@@ -86,7 +86,7 @@
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group{{ fw_post_alias_visible($postType, 'is_published') ? '': ' hidden' }}">
+            <div class="row{{ fw_post_alias_visible($postType, 'is_published') ? '': ' hidden' }}">
                 <label for="is_published" class="control-label col-sm-2">{{ fw_post_alias($postType, 'is_published', 'Published')  }}</label>
                 <div class="col-sm-10">
                     <label>
@@ -99,7 +99,7 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group{{ fw_post_alias_visible($postType, 'is_featured') ? '': ' hidden' }}">
+            <div class="row{{ fw_post_alias_visible($postType, 'is_featured') ? '': ' hidden' }}">
                 <label for="is_featured" class="control-label col-sm-2">{{ fw_post_alias($postType, 'is_featured', 'Featured')  }}</label>
                 <div class="col-sm-10">
                     <label>
@@ -124,11 +124,11 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-3 image-wrapper" v-for="(field,j) in post.images.filter(i => i.slug == pt.slug || i.pivot.slug == pt.slug)">
-                                <div class="form-group text-center">
+                                <div class="row text-center">
                                     <a href="javascript:void(0);" class="text-danger" @click="removeImageField(field)" v-if="pt.type == 'multiple-images'"><i class="material-icons">close</i></a>
                                     <image-selector :name="'post[images]['+pt.slug+j+'][path]'" v-model="field.url"></image-selector>
                                 </div>
-                                <div class="form-group hidden">
+                                <div class="row hidden">
                                     <label :for="'images['+pt.slug+j+'][slug]'">Image Slug: </label>
                                     <input class="form-control" :name="'post[images]['+pt.slug+j+'][pivot][slug]'" type="text" v-model="field.pivot.slug">
                                 </div>
@@ -139,21 +139,21 @@
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="seo">
-            <div class="form-group">
+            <div class="row">
                 <label for="meta_title" class="control-label col-sm-2">Meta Title</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="post[meta_title]" type="text" v-model="post.meta_title" id="meta_title">
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="meta_description" class="control-label col-sm-2">Meta Description</label>
                 <div class="col-sm-10">
                     <textarea class="form-control" name="post[meta_description]" id="meta_description" v-model="post.meta_description"></textarea>
                     <span class="help-block"></span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="meta_keywords" class="control-label col-sm-2">Meta Keywords</label>
                 <div class="col-sm-10">
                     <textarea class="form-control" name="post[meta_keywords]" id="meta_keywords" v-model="post.meta_keywords"></textarea>
@@ -187,6 +187,10 @@
             height: 200px;
             max-width: 100%;
         }
+
+        .tab-pane {
+            padding: 20px;
+        }
     </style>
 @endpush
 
@@ -216,6 +220,7 @@
       Laraberg.init('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
     </script>
     <script src="{{ asset('js/blocks.js') }}"></script>
+    <script src="{{ asset('vendor/coblocks/dist/blocks.build.js') }}"></script>
 
     <script type="text/javascript">
         @php

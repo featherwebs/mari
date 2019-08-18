@@ -2,6 +2,7 @@
 
 namespace Featherwebs\Mari\Controllers;
 
+use Illuminate\Support\Facades\File;
 use Featherwebs\Mari\Models\PostType;
 use Featherwebs\Mari\Requests\StorePostType;
 use Featherwebs\Mari\Requests\UpdatePostType;
@@ -27,8 +28,11 @@ class PostTypeController extends BaseController
     public function create()
     {
         $postTypes = PostType::all();
+        $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
+            return explode('.', $item->getFilename())[0];
+        });
 
-        return view('featherwebs::admin.post-type.create', compact('postTypes'));
+        return view('featherwebs::admin.post-type.create', compact('postTypes', 'templates'));
     }
 
     public function store(StorePostType $request)
@@ -47,8 +51,11 @@ class PostTypeController extends BaseController
     public function edit(PostType $postType)
     {
         $postTypes = PostType::all();
+        $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
+            return explode('.', $item->getFilename())[0];
+        });
 
-        return view('featherwebs::admin.post-type.edit', compact('postType', 'postTypes'));
+        return view('featherwebs::admin.post-type.edit', compact('postType', 'postTypes', 'templates'));
     }
 
     public function update(UpdatePostType $request, PostType $postType)

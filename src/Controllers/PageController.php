@@ -3,9 +3,11 @@
 namespace Featherwebs\Mari\Controllers;
 
 use Featherwebs\Mari\Models\Page;
+use Featherwebs\Mari\Models\Post;
 use Illuminate\Support\Facades\DB;
 use Featherwebs\Mari\Models\Setting;
 use Illuminate\Support\Facades\File;
+use Featherwebs\Mari\Models\PageType;
 use Featherwebs\Mari\Requests\StorePage;
 use Yajra\DataTables\Facades\DataTables;
 use Featherwebs\Mari\Requests\UpdatePage;
@@ -27,12 +29,11 @@ class PageController extends BaseController
 
     public function create()
     {
+        $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
         $pages     = Page::whereNull('page_id')->pluck('title', 'id');
-        $templates = collect(File::allFiles(resource_path('views/pages')))->map(function ($item) {
-            return explode('.', $item->getFilename())[0];
-        });
+        $pageTypes = PageType::all();
 
-        return view('featherwebs::admin.page.create', compact('pages', 'templates'));
+        return view('featherwebs::admin.page.create', compact('pages', 'pageTypes', 'posts'));
     }
 
     public function store(StorePage $request)
@@ -40,6 +41,21 @@ class PageController extends BaseController
         $page = DB::transaction(function () use ($request) {
             $page             = Page::create($request->data());
             $page->lb_content = $request->data()['content'];
+
+            if ($request->customdata()) {
+                foreach ($request->customData() as $customData) {
+                    $page->custom()->create($customData);
+                }
+            }
+
+            if ($request->postsData()) {
+                foreach ($request->postsData() as $customData) {
+                    foreach ($customData['value'] as $value) {
+                        $page->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
+                    }
+                }
+            }
+
             $page->syncImages($request);
 
             if ($request->get('homepage', 0) == 1) {
@@ -48,8 +64,6 @@ class PageController extends BaseController
 
             return $page;
         });
-
-        cache()->flush();
 
         return redirect()
             ->route('admin.page.index')
@@ -58,13 +72,13 @@ class PageController extends BaseController
 
     public function edit(Page $page)
     {
-        $page->load('images');
-        $pages     = Page::whereNull('page_id')->pluck('title', 'id');
-        $templates = collect(File::allFiles(resource_path('views/pages')))->map(function ($item) {
-            return explode('.', $item->getFilename())[0];
-        });
+        $page->load('images', 'pageType', 'posts');
 
-        return view('featherwebs::admin.page.edit', compact('page', 'pages', 'templates'));
+        $pages     = Page::whereNull('page_id')->pluck('title', 'id');
+        $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
+        $pageTypes = PageType::all();
+
+        return view('featherwebs::admin.page.edit', compact('page', 'pages', 'pageTypes', 'posts'));
     }
 
     public function update(UpdatePage $request, Page $page)
@@ -72,15 +86,24 @@ class PageController extends BaseController
         DB::transaction(function () use ($request, $page) {
             $page->update($request->data());
             $page->lb_content = $request->data()['content'];
+
+            if ($request->postsData()) {
+                $page->posts()->detach();
+                foreach ($request->postsData() as $customData) {
+                    foreach ($customData['value'] as $value) {
+                        $page->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
+                    }
+                }
+            }
+
             $page->syncImages($request);
+
             if ($request->get('homepage', 0) == 1) {
                 Setting::fetch('homepage')->update([ 'value' => $page->id ]);
             }
 
             return $page;
         });
-
-        cache()->flush();
 
         return redirect()
             ->route('admin.page.edit', $page->slug)
@@ -91,8 +114,6 @@ class PageController extends BaseController
     {
         $title = str_limit($page->title, 20);
         $page->delete();
-
-        cache()->flush();
 
         return redirect()
             ->route('admin.page.index')

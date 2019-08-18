@@ -80,6 +80,12 @@
             Post Type
         </a>
         @endpermission
+        @permission('read-post-type')
+        <a class="mdl-navigation__link" href="{{ route('admin.page-type.index') }}">
+            <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">view_module</i>
+            Page Type
+        </a>
+        @endpermission
         @permission('read-user')
         <a class="mdl-navigation__link" href="{{ route('admin.user.index') }}">
             <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">perm_identity</i>

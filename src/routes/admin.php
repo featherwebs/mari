@@ -2,6 +2,7 @@
 
 use \Featherwebs\Mari\Controllers\AdminController;
 use \Featherwebs\Mari\Controllers\PostTypeController;
+use \Featherwebs\Mari\Controllers\PageTypeController;
 use \Featherwebs\Mari\Controllers\ProfileController;
 use \Featherwebs\Mari\Controllers\PageController;
 use \Featherwebs\Mari\Controllers\PostController;
@@ -80,6 +81,13 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::put('post-type/{postType}', PostTypeController::class.'@update')->name('post-type.update')->middleware('permission:update-post-type');
         Route::delete('post-type/{postType}', PostTypeController::class.'@destroy')->name('post-type.destroy')->middleware('permission:delete-post-type');
 
+        Route::get('page-type', PageTypeController::class.'@index')->name('page-type.index')->middleware('permission:read-post-type');
+        Route::get('page-type/create', PageTypeController::class.'@create')->name('page-type.create')->middleware('permission:create-post-type');
+        Route::post('page-type', PageTypeController::class.'@store')->name('page-type.store')->middleware('permission:create-post-type');
+        Route::get('page-type/{pageType}/edit', PageTypeController::class.'@edit')->name('page-type.edit')->middleware('permission:update-post-type');
+        Route::put('page-type/{pageType}', PageTypeController::class.'@update')->name('page-type.update')->middleware('permission:update-post-type');
+        Route::delete('page-type/{pageType}', PageTypeController::class.'@destroy')->name('page-type.destroy')->middleware('permission:delete-post-type');
+
         Route::resource('support', SupportController::class)->only('index', 'create', 'show');
         Route::get('support/{slug}/message/create', SupportController::class.'@messageCreate')->name('support.message.create');
 
@@ -101,6 +109,7 @@ Route::group([ 'middleware' => 'web' ], function () {
         Route::post('role', RoleController::class.'@api')->name('role.datatable');
         Route::post('user', UserController::class.'@api')->name('user.datatable');
         Route::post('post-type', PostTypeController::class.'@api')->name('post-type.datatable');
+        Route::post('page-type', PageTypeController::class.'@api')->name('page-type.datatable');
         Route::post('media', MediaController::class.'@api')->name('media.api');
     });
 });

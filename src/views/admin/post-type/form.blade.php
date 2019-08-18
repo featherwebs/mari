@@ -1,9 +1,8 @@
-<div id="post-type-app" v-cloak>
-    <div class="form-group">
+<div id="post-type-app" style="padding: 20px;" v-cloak>
+    <div class="row">
         <label for="title" class="control-label col-sm-2">Name</label>
         <div class="col-sm-10">
             <input class="form-control" name="title" type="text" v-model="post_type.title" id="title" required pattern=".{3,}" title="3 characters minimum">
-            <span class="help-block">Post Type Title</span>
         </div>
     </div>
     <h4>Column Aliases</h4>
@@ -30,10 +29,13 @@
             <span class="help-block"></span>
         </div>
         <div class="col-sm-2">
-            <input class="form-control" :name="'alias['+i+'][default]'" type="text" v-model="column.default">
+            <select class="form-control" :name="'alias['+i+'][default]'" v-if="column.values && column.values.length" v-model="column.default">
+                <option v-for="v in column.values" v-html="v" :value="v"></option>
+            </select>
+            <input class="form-control" :name="'alias['+i+'][default]'" type="text" v-else v-model="column.default">
         </div>
         <div class="col-sm-2">
-            <code>$post->@{{ column.slug }}</code>
+            <code>{$post/$page}->@{{ column.slug }}</code>
         </div>
     </div>
     <div class="row">
@@ -80,7 +82,7 @@
                 <span class="help-block">Default</span>
             </div>
             <div class="col-xs-2">
-                <code>$post->getCustom('@{{ field.slug }}')</code>
+                <code>{$post/$page}->getCustom('@{{ field.slug }}')</code>
                 <button class="btn btn-xs btn-danger pull-right" type="button" @click="removeCustomField(i)">
                     X
                 </button>
@@ -96,13 +98,14 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script>
-            @if(isset($postType))
+            @if(isset($pageType))
+      let post_type = JSON.parse('{!! addslashes(json_encode($pageType)) !!}');
+            @elseif(isset($postType))
       let post_type = JSON.parse('{!! addslashes(json_encode($postType)) !!}');
             @endif
 
-            @if(isset($postTypes))
       let post_types = JSON.parse('{!! addslashes(json_encode($postTypes)) !!}');
-        @endif
+      let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
 
         {{--@if($p = old('post_type', isset($postType)?$postType:null))--}}
         {{--let post_type = JSON.parse('{!! addslashes(json_encode($p)) !!}');--}}

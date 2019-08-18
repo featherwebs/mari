@@ -109,7 +109,7 @@ class Post extends Model
 
     public function getCustom($slug = false, $default = "-")
     {
-        if ($custom = $this->custom->where('slug', $slug)->first()) {
+        if ($custom = $this->custom()->where('slug', $slug)->first()) {
             return $custom->value;
         }
 

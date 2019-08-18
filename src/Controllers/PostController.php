@@ -77,8 +77,6 @@ class PostController extends BaseController
             return $post;
         });
 
-        cache()->flush();
-
         return redirect()
             ->route('admin.post.index', [ 'post_type' => $post->postType->slug ])
             ->withSuccess(trans('messages.create_success', [ 'entity' => "Post '" . str_limit($post->title, 20) . "'" ]));
@@ -122,8 +120,6 @@ class PostController extends BaseController
 
             return $post;
         });
-
-        cache()->flush();
 
         return redirect()
             ->route('admin.post.edit', $post->slug)

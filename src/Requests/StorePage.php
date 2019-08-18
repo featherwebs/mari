@@ -50,4 +50,42 @@ class StorePage extends FormRequest
             'is_published'     => $this->input('page.is_published', 'false') == 'true',
         ];
     }
+
+    public function customData()
+    {
+        if ( ! $this->input('page.custom', false)) {
+            return false;
+        }
+
+        $data = [];
+        foreach ($this->input('page.custom', []) as $custom) {
+            if ($custom['type'] != 'post-type' && $custom['type'] != 'post-type-multiple' && array_key_exists('slug', $custom)) {
+                array_push($data, [
+                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
+                    'value' => array_key_exists('value', $custom) ? $custom['value'] : '',
+                ]);
+            }
+        }
+
+        return $data;
+    }
+
+    public function postsData()
+    {
+        if ( ! $this->input('page.custom', false)) {
+            return false;
+        }
+
+        $data = [];
+        foreach ($this->input('page.custom', []) as $custom) {
+            if (($custom['type'] == 'post-type' || $custom['type'] == 'post-type-multiple') && array_key_exists('slug', $custom)) {
+                array_push($data, [
+                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
+                    'value' => array_key_exists('value', $custom) ? $custom['value'] : [],
+                ]);
+            }
+        }
+
+        return $data;
+    }
 }

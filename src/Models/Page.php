@@ -33,7 +33,7 @@ class Page extends Model
 
     protected $appends = [
         'url',
-        'lb_raw_content'
+        'lb_raw_content',
     ];
 
     protected $dontKeepRevisionOf = [
@@ -60,14 +60,12 @@ class Page extends Model
 
     public function getCustom($slug = false, $default = "-")
     {
-        $custom = collect($this->custom);
-        if ( ! $slug) {
-            return $custom;
+        if ($custom = $this->custom()->where('slug', $slug)->first()) {
+            return $custom->value;
         }
 
-        if ($custom->where('slug', $slug)->count() > 0
-            && array_key_exists('value', $custom->where('slug', $slug)->first())) {
-            return $custom->where('slug', $slug)->first()['value'];
+        if($custom = $this->posts()->wherePivot('slug', $slug)->count()) {
+            return $this->posts()->wherePivot('slug', $slug)->get();
         }
 
         return $default;
@@ -143,8 +141,30 @@ class Page extends Model
         }
     }
 
+    public function pageType()
+    {
+        return $this->belongsTo(PageType::class, 'view');
+    }
+
     public function files()
     {
         return $this->morphToMany(File::class, 'fileable')->withPivot('slug');
+    }
+
+    public function custom()
+    {
+        return $this->morphMany(CustomField::class, 'customable');
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class)->withPivot('slug');
+    }
+
+    public function delete()
+    {
+        $this->custom()->delete();
+
+        parent::performDeleteOnModel();
     }
 }
