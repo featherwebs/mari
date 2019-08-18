@@ -42,7 +42,6 @@ class StorePage extends FormRequest
             'slug'             => str_slug($this->input('page.slug')),
             'view'             => $this->input('page.view', 'default'),
             'content'          => $this->input('page.content'),
-            'custom'           => $this->input('page.custom', []),
             'page_id'          => $this->input('page.page_id'),
             'meta_title'       => $this->input('page.meta_title'),
             'meta_description' => $this->input('page.meta_description'),

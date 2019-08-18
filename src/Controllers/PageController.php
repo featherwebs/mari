@@ -72,7 +72,7 @@ class PageController extends BaseController
 
     public function edit(Page $page)
     {
-        $page->load('images', 'pageType', 'posts');
+        $page->load('images', 'pageType', 'posts', 'custom');
 
         $pages     = Page::whereNull('page_id')->pluck('title', 'id');
         $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
@@ -93,6 +93,12 @@ class PageController extends BaseController
                     foreach ($customData['value'] as $value) {
                         $page->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
                     }
+                }
+            }
+            if ($request->customdata()) {
+                $page->custom()->delete();
+                foreach ($request->customData() as $customData) {
+                    $page->custom()->create($customData);
                 }
             }
 

@@ -20,24 +20,18 @@ class Page extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
-        'custom',
         'view',
         'is_published',
         'page_id',
     ];
 
     protected $casts = [
-        'custom'       => 'json',
         'is_published' => 'boolean',
     ];
 
     protected $appends = [
         'url',
         'lb_raw_content',
-    ];
-
-    protected $dontKeepRevisionOf = [
-        'custom',
     ];
 
     protected $revisionFormattedFields = [
