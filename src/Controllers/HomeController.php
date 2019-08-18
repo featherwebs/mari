@@ -3,6 +3,7 @@
 namespace Featherwebs\Mari\Controllers;
 
 use Featherwebs\Mari\Models\Page;
+use Featherwebs\Mari\Models\PageType;
 use Illuminate\Routing\Controller as BaseController;
 
 class HomeController extends BaseController
@@ -34,13 +35,22 @@ class HomeController extends BaseController
     public function page($slug)
     {
         $page = Page::whereSlug($slug)->published()->first();
-        
         $view = 'default';
         if ( ! $page) {
             abort(404);
         } else {
-            if ( ! empty($page->view) && view()->exists('pages.' . $page->view)) {
-                $view = $page->view;
+            if ( ! empty($page->view)) {
+                $pageType = PageType::find($page->view);
+                if(count($pageType->alias)) {
+                    $pageTypeViewField = collect($pageType->alias)->firstWhere('slug','view');
+                    if($pageTypeViewField) {
+                        $view = $pageTypeViewField['default'];
+                    }
+                }
+
+                if(view()->exists('pages.' . $page->view)) {
+                    $view = $page->view;
+                }
             }
         }
 
