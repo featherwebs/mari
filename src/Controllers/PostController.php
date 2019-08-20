@@ -58,6 +58,8 @@ class PostController extends BaseController
         $post = DB::transaction(function () use ($request) {
             $post             = Post::create($request->data());
             $post->lb_content = $request->data()['content'];
+            $post->save();
+            
             if ($request->customdata()) {
                 foreach ($request->customData() as $customData) {
                     $post->custom()->create($customData);
@@ -100,6 +102,8 @@ class PostController extends BaseController
         DB::transaction(function () use ($request, $post) {
             $post->update($request->data());
             $post->lb_content = $request->data()['content'];
+            $post->save();
+
             if ($request->customdata()) {
                 $post->custom()->delete();
                 foreach ($request->customData() as $customData) {
