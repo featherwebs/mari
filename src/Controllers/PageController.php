@@ -41,6 +41,7 @@ class PageController extends BaseController
         $page = DB::transaction(function () use ($request) {
             $page             = Page::create($request->data());
             $page->lb_content = $request->data()['content'];
+            $page->save();
 
             if ($request->customdata()) {
                 foreach ($request->customData() as $customData) {
@@ -86,6 +87,7 @@ class PageController extends BaseController
         DB::transaction(function () use ($request, $page) {
             $page->update($request->data());
             $page->lb_content = $request->data()['content'];
+            $page->save();
 
             if ($request->postsData()) {
                 $page->posts()->detach();
