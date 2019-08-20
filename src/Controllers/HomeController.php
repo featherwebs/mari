@@ -41,7 +41,7 @@ class HomeController extends BaseController
         } else {
             if ( ! empty($page->view)) {
                 $pageType = PageType::find($page->view);
-                if($pageType && count($pageType->alias)) {
+                if(count($pageType->alias)) {
                     $pageTypeViewField = collect($pageType->alias)->firstWhere('slug','view');
                     if($pageTypeViewField) {
                         $view = $pageTypeViewField['default'];
