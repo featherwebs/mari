@@ -66,6 +66,8 @@ class StorePage extends FormRequest
                     if (array_key_exists('value', $custom)) {
                         if ( ! is_array($custom['value'])) {
                             $values = [ $custom['value'] ];
+                        } else {
+                            $values = $custom['value'];
                         }
                     }
 
@@ -98,6 +100,8 @@ class StorePage extends FormRequest
                     if (array_key_exists('value', $custom)) {
                         if ( ! is_array($custom['value'])) {
                             $values = [ $custom['value'] ];
+                        } else {
+                            $values = $custom['value'];
                         }
                     }
 

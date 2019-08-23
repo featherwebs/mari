@@ -87,16 +87,17 @@ class PageController extends BaseController
             $page->update($request->data());
             $page->lb_content = $request->data()['content'];
 
+            $page->posts()->detach();
             if ($request->postsData()) {
-                $page->posts()->detach();
                 foreach ($request->postsData() as $customData) {
                     foreach ($customData['value'] as $value) {
                         $page->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
                     }
                 }
             }
+
+            $page->custom()->delete();
             if ($request->customdata()) {
-                $page->custom()->delete();
                 foreach ($request->customData() as $customData) {
                     foreach($customData as $data) {
                         $page->custom()->create($customData);

@@ -58,6 +58,8 @@ class PostController extends BaseController
         $post = DB::transaction(function () use ($request) {
             $post             = Post::create($request->data());
             $post->lb_content = $request->data()['content'];
+
+
             if ($request->customdata()) {
                 foreach ($request->customData() as $customData) {
                     $post->custom()->create($customData);
@@ -66,9 +68,7 @@ class PostController extends BaseController
 
             if ($request->postsData()) {
                 foreach ($request->postsData() as $customData) {
-                    foreach ($customData['value'] as $value) {
-                        $post->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
-                    }
+                    $post->posts()->attach($customData['value'], [ 'slug' => $customData['slug'] ]);
                 }
             }
 
@@ -100,19 +100,19 @@ class PostController extends BaseController
         DB::transaction(function () use ($request, $post) {
             $post->update($request->data());
             $post->lb_content = $request->data()['content'];
+
+
+            $post->custom()->delete();
             if ($request->customdata()) {
-                $post->custom()->delete();
                 foreach ($request->customData() as $customData) {
                     $post->custom()->create($customData);
                 }
             }
 
+            $post->posts()->detach();
             if ($request->postsData()) {
-                $post->posts()->detach();
                 foreach ($request->postsData() as $customData) {
-                    foreach ($customData['value'] as $value) {
-                        $post->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
-                    }
+                    $post->posts()->attach($customData['value'], [ 'slug' => $customData['slug'] ]);
                 }
             }
 
