@@ -30,7 +30,7 @@ class UpdatePost extends FormRequest
             'post.view'          => '',
             'post.content'       => '',
             'post.post_type_id'  => 'required|exists:post_types,id',
-            'post.images.*.file' => 'image|max:5120|dimensions:max_width=3840,max_height=2160'
+            'post.images.*.file' => 'image|max:5120|dimensions:max_width=3840,max_height=2160',
         ];
     }
 
@@ -48,7 +48,7 @@ class UpdatePost extends FormRequest
             'meta_description' => $this->input('post.meta_description'),
             'meta_keywords'    => $this->input('post.meta_keywords'),
             'is_published'     => $this->input('post.is_published', 'false') == 'true',
-            'is_featured'      => $this->input('post.is_featured', 'false') == 'true'
+            'is_featured'      => $this->input('post.is_featured', 'false') == 'true',
         ];
     }
 
@@ -61,10 +61,23 @@ class UpdatePost extends FormRequest
         $data = [];
         foreach ($this->input('post.custom', []) as $custom) {
             if ($custom['type'] != 'post-type' && $custom['type'] != 'post-type-multiple' && array_key_exists('slug', $custom)) {
-                array_push($data, [
-                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
-                    'value' => array_key_exists('value', $custom) ? $custom['value'] : '',
-                ]);
+                $slug   = $custom['slug'];
+                $values = [];
+
+                if (array_key_exists('value', $custom)) {
+                    if ( ! is_array($custom['value'])) {
+                        $values = [ $custom['value'] ];
+                    } else {
+                        $values = $custom['value'];
+                    }
+                }
+
+                foreach ($values as $value) {
+                    array_push($data, [
+                        'slug'  => $slug,
+                        'value' => $value,
+                    ]);
+                }
             }
         }
 
@@ -80,22 +93,22 @@ class UpdatePost extends FormRequest
         $data = [];
         foreach ($this->input('post.custom', []) as $custom) {
             if (($custom['type'] == 'post-type' || $custom['type'] == 'post-type-multiple') && array_key_exists('slug', $custom)) {
-                if (array_key_exists('slug', $custom)) {
-                    $slug   = $custom['slug'];
-                    $values = [];
+                $slug   = $custom['slug'];
+                $values = [];
 
-                    if (array_key_exists('value', $custom)) {
-                        if ( ! is_array($custom['value'])) {
-                            $values = [ $custom['value'] ];
-                        }
+                if (array_key_exists('value', $custom)) {
+                    if ( ! is_array($custom['value'])) {
+                        $values = [ $custom['value'] ];
+                    } else {
+                        $values = $custom['value'];
                     }
+                }
 
-                    foreach ($values as $value) {
-                        array_push($data, [
-                            'slug'  => $slug,
-                            'value' => $value,
-                        ]);
-                    }
+                foreach ($values as $value) {
+                    array_push($data, [
+                        'slug'  => $slug,
+                        'value' => $value,
+                    ]);
                 }
             }
         }

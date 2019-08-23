@@ -6,7 +6,6 @@ use Featherwebs\Mari\Models\Page;
 use Featherwebs\Mari\Models\Post;
 use Illuminate\Support\Facades\DB;
 use Featherwebs\Mari\Models\Setting;
-use Illuminate\Support\Facades\File;
 use Featherwebs\Mari\Models\PageType;
 use Featherwebs\Mari\Requests\StorePage;
 use Yajra\DataTables\Facades\DataTables;
@@ -42,17 +41,15 @@ class PageController extends BaseController
             $page             = Page::create($request->data());
             $page->lb_content = $request->data()['content'];
 
-            if ($request->customdata()) {
-                foreach ($request->customData() as $customData) {
-                    $page->custom()->create($customData);
+            if ($request->postsData()) {
+                foreach ($request->postsData() as $customData) {
+                    $page->posts()->attach($customData['value'], [ 'slug' => $customData['slug'] ]);
                 }
             }
 
-            if ($request->postsData()) {
-                foreach ($request->postsData() as $customData) {
-                    foreach ($customData['value'] as $value) {
-                        $page->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
-                    }
+            if ($request->customdata()) {
+                foreach ($request->customData() as $customData) {
+                    $page->custom()->create($customData);
                 }
             }
 
@@ -90,18 +87,14 @@ class PageController extends BaseController
             $page->posts()->detach();
             if ($request->postsData()) {
                 foreach ($request->postsData() as $customData) {
-                    foreach ($customData['value'] as $value) {
-                        $page->posts()->attach($value, [ 'slug' => $customData['slug'] ]);
-                    }
+                    $page->posts()->attach($customData['value'], [ 'slug' => $customData['slug'] ]);
                 }
             }
 
             $page->custom()->delete();
             if ($request->customdata()) {
                 foreach ($request->customData() as $customData) {
-                    foreach($customData as $data) {
-                        $page->custom()->create($customData);
-                    }
+                    $page->custom()->create($customData);
                 }
             }
 
