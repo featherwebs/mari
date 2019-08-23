@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="row" v-for="(field,i) in post.custom">
+            <div class="row" v-for="(field,i) in post_type_non_images">
                 <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">@{{ field.title }}</label>
                 <div class="col-sm-10">
                     <input :name="'post[custom]['+i+'][slug]'" type="hidden" v-model="field.slug">
@@ -63,26 +63,26 @@
                     <input :name="'post[custom]['+i+'][title]'" type="hidden" v-model="field.title">
                     <input :name="'post[custom]['+i+'][options]'" type="hidden" v-model="field.options">
                     <input :name="'post[custom]['+i+'][map]'" type="hidden" v-model="field.map">
-                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="text" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
-                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
-                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
-                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="time" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
-                    {{--                    <input class="form-control" :name="'post[custom]['+i+'][file]'" type="file" :id="'custom-'+i+'-value'" v-if="field.type=='file'">--}}
+
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="text" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="number" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="time" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
                     <template v-if="field.type == 'map'">
-                        <map-location-selector :longitude="Number(field.value.split(',')[1])" :latitude="Number(field.value.split(',')[0])" @locationupdated="locationupdated($event, field)"></map-location-selector>
-                        <input type="hidden" :name="'post[custom]['+i+'][value]'" v-model="field.value">
+                        <map-location-selector :lnglat="getCustomValue(field.slug)" @locationupdated="locationupdated($event, field.slug, 'post[custom]['+i+'][value]')"></map-location-selector>
+                        <input type="hidden" :name="'post[custom]['+i+'][value]'" :value="getCustomValue(field.slug)">
                     </template>
-                    <image-selector :name="'post[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" :value="field.value"></image-selector>
-                    <select class="form-control" :name="'post[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
-                        <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
+                    <image-selector :name="'post[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" :value="getCustomValue(field.slug)"></image-selector>
+                    <select class="form-control" :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
+                        <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option" :selected="getCustomValue(field.slug) == option"></option>
                     </select>
                     <select class="form-control select2" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug">
-                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="post.posts.find(p => p.pivot.slug == field.slug && p.id == pos.id)"></option>
+                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
                     </select>
                     <select class="form-control select2" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple>
-                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="post.posts.find(p => p.pivot.slug == field.slug && p.id == pos.id)"></option>
+                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
                     </select>
-                    <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>
+                    <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" :value="getCustomValue(field.slug)" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>
                     <span class="help-block"></span>
                 </div>
             </div>
@@ -195,7 +195,7 @@
 @endpush
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>

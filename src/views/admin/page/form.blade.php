@@ -13,110 +13,110 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="main">
             @permission('update-post-type')
-                <div class="row">
-                    <label for="view" class="control-label col-sm-2">Page Type</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" name="page[view]" v-model="page.view">
-                            <option v-for="type in page_types" :value="type.id">@{{ type.title }}</option>
-                        </select>
-                        <span class="help-block">Select a Page Type</span>
-                    </div>
+            <div class="row">
+                <label for="view" class="control-label col-sm-2">Page Type</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="page[view]" v-model="page.view">
+                        <option v-for="type in page_types" :value="type.id">@{{ type.title }}</option>
+                    </select>
+                    <span class="help-block">Select a Page Type</span>
                 </div>
+            </div>
             @else
                 <div class="row">
                     <div class="col-sm-12">
                         <input type="hidden" name="page[view]" v-model="page.view">
                     </div>
                 </div>
-            @endpermission
-            <div class="row" :class="{'hidden': !alias_visible('title')}">
-                <label for="title" class="control-label col-sm-2">@{{ alias('title') }}</label>
-                <div class="col-sm-10">
-                    <input class="form-control" name="page[title]" type="text" v-model="page.title" id="title">
-                    <span class="help-block">Page Title</span>
+                @endpermission
+                <div class="row" :class="{'hidden': !alias_visible('title')}">
+                    <label for="title" class="control-label col-sm-2">@{{ alias('title') }}</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" name="page[title]" type="text" v-model="page.title" id="title">
+                        <span class="help-block">Page Title</span>
+                    </div>
                 </div>
-            </div>
-            <div class="row" :class="{'hidden': !alias_visible('sub_title')}">
-                <label for="sub_title" class="control-label col-sm-2">@{{ alias('sub_title') }}</label>
-                <div class="col-sm-10">
-                    <input class="form-control" name="page[sub_title]" type="text" v-model="page.sub_title" id="sub_title">
-                    <span class="help-block">Page Subtitle</span>
+                <div class="row" :class="{'hidden': !alias_visible('sub_title')}">
+                    <label for="sub_title" class="control-label col-sm-2">@{{ alias('sub_title') }}</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" name="page[sub_title]" type="text" v-model="page.sub_title" id="sub_title">
+                        <span class="help-block">Page Subtitle</span>
+                    </div>
                 </div>
-            </div>
-            <div class="row" :class="{'hidden': !alias_visible('slug')}">
-                <label for="slug" class="control-label col-sm-2">@{{ alias('slug') }}</label>
-                <div class="col-sm-10">
-                    <input class="form-control" name="page[slug]" type="text" v-model="page.slug" id="slug" debounce="500">
-                    <span class="help-block">Page Slug (appears on url)</span>
+                <div class="row" :class="{'hidden': !alias_visible('slug')}">
+                    <label for="slug" class="control-label col-sm-2">@{{ alias('slug') }}</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" name="page[slug]" type="text" v-model="page.slug" id="slug" debounce="500">
+                        <span class="help-block">Page Slug (appears on url)</span>
+                    </div>
                 </div>
-            </div>
-            <div class="row" :class="{'hidden': !alias_visible('content')}">
-                <label for="content" class="control-label col-sm-12">@{{ alias('content') }}</label>
-            </div>
-            <div class="row" :class="{'hidden': !alias_visible('content')}">
-                <div class="col-sm-12">
-                    <input name="page[content]" id="content" v-model="page.lb_raw_content" type="textarea" hidden>
-                    <span class="help-block">Main Content of the Page</span>
+                <div class="row" :class="{'hidden': !alias_visible('content')}">
+                    <label for="content" class="control-label col-sm-12">@{{ alias('content') }}</label>
                 </div>
-            </div>
-            <div class="row" v-for="(field,i) in page.custom">
-                <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">@{{ field.title }}</label>
-                <div class="col-sm-10">
-                    <input :name="'page[custom]['+i+'][slug]'" type="hidden" v-model="field.slug">
-                    <input :name="'page[custom]['+i+'][type]'" type="hidden" v-model="field.type">
-                    <input :name="'page[custom]['+i+'][title]'" type="hidden" v-model="field.title">
-                    <input :name="'page[custom]['+i+'][options]'" type="hidden" v-model="field.options">
-                    <input :name="'page[custom]['+i+'][map]'" type="hidden" v-model="field.map">
-                    <input class="form-control" :name="'page[custom]['+i+'][value]'" type="text" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
-                    <input class="form-control" :name="'page[custom]['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
-                    <input class="form-control" :name="'page[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
-                    <input class="form-control" :name="'page[custom]['+i+'][value]'" type="time" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
-                    {{--                    <input class="form-control" :name="'page[custom]['+i+'][file]'" type="file" :id="'custom-'+i+'-value'" v-if="field.type=='file'">--}}
-                    <template v-if="field.type == 'map'">
-                        <map-location-selector :longitude="Number(field.value.split(',')[1])" :latitude="Number(field.value.split(',')[0])" @locationupdated="locationupdated($event, field)"></map-location-selector>
-                        <input type="hidden" :name="'page[custom]['+i+'][value]'" v-model="field.value">
-                    </template>
-                    <image-selector :name="'page[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" :value="field.value"></image-selector>
-                    <select class="form-control" :name="'page[custom]['+i+'][value]'" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
-                        <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option"></option>
-                    </select>
-                    <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug">
-                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="page.posts.find(p => p.pivot.slug == field.slug && p.id == pos.id)"></option>
-                    </select>
-                    <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple>
-                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="page.posts.find(p => p.pivot.slug == field.slug && p.id == pos.id)"></option>
-                    </select>
-                    <ckeditor :name="'page[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>
-                    <span class="help-block"></span>
+                <div class="row" :class="{'hidden': !alias_visible('content')}">
+                    <div class="col-sm-12">
+                        <input name="page[content]" id="content" v-model="page.lb_raw_content" type="textarea" hidden>
+                        <span class="help-block">Main Content of the Page</span>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <label for="is_published" class="control-label col-sm-2">Published</label>
-                <div class="col-sm-10">
-                    <label>
-                        <input type="radio" name="page[is_published]" id="is_published" :value="true" v-model="page.is_published">
-                        Yes
-                    </label>
-                    <label>
-                        <input type="radio" name="page[is_published]" id="is_published" :value="false" v-model="page.is_published">
-                        No
-                    </label>
+                <div class="row" v-for="(field,i) in page_type_non_images">
+                    <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">@{{ field.title }}</label>
+                    <div class="col-sm-10">
+                        <input :name="'page[custom]['+i+'][slug]'" type="hidden" v-model="field.slug">
+                        <input :name="'page[custom]['+i+'][type]'" type="hidden" v-model="field.type">
+                        <input :name="'page[custom]['+i+'][title]'" type="hidden" v-model="field.title">
+                        <input :name="'page[custom]['+i+'][options]'" type="hidden" v-model="field.options">
+                        <input :name="'page[custom]['+i+'][map]'" type="hidden" v-model="field.map">
+
+                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="text" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
+                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="number" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
+                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="date" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
+                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="time" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
+                        <template v-if="field.type == 'map'">
+                            <map-location-selector :lnglat="getCustomValue(field.slug)" @locationupdated="locationupdated($event, field.slug, 'page[custom]['+i+'][value]')"></map-location-selector>
+                            <input type="hidden" :name="'page[custom]['+i+'][value]'" :value="getCustomValue(field.slug)">
+                        </template>
+                        <image-selector :name="'page[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" :value="getCustomValue(field.slug)"></image-selector>
+                        <select class="form-control" :name="'page[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
+                            <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option" :selected="getCustomValue(field.slug) == option"></option>
+                        </select>
+                        <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug">
+                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
+                        </select>
+                        <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple>
+                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
+                        </select>
+                        <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" :value="getCustomValue(field.slug)" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>
+                        <span class="help-block"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <label for="is_published" class="control-label col-sm-2">Home Page</label>
-                <div class="col-sm-10">
-                    <label>
-                        <input type="radio" name="homepage" value="1" {{ isset($page) && fw_setting('homepage') == $page->id ? 'checked': '' }}>
-                        Yes
-                    </label>
-                    <label>
-                        <input type="radio" name="homepage" value="0" {{ !(isset($page) && fw_setting('homepage') == $page->id) ? 'checked': '' }}>
-                        No
-                    </label>
-                    <span class="help-block">Make this the homepage.</span>
+                <div class="row">
+                    <label for="is_published" class="control-label col-sm-2">Published</label>
+                    <div class="col-sm-10">
+                        <label>
+                            <input type="radio" name="page[is_published]" id="is_published" :value="true" v-model="page.is_published">
+                            Yes
+                        </label>
+                        <label>
+                            <input type="radio" name="page[is_published]" id="is_published" :value="false" v-model="page.is_published">
+                            No
+                        </label>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <label for="is_published" class="control-label col-sm-2">Home Page</label>
+                    <div class="col-sm-10">
+                        <label>
+                            <input type="radio" name="homepage" value="1" {{ isset($page) && fw_setting('homepage') == $page->id ? 'checked': '' }}>
+                            Yes
+                        </label>
+                        <label>
+                            <input type="radio" name="homepage" value="0" {{ !(isset($page) && fw_setting('homepage') == $page->id) ? 'checked': '' }}>
+                            No
+                        </label>
+                        <span class="help-block">Make this the homepage.</span>
+                    </div>
+                </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="image" v-if="page_type_images.length">
             <div v-for="pt in page_type_images">

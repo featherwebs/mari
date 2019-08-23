@@ -59,10 +59,23 @@ class StorePage extends FormRequest
         $data = [];
         foreach ($this->input('page.custom', []) as $custom) {
             if ($custom['type'] != 'post-type' && $custom['type'] != 'post-type-multiple' && array_key_exists('slug', $custom)) {
-                array_push($data, [
-                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
-                    'value' => array_key_exists('value', $custom) ? $custom['value'] : '',
-                ]);
+                if (array_key_exists('slug', $custom)) {
+                    $slug   = $custom['slug'];
+                    $values = [];
+
+                    if (array_key_exists('value', $custom)) {
+                        if ( ! is_array($custom['value'])) {
+                            $values = [ $custom['value'] ];
+                        }
+                    }
+
+                    foreach ($values as $value) {
+                        array_push($data, [
+                            'slug'  => $slug,
+                            'value' => $value,
+                        ]);
+                    }
+                }
             }
         }
 
@@ -78,10 +91,23 @@ class StorePage extends FormRequest
         $data = [];
         foreach ($this->input('page.custom', []) as $custom) {
             if (($custom['type'] == 'post-type' || $custom['type'] == 'post-type-multiple') && array_key_exists('slug', $custom)) {
-                array_push($data, [
-                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
-                    'value' => array_key_exists('value', $custom) ? $custom['value'] : [],
-                ]);
+                if (array_key_exists('slug', $custom)) {
+                    $slug   = $custom['slug'];
+                    $values = [];
+
+                    if (array_key_exists('value', $custom)) {
+                        if ( ! is_array($custom['value'])) {
+                            $values = [ $custom['value'] ];
+                        }
+                    }
+
+                    foreach ($values as $value) {
+                        array_push($data, [
+                            'slug'  => $slug,
+                            'value' => $value,
+                        ]);
+                    }
+                }
             }
         }
 

@@ -8,6 +8,7 @@ class UpdatePage extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
      * @return bool
      */
     public function authorize()
@@ -17,6 +18,7 @@ class UpdatePage extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     *
      * @return array
      */
     public function rules()
@@ -28,7 +30,7 @@ class UpdatePage extends FormRequest
             'page.view'          => '',
             'page.content'       => '',
             'page.page_id'       => 'exists:pages,id|nullable',
-            'page.images.*.file' => 'image|max:5120|dimensions:max_width=3840,max_height=2160'
+            'page.images.*.file' => 'image|max:5120|dimensions:max_width=3840,max_height=2160',
         ];
     }
 
@@ -57,10 +59,23 @@ class UpdatePage extends FormRequest
         $data = [];
         foreach ($this->input('page.custom', []) as $custom) {
             if ($custom['type'] != 'page-type' && $custom['type'] != 'page-type-multiple' && array_key_exists('slug', $custom)) {
-                array_push($data, [
-                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
-                    'value' => array_key_exists('value', $custom) ? $custom['value'] : '',
-                ]);
+                if (array_key_exists('slug', $custom)) {
+                    $slug   = $custom['slug'];
+                    $values = [];
+
+                    if (array_key_exists('value', $custom)) {
+                        if ( ! is_array($custom['value'])) {
+                            $values = [ $custom['value'] ];
+                        }
+                    }
+
+                    foreach ($values as $value) {
+                        array_push($data, [
+                            'slug'  => $slug,
+                            'value' => $value,
+                        ]);
+                    }
+                }
             }
         }
 
@@ -76,10 +91,23 @@ class UpdatePage extends FormRequest
         $data = [];
         foreach ($this->input('page.custom', []) as $custom) {
             if (($custom['type'] == 'post-type' || $custom['type'] == 'post-type-multiple') && array_key_exists('slug', $custom)) {
-                array_push($data, [
-                    'slug'  => array_key_exists('slug', $custom) ? $custom['slug'] : '',
-                    'value' => array_key_exists('value', $custom) ? $custom['value'] : [],
-                ]);
+                if (array_key_exists('slug', $custom)) {
+                    $slug   = $custom['slug'];
+                    $values = [];
+
+                    if (array_key_exists('value', $custom)) {
+                        if ( ! is_array($custom['value'])) {
+                            $values = [ $custom['value'] ];
+                        }
+                    }
+
+                    foreach ($values as $value) {
+                        array_push($data, [
+                            'slug'  => $slug,
+                            'value' => $value,
+                        ]);
+                    }
+                }
             }
         }
 
