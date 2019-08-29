@@ -59,22 +59,22 @@ class UpdatePage extends FormRequest
         $data = [];
         foreach ($this->input('page.custom', []) as $custom) {
             if ($custom['type'] != 'page-type' && $custom['type'] != 'page-type-multiple' && array_key_exists('slug', $custom)) {
-                if (array_key_exists('slug', $custom)) {
-                    $slug   = $custom['slug'];
-                    $values = [];
+                $slug   = $custom['slug'];
+                $values = [];
 
-                    if (array_key_exists('value', $custom)) {
-                        if ( ! is_array($custom['value'])) {
-                            $values = [ $custom['value'] ];
-                        }
+                if (array_key_exists('value', $custom)) {
+                    if (is_array($custom['value'])) {
+                        $values = $custom['value'];
+                    } else {
+                        $values = [ $custom['value'] ];
                     }
+                }
 
-                    foreach ($values as $value) {
-                        array_push($data, [
-                            'slug'  => $slug,
-                            'value' => $value,
-                        ]);
-                    }
+                foreach ($values as $value) {
+                    array_push($data, [
+                        'slug'  => $slug,
+                        'value' => $value,
+                    ]);
                 }
             }
         }
@@ -91,22 +91,22 @@ class UpdatePage extends FormRequest
         $data = [];
         foreach ($this->input('page.custom', []) as $custom) {
             if (($custom['type'] == 'post-type' || $custom['type'] == 'post-type-multiple') && array_key_exists('slug', $custom)) {
-                if (array_key_exists('slug', $custom)) {
-                    $slug   = $custom['slug'];
-                    $values = [];
+                $slug   = $custom['slug'];
+                $values = [];
 
-                    if (array_key_exists('value', $custom)) {
-                        if ( ! is_array($custom['value'])) {
-                            $values = [ $custom['value'] ];
-                        }
+                if (array_key_exists('value', $custom)) {
+                    if (is_array($custom['value'])) {
+                        $values = $custom['value'];
+                    } else {
+                        $values = [ $custom['value'] ];
                     }
+                }
 
-                    foreach ($values as $value) {
-                        array_push($data, [
-                            'slug'  => $slug,
-                            'value' => $value,
-                        ]);
-                    }
+                foreach ($values as $value) {
+                    array_push($data, [
+                        'slug'  => $slug,
+                        'value' => $value,
+                    ]);
                 }
             }
         }

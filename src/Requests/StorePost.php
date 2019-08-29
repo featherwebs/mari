@@ -64,10 +64,10 @@ class StorePost extends FormRequest
                 $values = [];
 
                 if (array_key_exists('value', $custom)) {
-                    if ( ! is_array($custom['value'])) {
-                        $values = [ $custom['value'] ];
-                    } else {
+                    if (is_array($custom['value'])) {
                         $values = $custom['value'];
+                    } else {
+                        $values = [ $custom['value'] ];
                     }
                 }
 
@@ -96,10 +96,10 @@ class StorePost extends FormRequest
                 $values = [];
 
                 if (array_key_exists('value', $custom)) {
-                    if ( ! is_array($custom['value'])) {
-                        $values = [ $custom['value'] ];
-                    } else {
+                    if (is_array($custom['value'])) {
                         $values = $custom['value'];
+                    } else {
+                        $values = [ $custom['value'] ];
                     }
                 }
 

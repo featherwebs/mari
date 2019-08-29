@@ -8,6 +8,7 @@ class StorePage extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
      * @return bool
      */
     public function authorize()
@@ -17,6 +18,7 @@ class StorePage extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     *
      * @return array
      */
     public function rules()
@@ -30,7 +32,7 @@ class StorePage extends FormRequest
             'page.page_id'           => 'exists:pages,id|nullable',
             'page.images.*.id'       => '',
             'page.images.*.image_id' => '',
-            'page.images.*.file'     => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:5120|dimensions:max_width=3840,max_height=2160'
+            'page.images.*.file'     => 'mimetypes:image/jpeg,image/png,image/jpg,image/bmp|max:5120|dimensions:max_width=3840,max_height=2160',
         ];
     }
 
@@ -93,24 +95,22 @@ class StorePage extends FormRequest
         $data = [];
         foreach ($this->input('page.custom', []) as $custom) {
             if (($custom['type'] == 'post-type' || $custom['type'] == 'post-type-multiple') && array_key_exists('slug', $custom)) {
-                if (array_key_exists('slug', $custom)) {
-                    $slug   = $custom['slug'];
-                    $values = [];
+                $slug   = $custom['slug'];
+                $values = [];
 
-                    if (array_key_exists('value', $custom)) {
-                        if ( ! is_array($custom['value'])) {
-                            $values = [ $custom['value'] ];
-                        } else {
-                            $values = $custom['value'];
-                        }
+                if (array_key_exists('value', $custom)) {
+                    if (is_array($custom['value'])) {
+                        $values = $custom['value'];
+                    } else {
+                        $values = [ $custom['value'] ];
                     }
+                }
 
-                    foreach ($values as $value) {
-                        array_push($data, [
-                            'slug'  => $slug,
-                            'value' => $value,
-                        ]);
-                    }
+                foreach ($values as $value) {
+                    array_push($data, [
+                        'slug'  => $slug,
+                        'value' => $value,
+                    ]);
                 }
             }
         }
