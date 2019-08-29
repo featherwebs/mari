@@ -59,14 +59,17 @@ class Post extends Model
             return;
         }
         foreach ($data as $t) {
-            $tag = Tag::where('title', $t)->orWhere('slug', str_slug($t))->first();
+            $tag = Tag::where('title', $t)
+                      ->orWhere('slug', str_slug($t))
+                      ->first();
             if ( ! $tag) {
                 $tag = Tag::create([ 'title' => $t, 'slug' => str_slug($t) ]);
             }
             array_push($ids, $tag->id);
         }
 
-        $this->tags()->sync(array_values($ids));
+        $this->tags()
+             ->sync(array_values($ids));
     }
 
     public function tags()
@@ -76,7 +79,8 @@ class Post extends Model
 
     public function syncImages(Request $request)
     {
-        $this->images()->detach();
+        $this->images()
+             ->detach();
 
         foreach ($request->input('post.images', []) as $k => $img) {
             $path = $request->input('post.images.' . $k . '.path');
@@ -84,9 +88,11 @@ class Post extends Model
 
             if ( ! empty($path)) {
                 $filename = basename($path);
-                $image    = Image::where('path', 'like', '%' . $filename)->first();
+                $image    = Image::where('path', 'like', '%' . $filename)
+                                 ->first();
                 if ($image) {
-                    $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+                    $this->images()
+                         ->save($image, [ 'slug' => str_slug($slug, '_') ]);
                 }
             }
         }
@@ -94,7 +100,8 @@ class Post extends Model
 
     public function images()
     {
-        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
+        return $this->morphToMany(Image::class, 'imageable')
+                    ->withPivot('slug');
     }
 
     public function scopePublished($query, $isPublished = true)
@@ -109,12 +116,18 @@ class Post extends Model
 
     public function getCustom($slug = false, $default = "-")
     {
-        if ($custom = $this->custom()->where('slug', $slug)->first()) {
+        if ($custom = $this->custom()
+                           ->where('slug', $slug)
+                           ->first()) {
             return $custom->value;
         }
 
-        if($custom = $this->posts()->wherePivot('slug', $slug)->count()) {
-            return $this->posts()->wherePivot('slug', $slug)->get();
+        if ($custom = $this->posts()
+                           ->wherePivot('slug', $slug)
+                           ->count()) {
+            return $this->posts()
+                        ->wherePivot('slug', $slug)
+                        ->get();
         }
 
         return $default;
@@ -126,7 +139,8 @@ class Post extends Model
             return $this->images;
         }
 
-        $builder = $this->images()->wherePivot('slug', $slug);
+        $builder = $this->images()
+                        ->wherePivot('slug', $slug);
 
         if ($multiple) {
             return $builder->get();
@@ -141,7 +155,9 @@ class Post extends Model
             return $this->files;
         }
 
-        $file = $this->files()->whereSlug($slug)->first();
+        $file = $this->files()
+                     ->whereSlug($slug)
+                     ->first();
 
         if ($file) {
             if ( ! $obj) {
@@ -156,7 +172,8 @@ class Post extends Model
 
     public function files()
     {
-        return $this->morphToMany(File::class, 'fileable')->withPivot('slug');
+        return $this->morphToMany(File::class, 'fileable')
+                    ->withPivot('slug');
     }
 
     public function scopeType($query, $slugid)
@@ -170,7 +187,8 @@ class Post extends Model
         return $query->where(function ($q) use ($arr) {
             foreach ($arr as $item) {
                 $id       = $item;
-                $postType = PostType::whereSlug($item)->first();
+                $postType = PostType::whereSlug($item)
+                                    ->first();
                 if ($postType) {
                     $id = $postType->id;
                 }
@@ -189,9 +207,12 @@ class Post extends Model
         while ($exists) {
 
             if ($this->exists) {
-                $exists = self::where('slug', $slug)->where('id', '!=', $this->id)->count() > 0;
+                $exists = self::where('slug', $slug)
+                              ->where('id', '!=', $this->id)
+                              ->count() > 0;
             } else {
-                $exists = self::where('slug', $slug)->count() > 0;
+                $exists = self::where('slug', $slug)
+                              ->count() > 0;
             }
 
             if ($exists) {
@@ -205,7 +226,8 @@ class Post extends Model
 
     public function delete()
     {
-        $this->custom()->delete();
+        $this->custom()
+             ->delete();
 
         parent::performDeleteOnModel();
     }
@@ -237,6 +259,7 @@ class Post extends Model
 
     public function posts()
     {
-        return $this->belongsToMany(self::class, 'post_post', 'parent_post_id', 'child_post_id')->withPivot('slug');
+        return $this->belongsToMany(self::class, 'post_post', 'child_post_id', 'parent_post_id')
+                    ->withPivot('slug');
     }
 }

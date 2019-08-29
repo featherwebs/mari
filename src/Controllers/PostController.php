@@ -21,15 +21,18 @@ class PostController extends BaseController
 
     public function api(Request $request)
     {
-        $type  = PostType::whereSlug($request->get('post_type', 'news'))->first();
-        $posts = Post::with('postType', 'posts', 'files', 'custom')->latest();
+        $type  = PostType::whereSlug($request->get('post_type', 'news'))
+                         ->first();
+        $posts = Post::with('postType', 'posts', 'files', 'custom')
+                     ->latest();
 
         if ($type) {
             $posts->where('post_type_id', $type->id);
         }
         $posts->select('posts.*');
 
-        return DataTables::of($posts)->make(true);
+        return DataTables::of($posts)
+                         ->make(true);
     }
 
     public function index(PostType $postType)
@@ -43,12 +46,16 @@ class PostController extends BaseController
     public function create(PostType $postType)
     {
         $postTypes = PostType::all();
-        $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
-        $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
-            return explode('.', $item->getFilename())[0];
-        })->filter(function ($item) {
-            return $item != 'index';
-        });
+        $posts     = Post::select('post_type_id', 'id', 'title')
+                         ->get()
+                         ->toArray();
+        $templates = collect(File::allFiles(resource_path('views/posts')))
+            ->map(function ($item) {
+                return explode('.', $item->getFilename())[0];
+            })
+            ->filter(function ($item) {
+                return $item != 'index';
+            });
 
         return view('featherwebs::admin.post.create', compact('posts', 'postTypes', 'templates', 'postType', 'posts'));
     }
@@ -58,17 +65,19 @@ class PostController extends BaseController
         $post = DB::transaction(function () use ($request) {
             $post             = Post::create($request->data());
             $post->lb_content = $request->data()['content'];
-
+            $post->save();
 
             if ($request->customdata()) {
                 foreach ($request->customData() as $customData) {
-                    $post->custom()->create($customData);
+                    $post->custom()
+                         ->create($customData);
                 }
             }
 
             if ($request->postsData()) {
                 foreach ($request->postsData() as $customData) {
-                    $post->posts()->attach($customData['value'], [ 'slug' => $customData['slug'] ]);
+                    $post->posts()
+                         ->attach($customData['value'], [ 'slug' => $customData['slug'] ]);
                 }
             }
 
@@ -86,7 +95,9 @@ class PostController extends BaseController
     {
         $post->load('images', 'posts', 'postType', 'custom', 'files');
         $postTypes = PostType::all();
-        $posts     = Post::select('post_type_id', 'id', 'title')->get()->toArray();
+        $posts     = Post::select('post_type_id', 'id', 'title')
+                         ->get()
+                         ->toArray();
         $postType  = $post->postType;
         $templates = collect(File::allFiles(resource_path('views/posts')))->map(function ($item) {
             return explode('.', $item->getFilename())[0];
@@ -100,19 +111,23 @@ class PostController extends BaseController
         DB::transaction(function () use ($request, $post) {
             $post->update($request->data());
             $post->lb_content = $request->data()['content'];
+            $post->save();
 
-
-            $post->custom()->delete();
+            $post->custom()
+                 ->delete();
             if ($request->customdata()) {
                 foreach ($request->customData() as $customData) {
-                    $post->custom()->create($customData);
+                    $post->custom()
+                         ->create($customData);
                 }
             }
 
-            $post->posts()->detach();
+            $post->posts()
+                 ->detach();
             if ($request->postsData()) {
                 foreach ($request->postsData() as $customData) {
-                    $post->posts()->attach($customData['value'], [ 'slug' => $customData['slug'] ]);
+                    $post->posts()
+                         ->attach($customData['value'], [ 'slug' => $customData['slug'] ]);
                 }
             }
 
@@ -152,7 +167,8 @@ class PostController extends BaseController
 
     public function archive(Request $request)
     {
-        $posts = Post::published()->latest();
+        $posts = Post::published()
+                     ->latest();
         $view  = $request->get('view', 'default');
         $title = 'Posts';
         $q     = '';
@@ -160,14 +176,16 @@ class PostController extends BaseController
         if ($request->has('q')) {
             $q     = $request->get('q');
             $posts = $posts->where(function ($query) use ($q) {
-                $query->where('title', 'like', '%' . $q . '%')->orWhere('sub_title', 'like', '%' . $q . '%');
+                $query->where('title', 'like', '%' . $q . '%')
+                      ->orWhere('sub_title', 'like', '%' . $q . '%');
             });
         }
 
         if ($request->has('type')) {
             $posts = $posts->type($request->get('type'));
         }
-        $posts = $posts->paginate($request->get('limit', 12))->appends($request->except('page'));
+        $posts = $posts->paginate($request->get('limit', 12))
+                       ->appends($request->except('page'));
 
         return view()->first([
             'postTypes.' . $view,
