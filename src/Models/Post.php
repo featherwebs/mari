@@ -46,7 +46,7 @@ class Post extends Model
     public static function boot()
     {
         parent::boot();
-        static::saving(function () {
+        static::saved(function () {
             Cache::flush();
         });
     }
