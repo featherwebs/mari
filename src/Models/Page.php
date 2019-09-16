@@ -3,6 +3,7 @@
 namespace Featherwebs\Mari\Models;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use VanOns\Laraberg\Models\Gutenbergable;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -42,6 +43,14 @@ class Page extends Model
         'is_published' => 'Published Status',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::saving(function () {
+            Cache::flush();
+        });
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';
@@ -54,15 +63,32 @@ class Page extends Model
 
     public function getCustom($slug = false, $default = "-")
     {
-        if ($custom = $this->custom()->where('slug', $slug)->first()) {
+        if ($custom = $this->custom()
+                           ->where('slug', $slug)
+                           ->first()) {
             return $custom->value;
         }
 
-        if($custom = $this->posts()->wherePivot('slug', $slug)->count()) {
-            return $this->posts()->wherePivot('slug', $slug)->get();
+        if ($custom = $this->posts()
+                           ->wherePivot('slug', $slug)
+                           ->count()) {
+            return $this->posts()
+                        ->wherePivot('slug', $slug)
+                        ->get();
         }
 
         return $default;
+    }
+
+    public function custom()
+    {
+        return $this->morphMany(CustomField::class, 'customable');
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class)
+                    ->withPivot('slug');
     }
 
     public function scopePublished($query, $isPublished = true)
@@ -81,7 +107,8 @@ class Page extends Model
             return $this->images;
         }
 
-        $builder = $this->images()->wherePivot('slug', $slug);
+        $builder = $this->images()
+                        ->wherePivot('slug', $slug);
 
         if ($multiple) {
             return $builder->get();
@@ -92,7 +119,8 @@ class Page extends Model
 
     public function images()
     {
-        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
+        return $this->morphToMany(Image::class, 'imageable')
+                    ->withPivot('slug');
     }
 
     public function setSlugAttribute($value)
@@ -103,9 +131,12 @@ class Page extends Model
         while ($exists) {
 
             if ($this->exists) {
-                $exists = self::where('slug', $slug)->where('id', '!=', $this->id)->count() > 0;
+                $exists = self::where('slug', $slug)
+                              ->where('id', '!=', $this->id)
+                              ->count() > 0;
             } else {
-                $exists = self::where('slug', $slug)->count() > 0;
+                $exists = self::where('slug', $slug)
+                              ->count() > 0;
             }
 
             if ($exists) {
@@ -119,7 +150,8 @@ class Page extends Model
 
     public function syncImages(Request $request)
     {
-        $this->images()->detach();
+        $this->images()
+             ->detach();
 
         foreach ($request->input('page.images', []) as $k => $img) {
             $path = $request->input('page.images.' . $k . '.path');
@@ -127,9 +159,11 @@ class Page extends Model
 
             if ( ! empty($path)) {
                 $filename = basename($path);
-                $image    = Image::where('path', 'like', '%' . $filename)->first();
+                $image    = Image::where('path', 'like', '%' . $filename)
+                                 ->first();
                 if ($image) {
-                    $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+                    $this->images()
+                         ->save($image, [ 'slug' => str_slug($slug, '_') ]);
                 }
             }
         }
@@ -142,22 +176,14 @@ class Page extends Model
 
     public function files()
     {
-        return $this->morphToMany(File::class, 'fileable')->withPivot('slug');
-    }
-
-    public function custom()
-    {
-        return $this->morphMany(CustomField::class, 'customable');
-    }
-
-    public function posts()
-    {
-        return $this->belongsToMany(Post::class)->withPivot('slug');
+        return $this->morphToMany(File::class, 'fileable')
+                    ->withPivot('slug');
     }
 
     public function delete()
     {
-        $this->custom()->delete();
+        $this->custom()
+             ->delete();
 
         parent::performDeleteOnModel();
     }

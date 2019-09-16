@@ -3,6 +3,7 @@
 namespace Featherwebs\Mari\Models;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use VanOns\Laraberg\Models\Gutenbergable;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -41,6 +42,14 @@ class Post extends Model
     protected $revisionFormattedFieldNames = [
         'is_published' => 'Published Status',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::saving(function () {
+            Cache::flush();
+        });
+    }
 
     public function getRouteKeyName()
     {
@@ -131,6 +140,17 @@ class Post extends Model
         }
 
         return $default;
+    }
+
+    public function custom()
+    {
+        return $this->morphMany(CustomField::class, 'customable');
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany(self::class, 'post_post', 'child_post_id', 'parent_post_id')
+                    ->withPivot('slug');
     }
 
     public function getImage($slug = false, $multiple = false)
@@ -232,11 +252,6 @@ class Post extends Model
         parent::performDeleteOnModel();
     }
 
-    public function custom()
-    {
-        return $this->morphMany(CustomField::class, 'customable');
-    }
-
     public function getUrlAttribute()
     {
         return route('post', $this->slug);
@@ -255,11 +270,5 @@ class Post extends Model
     public function getExcerptAttribute()
     {
         return str_limit(strip_tags($this->lb_content), 100);
-    }
-
-    public function posts()
-    {
-        return $this->belongsToMany(self::class, 'post_post', 'child_post_id', 'parent_post_id')
-                    ->withPivot('slug');
     }
 }
