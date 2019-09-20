@@ -2,13 +2,11 @@
 
 namespace Featherwebs\Mari\Models;
 
-use Featherwebs\Mari\Traits\Flushable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class SubMenu extends Model
 {
-    use Flushable;
-    
     protected $fillable = [ 'menu_id', 'title', 'url', 'order', 'custom' ];
 
     protected $casts = [
@@ -16,6 +14,14 @@ class SubMenu extends Model
     ];
 
     protected $appends = [ 'type' ];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function () {
+            Cache::flush();
+        });
+    }
 
     public function menu()
     {

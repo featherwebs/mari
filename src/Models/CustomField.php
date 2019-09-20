@@ -1,14 +1,13 @@
 <?php
 
 namespace Featherwebs\Mari\Models;
-
-use Featherwebs\Mari\Traits\Flushable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class CustomField extends Model
 {
-    use RevisionableTrait, Flushable;
+    use RevisionableTrait;
     protected $revisionCreationsEnabled = true;
 
     protected $guarded = [];
@@ -16,5 +15,13 @@ class CustomField extends Model
     public function customable()
     {
         return $this->morphTo();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function () {
+            Cache::flush();
+        });
     }
 }

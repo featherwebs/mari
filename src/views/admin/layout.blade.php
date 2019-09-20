@@ -58,10 +58,6 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scrollbar/8.2.6/smooth-scrollbar.js"></script>
-
-<script src="https://unpkg.com/react@16.6.3/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@16.6.3/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/moment@2.22.1/min/moment.min.js"></script>
 <script>Scrollbar.initAll();</script>
 <script>
   window.Laravel = {csrfToken: '{{ csrf_token() }}'};

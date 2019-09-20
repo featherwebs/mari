@@ -3,13 +3,19 @@
 namespace Featherwebs\Mari\Models;
 
 use Zizaco\Entrust\EntrustRole;
-use Featherwebs\Mari\Traits\Flushable;
+use Illuminate\Support\Facades\Cache;
 
 class Role extends EntrustRole
 {
-    use Flushable;
-
     protected $guarded = [];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function () {
+            Cache::flush();
+        });
+    }
 
     public function getRouteKeyName()
     {

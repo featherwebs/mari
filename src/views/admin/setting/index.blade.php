@@ -73,7 +73,7 @@
                                 <div class="row">
                                     <label for="keywords" class="control-label col-sm-2">Keywords</label>
                                     <div class="col-sm-10">
-                                        <textarea id="keywords" name="setting[keywords]" class="form-control">{{ old('setting.keywords') ?: fw_setting('keywords') }}</textarea>
+                                        <textarea id="keywords" name="setting[keywords]" class="form-control">{!! old('setting.keywords') ?: fw_setting('keywords') !!}</textarea>
                                         <span class="help-block">Site Keywords<code>fw_setting('keywords')</code></span>
                                     </div>
                                 </div>

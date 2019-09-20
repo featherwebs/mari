@@ -2,17 +2,24 @@
 
 namespace Featherwebs\Mari\Models;
 
-use Featherwebs\Mari\Traits\Flushable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    use Flushable;
     protected $fillable = [ 'slug', 'title', 'custom' ];
 
     protected $casts = [
         'custom' => 'array',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function () {
+            Cache::flush();
+        });
+    }
 
     public function getRouteKeyName()
     {

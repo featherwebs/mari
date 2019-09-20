@@ -3,20 +3,28 @@
 namespace Featherwebs\Mari\Models;
 
 use Illuminate\Support\Facades\Cache;
-use Featherwebs\Mari\Traits\Flushable;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Setting extends Model
 {
-    use RevisionableTrait, Flushable;
+    use RevisionableTrait;
 
     protected $revisionCreationsEnabled = true;
 
     protected $guarded = [];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function () {
+            Cache::flush();
+        });
+    }
+
     /**
      * Scope a query to return specific value.
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param $slug
      * @return \Illuminate\Database\Eloquent\Builder
@@ -27,7 +35,7 @@ class Setting extends Model
         return $query->whereSlug($slug);
     }
 
-    public function scopeCustom($query, $custom=1)
+    public function scopeCustom($query, $custom = 1)
     {
         return $query->whereIsCustom($custom);
     }
@@ -37,6 +45,7 @@ class Setting extends Model
      */
     public function images()
     {
-        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
+        return $this->morphToMany(Image::class, 'imageable')
+                    ->withPivot('slug');
     }
 }

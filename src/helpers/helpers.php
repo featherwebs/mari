@@ -81,24 +81,23 @@ if ( ! function_exists('fw_posts_by_tag')) {
 if ( ! function_exists('fw_posts_by_category')) {
     function fw_posts_by_category($category, $limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images', 'custom', 'files')
-                     ->published()
-                     ->latest()
-                     ->whereHas('postType', function ($q) use ($category) {
-                         if (is_array($category)) {
-                             $q->whereIn('slug', $category);
-                         } else {
-                             $q->where('slug', $category);
-                         }
-                     });
-        if ($limit) {
-            $posts = $posts->take($limit);
-        }
-        if ($builder) {
-            return $posts;
-        }
-
-        return Cache::remember('helpers_fw_posts_by_category' . $category . $limit . $builder, config('mari.cache', 0), function () use ($posts) {
+        return Cache::remember('helpers_fw_posts_by_category' . $category . $limit . $builder, config('mari.cache', 0), function () use($category, $limit, $builder) {
+            $posts = Post::with('tags', 'images', 'custom', 'files')
+                         ->published()
+                         ->latest()
+                         ->whereHas('postType', function ($q) use ($category) {
+                             if (is_array($category)) {
+                                 $q->whereIn('slug', $category);
+                             } else {
+                                 $q->where('slug', $category);
+                             }
+                         });
+            if ($limit) {
+                $posts = $posts->take($limit);
+            }
+            if ($builder) {
+                return $posts;
+            }
             return $posts->get();
         });
     }
@@ -118,22 +117,25 @@ if ( ! function_exists('fw_post_by_slug')) {
 if ( ! function_exists('fw_post_by_id')) {
     function fw_post_by_id($id)
     {
-        return Post::with('tags', 'images', 'custom', 'files')->published()->find($id);
+        return Cache::remember('helpers_fw_post_by_id' . $id, config('mari.cache', 0), function () use($id) {
+            return Post::with('tags', 'images', 'custom', 'files')
+                       ->published()
+                       ->find($id);
+        });
     }
 }
 if ( ! function_exists('fw_posts')) {
     function fw_posts($limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images', 'custom', 'files')->latest()->published();
-        if ($limit) {
-            $posts = $posts->limit($limit);
-        }
+        return Cache::remember('helper_fw_posts' . $limit . $builder, config('mari.cache', 0), function () use ($limit, $builder) {
+            $posts = Post::with('tags', 'images', 'custom', 'files')->latest()->published();
+            if ($limit) {
+                $posts = $posts->limit($limit);
+            }
 
-        if ($builder) {
-            return $posts;
-        }
-
-        return Cache::remember('helper_fw_posts' . $limit . $builder, config('mari.cache', 0), function () use ($limit, $builder, $posts) {
+            if ($builder) {
+                return $posts;
+            }
             return $posts->get();
         });
     }
@@ -149,12 +151,16 @@ if ( ! function_exists('fw_page_by_slug')) {
 if ( ! function_exists('fw_pages')) {
     function fw_pages($limit = false)
     {
-        $pages = Page::with('images')->published()->latest();
-        if ($limit) {
-            $pages = $pages->limit($limit);
-        }
+        return Cache::remember('helpers_fw_pages' . $limit, config('mari.cache', 0), function () use($limit) {
+            $pages = Page::with('images')
+                         ->published()
+                         ->latest();
+            if ($limit) {
+                $pages = $pages->limit($limit);
+            }
 
-        return $pages->get();
+            return $pages->get();
+        });
     }
 }
 if ( ! function_exists('fw_upload_image')) {
@@ -213,7 +219,7 @@ if ( ! function_exists('fw_fetch_data')) {
 if ( ! function_exists('fw_thumbnail')) {
     function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "", $useDefault = true)
     {
-        $id = str_slug($entity->slug ?? $entity->title ?? $entity->id ?? $entity);
+        $id = str_slug($entity->slug ?? str_slug($entity->title) ?? $entity->id ?? $entity);
 
         return Cache::remember('helpers_fw_thumbnails' . $id . $width . $height . $slug . $useDefault, config('mari.cache', 0), function () use ($entity, $width, $height, $slug, $useDefault) {
             if ($entity && $entity instanceof Image) {

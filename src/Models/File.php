@@ -2,25 +2,26 @@
 
 namespace Featherwebs\Mari\Models;
 
-use Featherwebs\Mari\Traits\Flushable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
-    use Flushable;
-
     protected $fillable = [ 'path' ];
 
     protected $appends = [ 'url' ];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function () {
+            Cache::flush();
+        });
+    }
+
     public function fileable()
     {
         return $this->morphTo();
-    }
-
-    public function getFullPath()
-    {
-        return storage_path('app/public/' . $this->path);
     }
 
     public function delete()
@@ -32,6 +33,11 @@ class File extends Model
         }
 
         parent::delete();
+    }
+
+    public function getFullPath()
+    {
+        return storage_path('app/public/' . $this->path);
     }
 
     public function getUrlAttribute()

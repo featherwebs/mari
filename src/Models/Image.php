@@ -2,14 +2,12 @@
 
 namespace Featherwebs\Mari\Models;
 
-use Featherwebs\Mari\Traits\Flushable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\Facades\Image as InterventionImage;
 
 class Image extends Model
 {
-    use Flushable;
-
     const THUMB_PATH = 'thumbnails/';
 
     protected $guarded = [];
@@ -18,21 +16,22 @@ class Image extends Model
 
     protected $casts = [ 'custom' => 'array' ];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function () {
+            Cache::flush();
+        });
+    }
+
     public function imageable()
     {
         return $this->morphTo();
     }
 
-    public function getFullPath()
+    public function getThumbnailAttribute()
     {
-        return storage_path('app/public/' . $this->path);
-    }
-
-    public function file()
-    {
-        if (file_exists($this->getFullPath())) {
-            return InterventionImage::make(storage_path('app/public/' . $this->path));
-        }
+        return $this->getThumbnail(150);
     }
 
     public function getThumbnail($width = null, $height = null)
@@ -52,18 +51,27 @@ class Image extends Model
             } elseif ($width == null || $height == null) {
                 $file->resize($width, $height, function ($constraint) {
                     $constraint->aspectRatio();
-                })->save($fileLocation);
+                })
+                     ->save($fileLocation);
             } else {
-                $file->fit($width, $height)->save($fileLocation);
+                $file->fit($width, $height)
+                     ->save($fileLocation);
             }
         }
 
         return url($fileLocation);
     }
 
-    public function getThumbnailAttribute()
+    public function file()
     {
-        return $this->getThumbnail(150);
+        if (file_exists($this->getFullPath())) {
+            return InterventionImage::make(storage_path('app/public/' . $this->path));
+        }
+    }
+
+    public function getFullPath()
+    {
+        return storage_path('app/public/' . $this->path);
     }
 
     public function delete()

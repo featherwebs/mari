@@ -3,11 +3,11 @@
 namespace Featherwebs\Mari\Models;
 
 use Illuminate\Http\Request;
-use Featherwebs\Mari\Traits\Flushable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Venturecraft\Revisionable\RevisionableTrait;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Venturecraft\Revisionable\RevisionableTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class FeatherwebsUser extends Authenticatable
 {
@@ -19,39 +19,52 @@ class FeatherwebsUser extends Authenticatable
     use RevisionableTrait {
         boot as private revisionableBoot;
     }
-    use Notifiable, Flushable;
+    use Notifiable;
 
     protected $dontKeepRevisionOf = [
         'password',
-        'remember_token'
+        'remember_token',
     ];
 
     protected $revisionFormattedFields = [
-        'is_active' => 'boolean:No|Yes'
+        'is_active' => 'boolean:No|Yes',
     ];
 
-    protected $appends = ['image'];
+    protected $appends = [ 'image' ];
 
     protected $revisionCreationsEnabled = true;
+
+    public static function boot()
+    {
+        self::entrustBoot();
+        self::revisionableBoot();
+        parent::boot();
+        static::saved(function () {
+            Cache::flush();
+        });
+    }
 
     public function getRouteKeyName()
     {
         return 'username';
     }
 
-    public function images()
-    {
-        return $this->morphToMany(Image::class, 'imageable')->withPivot('slug');
-    }
-
     public function getImageAttribute()
     {
-        return $this->images()->first();
+        return $this->images()
+                    ->first();
+    }
+
+    public function images()
+    {
+        return $this->morphToMany(Image::class, 'imageable')
+                    ->withPivot('slug');
     }
 
     public function scopeSuperAdmin($query, $is = true)
     {
-        $superRole = Role::whereDescription('super-admin')->first();
+        $superRole = Role::whereDescription('super-admin')
+                         ->first();
         if ( ! $superRole) {
             return $query;
         }
@@ -67,30 +80,28 @@ class FeatherwebsUser extends Authenticatable
 
     public function isSuperAdmin()
     {
-        $superRole = Role::whereDescription('super-admin')->first();
+        $superRole = Role::whereDescription('super-admin')
+                         ->first();
 
         return $this->hasRole($superRole->name);
     }
 
     public function syncImage(Request $request)
     {
-        $this->images()->detach();
+        $this->images()
+             ->detach();
 
         $path = $request->input('user.image');
         $slug = 'photo';
 
         if ( ! empty($path)) {
             $filename = basename($path);
-            $image = Image::where('path', 'like', '%'.$filename)->first();
-            if($image)
-                $this->images()->save($image, [ 'slug' => str_slug($slug, '_') ]);
+            $image    = Image::where('path', 'like', '%' . $filename)
+                             ->first();
+            if ($image) {
+                $this->images()
+                     ->save($image, [ 'slug' => str_slug($slug, '_') ]);
+            }
         }
-    }
-
-    public static function boot()
-    {
-        self::entrustBoot();
-        self::revisionableBoot();
-        parent::boot();
     }
 }
