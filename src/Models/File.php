@@ -2,10 +2,13 @@
 
 namespace Featherwebs\Mari\Models;
 
+use Featherwebs\Mari\Traits\Flushable;
 use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
+    use Flushable;
+
     protected $fillable = [ 'path' ];
 
     protected $appends = [ 'url' ];

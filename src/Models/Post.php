@@ -4,6 +4,7 @@ namespace Featherwebs\Mari\Models;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Featherwebs\Mari\Traits\Flushable;
 use Illuminate\Database\Eloquent\Model;
 use VanOns\Laraberg\Models\Gutenbergable;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -11,7 +12,8 @@ use JordanMiguel\LaravelPopular\Traits\Visitable;
 
 class Post extends Model
 {
-    use RevisionableTrait, Gutenbergable, Visitable;
+    use RevisionableTrait, Gutenbergable, Visitable, Flushable;
+
     protected $revisionCreationsEnabled = true;
 
     protected $fillable = [
@@ -42,14 +44,6 @@ class Post extends Model
     protected $revisionFormattedFieldNames = [
         'is_published' => 'Published Status',
     ];
-
-    public static function boot()
-    {
-        parent::boot();
-        static::saved(function () {
-            Cache::flush();
-        });
-    }
 
     public function getRouteKeyName()
     {

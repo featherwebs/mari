@@ -2,12 +2,15 @@
 
 namespace Featherwebs\Mari\Models;
 
+use Illuminate\Support\Facades\Cache;
+use Featherwebs\Mari\Traits\Flushable;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Setting extends Model
 {
-    use RevisionableTrait;
+    use RevisionableTrait, Flushable;
+
     protected $revisionCreationsEnabled = true;
 
     protected $guarded = [];

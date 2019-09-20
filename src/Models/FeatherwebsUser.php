@@ -3,6 +3,7 @@
 namespace Featherwebs\Mari\Models;
 
 use Illuminate\Http\Request;
+use Featherwebs\Mari\Traits\Flushable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -15,10 +16,10 @@ class FeatherwebsUser extends Authenticatable
     use EntrustUserTrait {
         boot as private entrustBoot;
     }
-    use Notifiable;
     use RevisionableTrait {
         boot as private revisionableBoot;
     }
+    use Notifiable, Flushable;
 
     protected $dontKeepRevisionOf = [
         'password',

@@ -2,11 +2,14 @@
 
 namespace Featherwebs\Mari\Models;
 
+use Featherwebs\Mari\Traits\Flushable;
 use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\Facades\Image as InterventionImage;
 
 class Image extends Model
 {
+    use Flushable;
+
     const THUMB_PATH = 'thumbnails/';
 
     protected $guarded = [];

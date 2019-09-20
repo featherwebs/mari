@@ -2,14 +2,16 @@
 
 namespace Featherwebs\Mari\Models;
 
+use Featherwebs\Mari\Traits\Flushable;
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
+    use Flushable;
     protected $fillable = [ 'slug', 'title', 'custom' ];
 
     protected $casts = [
-        'custom' => 'array'
+        'custom' => 'array',
     ];
 
     public function getRouteKeyName()
@@ -27,17 +29,20 @@ class Menu extends Model
         $count  = '';
         $slug   = $value;
         $exists = true;
-        while ( $exists) {
+        while ($exists) {
 
-            if($this->exists)
-                $exists = self::where('slug', $slug)->where('id', '!=', $this->id)->count() > 0;
-            else {
-                $exists = self::where('slug', $slug)->count() > 0;
+            if ($this->exists) {
+                $exists = self::where('slug', $slug)
+                              ->where('id', '!=', $this->id)
+                              ->count() > 0;
+            } else {
+                $exists = self::where('slug', $slug)
+                              ->count() > 0;
             }
 
             if ($exists) {
                 $count = intval($count) + 1;
-                $slug = $value . '-' . intval($count);
+                $slug  = $value . '-' . intval($count);
             }
         }
 
