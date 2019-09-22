@@ -19,10 +19,14 @@ if ( ! function_exists('fw_setting')) {
     function fw_setting($query, $default = null)
     {
         return Cache::remember('settings_' . $query, config('mari.cache', 0), function () use ($query, $default) {
-            $setting = Setting::fetch($query)->first();
+            $setting = Setting::fetch($query)
+                              ->first();
 
-            if ($setting && $setting->images()->first()) {
-                return asset($setting->images()->first()->url);
+            if ($setting
+                && $setting->images()
+                           ->first()) {
+                return asset($setting->images()
+                                     ->first()->url);
             }
 
             if ( ! empty($setting->value)) {
@@ -49,7 +53,9 @@ if ( ! function_exists('fw_menu')) {
     function fw_menu($slug)
     {
         return Cache::remember('helper_fw_menu_' . $slug, config('mari.cache', 0), function () use ($slug) {
-            return Menu::with('subMenus')->whereSlug($slug)->first();
+            return Menu::with('subMenus')
+                       ->whereSlug($slug)
+                       ->first();
         });
     }
 }
@@ -118,7 +124,7 @@ if ( ! function_exists('fw_post_by_slug')) {
 if ( ! function_exists('fw_post_by_id')) {
     function fw_post_by_id($id)
     {
-        return Cache::remember('helpers_fw_post_by_id' . $id, config('mari.cache', 0), function () use($id) {
+        return Cache::remember('helpers_fw_post_by_id' . $id, config('mari.cache', 0), function () use ($id) {
             return Post::with('tags', 'images', 'custom', 'files')
                        ->published()
                        ->find($id);
@@ -128,7 +134,9 @@ if ( ! function_exists('fw_post_by_id')) {
 if ( ! function_exists('fw_posts')) {
     function fw_posts($limit = false, $builder = false)
     {
-        $posts = Post::with('tags', 'images', 'custom', 'files')->latest()->published();
+        $posts = Post::with('tags', 'images', 'custom', 'files')
+                     ->latest()
+                     ->published();
         if ($limit) {
             $posts = $posts->limit($limit);
         }
@@ -146,14 +154,16 @@ if ( ! function_exists('fw_page_by_slug')) {
     function fw_page_by_slug($slug)
     {
         return Cache::remember('helper_fw_page_by_slug' . $slug, config('mari.cache', 0), function () use ($slug) {
-            return Page::with('images')->where([ 'slug' => $slug ])->first();
+            return Page::with('images')
+                       ->where([ 'slug' => $slug ])
+                       ->first();
         });
     }
 }
 if ( ! function_exists('fw_pages')) {
     function fw_pages($limit = false)
     {
-        return Cache::remember('helpers_fw_pages' . $limit, config('mari.cache', 0), function () use($limit) {
+        return Cache::remember('helpers_fw_pages' . $limit, config('mari.cache', 0), function () use ($limit) {
             $pages = Page::with('images')
                          ->published()
                          ->latest();
@@ -177,10 +187,13 @@ if ( ! function_exists('fw_upload_image')) {
 
         $imageInstance = Image::create($image);
         if ($single) {
-            $model->images()->detach();
-            $model->images()->save($imageInstance, [ 'slug' => str_slug($slug, '_') ]);
+            $model->images()
+                  ->detach();
+            $model->images()
+                  ->save($imageInstance, [ 'slug' => str_slug($slug, '_') ]);
         } else {
-            $model->images()->save($imageInstance, [ 'slug' => str_slug($slug, '_') ]);
+            $model->images()
+                  ->save($imageInstance, [ 'slug' => str_slug($slug, '_') ]);
         }
     }
 }
@@ -198,12 +211,15 @@ if ( ! function_exists('fw_upload')) {
 
         if ($single) {
             if ($model->files) {
-                $model->files()->delete();
+                $model->files()
+                      ->delete();
             }
 
-            $model->files()->create($data);
+            $model->files()
+                  ->create($data);
         } else {
-            $model->files()->create($data);
+            $model->files()
+                  ->create($data);
         }
     }
 }
@@ -219,9 +235,9 @@ if ( ! function_exists('fw_fetch_data')) {
     }
 }
 if ( ! function_exists('fw_thumbnail')) {
-    function fw_thumbnail($entity = null, $width = null, $height = null, $slug = "", $useDefault = true)
+    function fw_thumbnail(Model $entity, $width = null, $height = null, $slug = "", $useDefault = true)
     {
-        $id = str_slug($entity->slug ?? str_slug($entity->title) ?? $entity->id ?? $entity);
+        $id = str_slug(get_class($entity) . '_' . $entity->id);
 
         return Cache::remember('helpers_fw_thumbnails' . $id . $width . $height . $slug . $useDefault, config('mari.cache', 0), function () use ($entity, $width, $height, $slug, $useDefault) {
             if ($entity && $entity instanceof Image) {
@@ -239,7 +255,8 @@ if ( ! function_exists('fw_thumbnail')) {
 
                     return $image->getThumbnail($width, $height);
                 } else {
-                    $image = $entity->images->where('pivot.slug', $slug)->first();
+                    $image = $entity->images->where('pivot.slug', $slug)
+                                            ->first();
 
                     if ($image) {
                         if ( ! $width && ! $height) {
@@ -249,16 +266,21 @@ if ( ! function_exists('fw_thumbnail')) {
                         return $image->getThumbnail($width, $height);
                     }
                 }
-            } elseif ($entity && $entity->images()->count()) {
+            } elseif ($entity
+                      && $entity->images()
+                                ->count()) {
                 if (empty($slug)) {
-                    $image = $entity->images()->first();
+                    $image = $entity->images()
+                                    ->first();
                     if ( ! $width && ! $height) {
                         return $image->url;
                     }
 
                     return $image->getThumbnail($width, $height);
                 } else {
-                    $image = $entity->images()->wherePivot('slug', $slug)->first();
+                    $image = $entity->images()
+                                    ->wherePivot('slug', $slug)
+                                    ->first();
 
                     if ($image) {
                         if ( ! $width && ! $height) {
@@ -307,7 +329,8 @@ if ( ! function_exists('fw_post_alias')) {
     {
         if ($postType instanceof PostType) {
             $aliases = collect($postType->alias);
-            $alias   = $aliases->where('slug', $field)->first();
+            $alias   = $aliases->where('slug', $field)
+                               ->first();
             if ($alias && array_key_exists('alias', $alias)) {
                 return $alias['alias'];
             }
@@ -322,7 +345,8 @@ if ( ! function_exists('fw_post_alias_visible')) {
     {
         if ($postType instanceof PostType) {
             $aliases = collect($postType->alias);
-            $alias   = $aliases->where('slug', $field)->first();
+            $alias   = $aliases->where('slug', $field)
+                               ->first();
             if ($alias && array_key_exists('visible', $alias)) {
                 return strtolower($alias['visible']) == "true";
             }
@@ -335,7 +359,8 @@ if ( ! function_exists('fw_post_alias_visible')) {
 if ( ! function_exists('fw_post_types')) {
     function fw_post_types($builder = false)
     {
-        $postTypes = PostType::query()->latest();
+        $postTypes = PostType::query()
+                             ->latest();
 
         if ($builder) {
             return $postTypes;
@@ -348,7 +373,8 @@ if ( ! function_exists('fw_post_types')) {
 if ( ! function_exists('fw_post_type_by_slug')) {
     function fw_post_type_by_slug($slug = false)
     {
-        $postType = PostType::where('slug', strtolower($slug))->first();
+        $postType = PostType::where('slug', strtolower($slug))
+                            ->first();
 
         return $postType;
     }
@@ -373,13 +399,15 @@ if ( ! function_exists('fw_notifiables')) {
         if ($withCustomNotifiables) {
             $notifiables = collect(explode(',', fw_setting('notification-emails')));
         }
-        $admins = User::withRole('admin')->get();
+        $admins = User::withRole('admin')
+                      ->get();
 
         return $notifiables->map(function ($u) {
             return (new User)->forceFill([
                 'email' => $u,
             ]);
-        })->merge($admins);
+        })
+                           ->merge($admins);
 
     }
 }
@@ -394,7 +422,8 @@ if ( ! function_exists('fw_sync_images')) {
         }
 
         if ($detach) {
-            $model->images()->detach();
+            $model->images()
+                  ->detach();
         }
         foreach ($images as $k => $img) {
 
@@ -407,9 +436,11 @@ if ( ! function_exists('fw_sync_images')) {
 
             if ( ! empty($path)) {
                 $filename = basename($path);
-                $image    = Image::where('path', 'like', '%/' . $filename)->first();
+                $image    = Image::where('path', 'like', '%/' . $filename)
+                                 ->first();
                 if ($image) {
-                    $model->images()->attach([ $image->id => [ 'slug' => str_slug($slug, '_') ] ]);
+                    $model->images()
+                          ->attach([ $image->id => [ 'slug' => str_slug($slug, '_') ] ]);
                 }
             }
         }
@@ -427,7 +458,8 @@ if ( ! function_exists('fw_sync_files')) {
         }
 
         if ($detach) {
-            $model->files()->detach();
+            $model->files()
+                  ->detach();
         }
 
         foreach ($files as $k => $img) {
@@ -440,14 +472,17 @@ if ( ! function_exists('fw_sync_files')) {
 
             if ( ! empty($path)) {
                 $filename = basename($path);
-                $file     = File::where('path', 'like', '%' . $filename)->first();
+                $file     = File::where('path', 'like', '%' . $filename)
+                                ->first();
 
                 if ( ! $file) {
-                    $file = Image::where('path', 'like', '%' . $filename)->first();
+                    $file = Image::where('path', 'like', '%' . $filename)
+                                 ->first();
                 }
 
                 if ($file) {
-                    $model->files()->save($file, [ 'slug' => str_slug($slug, '_') ]);
+                    $model->files()
+                          ->save($file, [ 'slug' => str_slug($slug, '_') ]);
                 }
             }
         }
@@ -548,8 +583,11 @@ if ( ! function_exists('fw_meta_image')) {
      */
     function fw_meta_image($article, $default = null)
     {
-        if ($article && $article->images()->count()) {
-            return $article->images()->first()->url;
+        if ($article
+            && $article->images()
+                       ->count()) {
+            return $article->images()
+                           ->first()->url;
         }
 
         return fw_setting('logo', $default);
@@ -568,7 +606,9 @@ if ( ! function_exists('fw_init_seo')) {
                 str_limit(strip_tags($model->lb_content), 200),
                 fw_setting('description'),
             ]));
-            $images      = $model->images->pluck('url')->push(fw_setting('logo'))->toArray();
+            $images      = $model->images->pluck('url')
+                                         ->push(fw_setting('logo'))
+                                         ->toArray();
             $keywords    = array_filter(array_merge(explode(',', $model->meta_keywords), explode(',', fw_setting('keywords'))));
         } else {
             if ($model instanceof Post) {
@@ -578,7 +618,9 @@ if ( ! function_exists('fw_init_seo')) {
                     str_limit(strip_tags($model->lb_content), 200),
                     fw_setting('description'),
                 ]));
-                $images      = $model->images->pluck('url')->push(fw_setting('logo'))->toArray();
+                $images      = $model->images->pluck('url')
+                                             ->push(fw_setting('logo'))
+                                             ->toArray();
                 $keywords    = array_filter(array_merge(explode(',', $model->meta_keywords), explode(',', fw_setting('keywords'))));
             } else {
                 $title       = fw_setting('title');
