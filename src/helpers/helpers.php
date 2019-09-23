@@ -435,8 +435,8 @@ if ( ! function_exists('fw_sync_images')) {
             $slug = array_key_exists('slug', $img) ? $img['slug'] : null;
 
             if ( ! empty($path)) {
-                $filename = basename($path);
-                $image    = Image::where('path', 'like', '%/' . $filename)
+                $filename = implode(array_slice(explode('/', $path), 4), '/'); // get the filename excluding https://something.com/mar-filemanager
+                $image    = Image::where('path', 'like', '%' . $filename)
                                  ->first();
                 if ($image) {
                     $model->images()

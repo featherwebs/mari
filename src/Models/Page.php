@@ -158,7 +158,7 @@ class Page extends Model
             $slug = $request->input('page.images.' . $k . '.pivot.slug');
 
             if ( ! empty($path)) {
-                $filename = basename($path);
+                $filename = implode(array_slice(explode('/', $path), 4), '/'); // get the filename excluding https://something.com/mar-filemanager
                 $image    = Image::where('path', 'like', '%' . $filename)
                                  ->first();
                 if ($image) {

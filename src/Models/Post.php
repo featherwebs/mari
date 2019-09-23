@@ -96,8 +96,9 @@ class Post extends Model
             $path = $request->input('post.images.' . $k . '.path');
             $slug = $request->input('post.images.' . $k . '.pivot.slug');
 
+
             if ( ! empty($path)) {
-                $filename = basename($path);
+                $filename = implode(array_slice(explode('/', $path), 4), '/'); // get the filename excluding https://something.com/mar-filemanager
                 $image    = Image::where('path', 'like', '%' . $filename)
                                  ->first();
                 if ($image) {
