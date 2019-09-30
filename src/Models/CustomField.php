@@ -1,6 +1,7 @@
 <?php
 
 namespace Featherwebs\Mari\Models;
+
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -21,6 +22,9 @@ class CustomField extends Model
     {
         parent::boot();
         static::saved(function () {
+            Cache::flush();
+        });
+        static::deleted(function () {
             Cache::flush();
         });
     }

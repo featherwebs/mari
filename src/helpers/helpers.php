@@ -471,7 +471,7 @@ if ( ! function_exists('fw_sync_files')) {
             $slug = array_key_exists('slug', $img) ? $img['slug'] : null;
 
             if ( ! empty($path)) {
-                $filename = basename($path);
+                $filename = implode(array_slice(explode('/', $path), 4), '/'); // get the filename excluding https://something.com/mar-filemanager
                 $file     = File::where('path', 'like', '%' . $filename)
                                 ->first();
 

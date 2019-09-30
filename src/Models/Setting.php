@@ -20,6 +20,9 @@ class Setting extends Model
         static::saved(function () {
             Cache::flush();
         });
+        static::deleted(function () {
+            Cache::flush();
+        });
     }
 
     /**

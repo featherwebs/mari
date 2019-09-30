@@ -11,7 +11,7 @@ class Tag extends Model
 
     public function getRouteKeyName()
     {
-      return 'slug';
+        return 'slug';
     }
 
     public function posts()
@@ -23,6 +23,9 @@ class Tag extends Model
     {
         parent::boot();
         static::saved(function () {
+            Cache::flush();
+        });
+        static::deleted(function () {
             Cache::flush();
         });
     }

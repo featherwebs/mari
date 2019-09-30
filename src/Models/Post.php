@@ -50,6 +50,9 @@ class Post extends Model
         static::saved(function () {
             Cache::flush();
         });
+        static::deleted(function () {
+            Cache::flush();
+        });
     }
 
     public function getRouteKeyName()
