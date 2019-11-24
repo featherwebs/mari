@@ -154,6 +154,12 @@ class Post extends Model
 
     public function posts()
     {
+        return $this->belongsToMany(self::class, 'post_post', 'child_post_id', 'parent_post_id')
+                    ->withPivot('slug');
+    }
+
+    public function childPosts()
+    {
         return $this->belongsToMany(self::class, 'post_post', 'parent_post_id', 'child_post_id')
                     ->withPivot('slug');
     }
