@@ -94,11 +94,11 @@
                     <label for="is_published" class="control-label col-sm-2">Published</label>
                     <div class="col-sm-10">
                         <label>
-                            <input type="radio" name="page[is_published]" id="is_published" :value="true" v-model="page.is_published">
+                            <input type="radio" name="page[is_published]" id="is_published" :value="true" :checked="page.is_published">
                             Yes
                         </label>
                         <label>
-                            <input type="radio" name="page[is_published]" id="is_published" :value="false" v-model="page.is_published">
+                            <input type="radio" name="page[is_published]" id="is_published" :value="false" :checked="!page.is_published">
                             No
                         </label>
                     </div>

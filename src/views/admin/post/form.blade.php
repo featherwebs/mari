@@ -90,11 +90,11 @@
                 <label for="is_published" class="control-label col-sm-2">{{ fw_post_alias($postType, 'is_published', 'Published')  }}</label>
                 <div class="col-sm-10">
                     <label>
-                        <input type="radio" name="post[is_published]" id="is_published" :value="true" v-model="post.is_published">
+                        <input type="radio" name="post[is_published]" id="is_published" :value="true" :checked="post.is_published">
                         Yes
                     </label>
                     <label>
-                        <input type="radio" name="post[is_published]" id="is_published" :value="false" v-model="post.is_published">
+                        <input type="radio" name="post[is_published]" id="is_published" :value="false" :checked="!post.is_published">
                         No
                     </label>
                 </div>
