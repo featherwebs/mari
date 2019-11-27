@@ -81,10 +81,10 @@
                             <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option" :selected="getCustomValue(field.slug) == option"></option>
                         </select>
                         <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug">
-                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
+                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" :test="getCustomValue(field.slug, []).join()" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
                         </select>
                         <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple>
-                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
+                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" :test="getCustomValue(field.slug, []).join()" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
                         </select>
                         <ckeditor :name="'page[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" :value="getCustomValue(field.slug)" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>
                         <span class="help-block"></span>
