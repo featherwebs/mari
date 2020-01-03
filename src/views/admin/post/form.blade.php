@@ -82,7 +82,9 @@
                     <select class="form-control select2" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple>
                         <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" :test="getCustomValue(field.slug, []).join()" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
                     </select>
-                    <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" :value="getCustomValue(field.slug)" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>
+                    {{--                    <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" :value="getCustomValue(field.slug)" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>--}}
+                    <vue-editor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" type="text" class="" :editor-toolbar="customToolbar" :value="getCustomValue(field.slug)" v-if="field.type=='formatted-text'"></vue-editor>
+
                     <span class="help-block"></span>
                 </div>
             </div>
@@ -197,7 +199,7 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>--}}
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>
