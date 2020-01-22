@@ -55,34 +55,38 @@
                 </div>
             </div>
 
-            <div class="row" v-for="(field,i) in post_type_non_images">
+            <div class="row" v-for="(field,i) in post.custom">
                 <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">@{{ field.title }}</label>
                 <div class="col-sm-10">
                     <input :name="'post[custom]['+i+'][slug]'" type="hidden" v-model="field.slug">
-                    <input :name="'post[custom]['+i+'][type]'" type="hidden" v-model="field.type">
+                    <input :name="'post[custom]['+i+'][type]'" type="hidden" :value="field.type">
                     <input :name="'post[custom]['+i+'][title]'" type="hidden" v-model="field.title">
                     <input :name="'post[custom]['+i+'][options]'" type="hidden" v-model="field.options">
                     <input :name="'post[custom]['+i+'][map]'" type="hidden" v-model="field.map">
+                    <input type="hidden" :name="'post[custom]['+i+'][value]'" v-model="field.value"/>
 
-                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="text" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
-                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="number" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
-                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
-                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="time" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="text" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
+                    <input class="form-control" :name="'post[custom]['+i+'][value]'" type="time" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
                     <template v-if="field.type == 'map'">
-                        <map-location-selector :lnglat="getCustomValue(field.slug)" @locationupdated="locationupdated($event, field.slug, 'post[custom]['+i+'][value]')"></map-location-selector>
-                        <input type="hidden" :name="'post[custom]['+i+'][value]'" :value="getCustomValue(field.slug)">
+                        <map-location-selector :lnglat="field.value" @locationupdated="locationupdated($event, field.slug, 'post[custom]['+i+'][value]')"></map-location-selector>
+                        <input type="hidden" :name="'post[custom]['+i+'][value]'" v-model="field.value">
                     </template>
-                    <image-selector :name="'post[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" :value="getCustomValue(field.slug)"></image-selector>
-                    <select class="form-control" :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
-                        <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option" :selected="getCustomValue(field.slug) == option"></option>
+                    <image-selector :name="'post[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" v-model="field.value"></image-selector>
+                    <select class="form-control" :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-if="field.type=='select'" v-model="field.value">
+                        <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option" :selected="field.value == option"></option>
                     </select>
-                    <select class="form-control select2" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug">
-                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" :test="getCustomValue(field.slug, []).join()" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
+
+                    <select class="form-control" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug" v-model="field.value">
+                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title"></option>
                     </select>
-                    <select class="form-control select2" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple>
-                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" :test="getCustomValue(field.slug, []).join()" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
+                    <select class="form-control" :name="'post[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple v-model="field.value">
+                        <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title"></option>
                     </select>
-                    <vue-editor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" type="text" class="" :editor-toolbar="customToolbar" :value="getCustomValue(field.slug)" v-if="field.type=='formatted-text'"></vue-editor>
+                    {{--                    <ckeditor :name="'post[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-model="field.value" class="editor mini" v-if="field.type=='formatted-text'" :config="editor"></ckeditor>--}}
+                    <vue-editor :id="'custom-'+i+'-value'"  type="text" class="" :editor-toolbar="customToolbar" v-if="field.type=='formatted-text'" v-model="field.value">
+                    </vue-editor>
                     <span class="help-block"></span>
                 </div>
             </div>
@@ -90,11 +94,11 @@
                 <label for="is_published" class="control-label col-sm-2">{{ fw_post_alias($postType, 'is_published', 'Published')  }}</label>
                 <div class="col-sm-10">
                     <label>
-                        <input type="radio" name="post[is_published]" id="is_published" :value="true" :checked="post.is_published">
+                        <input type="radio" name="post[is_published]" id="is_published" :value="true" v-model="post.is_published">
                         Yes
                     </label>
                     <label>
-                        <input type="radio" name="post[is_published]" id="is_published" :value="false" :checked="!post.is_published">
+                        <input type="radio" name="post[is_published]" id="is_published" :value="false" v-model="post.is_published">
                         No
                     </label>
                 </div>
@@ -165,7 +169,6 @@
 </div>
 
 @push('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
     <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
     <style>
         .thumbnail {
@@ -195,11 +198,9 @@
 @endpush
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
-    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>--}}
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>
     <script src="https://unpkg.com/react@16.8.6/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js"></script>
@@ -219,7 +220,6 @@
       let templates = JSON.parse('{!! addslashes(json_encode($templates)) !!}');
       Laraberg.init('content', {laravelFilemanager: {prefix: '/mari-filemanager'}, minHeight: '800px'});
     </script>
-    <script src="{{ asset('js/blocks.js') }}"></script>
     <script src="{{ asset('vendor/coblocks/dist/blocks.build.js') }}"></script>
 
     <script type="text/javascript">
