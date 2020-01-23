@@ -198,7 +198,7 @@
 @endpush
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{ fw_setting('google-map-api') }}"></script>

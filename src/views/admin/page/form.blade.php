@@ -59,7 +59,7 @@
                         <span class="help-block">Main Content of the Page</span>
                     </div>
                 </div>
-                <div class="row" v-for="(field,i) in page_type_non_images">
+                <div class="row" v-for="(field,i) in page.custom">
                     <label :for="'custom-'+i+'-value'" class="control-label col-sm-2">@{{ field.title }}</label>
                     <div class="col-sm-10">
                         <input :name="'page[custom]['+i+'][slug]'" type="hidden" v-model="field.slug">
@@ -67,26 +67,27 @@
                         <input :name="'page[custom]['+i+'][title]'" type="hidden" v-model="field.title">
                         <input :name="'page[custom]['+i+'][options]'" type="hidden" v-model="field.options">
                         <input :name="'page[custom]['+i+'][map]'" type="hidden" v-model="field.map">
+                        <input type="hidden" :name="'page[custom]['+i+'][value]'" v-model="field.value"/>
 
-                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="text" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
-                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="number" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
-                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="date" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
-                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="time" :value="getCustomValue(field.slug)" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
+                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="text" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='raw-text'">
+                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="number" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='number'">
+                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="date" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='date'">
+                        <input class="form-control" :name="'page[custom]['+i+'][value]'" type="time" v-model="field.value" :id="'custom-'+i+'-value'" v-if="field.type=='time'">
                         <template v-if="field.type == 'map'">
                             <map-location-selector :lnglat="getCustomValue(field.slug)" @locationupdated="locationupdated($event, field.slug, 'page[custom]['+i+'][value]')"></map-location-selector>
-                            <input type="hidden" :name="'page[custom]['+i+'][value]'" :value="getCustomValue(field.slug)">
+                            <input type="hidden" :name="'page[custom]['+i+'][value]'" v-model="field.value">
                         </template>
-                        <image-selector :name="'page[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" :value="getCustomValue(field.slug)"></image-selector>
+                        <image-selector :name="'page[custom]['+i+'][value]'" v-if="field.type=='file'" type="file" :hidevalue="false" v-model="field.value"></image-selector>
                         <select class="form-control" :name="'page[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" v-if="field.type=='select'">
                             <option v-for="option in field.options.split(/\r?\n/)" :value="option" v-html="option" :selected="getCustomValue(field.slug) == option"></option>
                         </select>
-                        <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug">
-                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" :test="getCustomValue(field.slug, []).join()" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
+                        <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type'" :data-slug="field.slug" v-model="field.value">
+                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" ></option>
                         </select>
-                        <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple>
-                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" :test="getCustomValue(field.slug, []).join()" v-html="pos.title" :selected="getCustomValue(field.slug, []).includes(pos.id)"></option>
+                        <select class="form-control select2" :name="'page[custom]['+i+'][value][]'" :id="'custom-'+i+'-value'" v-if="field.type=='post-type-multiple'" :data-slug="field.slug" multiple v-model="field.value">
+                            <option v-for="pos in posts.filter(p => p.post_type_id == field.id)" :value="pos.id" v-html="pos.title" ></option>
                         </select>
-                        <vue-editor :name="'page[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" type="text" class="" :editor-toolbar="customToolbar" :value="getCustomValue(field.slug)" v-if="field.type=='formatted-text'"></vue-editor>
+                        <vue-editor :name="'page[custom]['+i+'][value]'" :id="'custom-'+i+'-value'" type="text" class="" :editor-toolbar="customToolbar" v-model="field.value" v-if="field.type=='formatted-text'"></vue-editor>
                         <span class="help-block"></span>
                     </div>
                 </div>
