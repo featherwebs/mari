@@ -101,7 +101,7 @@ class Post extends Model
 
 
             if ( ! empty($path)) {
-                $filename = implode(array_slice(explode('/', $path), 4), '/'); // get the filename excluding https://something.com/mar-filemanager
+                $filename = implode('/', array_slice(explode('/', $path), 4)); // get the filename excluding https://something.com/mar-filemanager
                 $image    = Image::where('path', 'like', '%' . $filename)
                                  ->first();
                 if ($image) {
